@@ -1,0 +1,73 @@
+/* ============================================================
+   BFI — Color tokens
+   Petroleum Blue brand system. All text pairings meet WCAG AA.
+   ============================================================ */
+:root {
+  /* ---- Brand: base palette ---- */
+  --bfi-petroleum-900: #0A2535; /* deepest, for text-on-light emphasis */
+  --bfi-petroleum-800: #0F3146; /* primary button hover */
+  --bfi-petroleum-700: #123C56; /* PRIMARY brand color (Petroleum Blue) */
+  --bfi-petroleum-600: #1C5273; /* lighter brand, hovers on tints */
+  --bfi-petroleum-300: #7FA3B8; /* muted brand for accents on dark */
+  --bfi-petroleum-100: #DCE7EE; /* brand tint surface */
+  --bfi-petroleum-050: #EEF3F7; /* section background tint */
+
+  --bfi-emerald-700:  #246E45; /* darker emerald for AA text on white */
+  --bfi-emerald-600:  #2E8B57; /* SECONDARY (Emerald Green) */
+  --bfi-emerald-100:  #DEF0E6; /* success/verified tint surface */
+
+  --bfi-gold-700:     #9A7B1D; /* darker gold for AA text on white */
+  --bfi-gold-600:     #C9A227; /* ACCENT (Warm Gold) */
+  --bfi-gold-100:     #F6EECF; /* premium tint surface */
+
+  /* ---- Neutrals ---- */
+  --bfi-ink:          #1F2937; /* dark text */
+  --bfi-body:         #4B5563; /* body text */
+  --bfi-muted:        #6B7280; /* light / secondary text */
+  --bfi-border:       #D9E2EC; /* borders */
+  --bfi-divider:      #E5E7EB; /* dividers / hairlines */
+  --bfi-white:        #FFFFFF;
+
+  /* ---- Backgrounds ---- */
+  --bfi-bg:           #FFFFFF; /* primary background */
+  --bfi-bg-subtle:    #F7F9FB; /* secondary background */
+  --bfi-bg-section:   #EEF3F7; /* section background */
+
+  /* ---- Status ---- */
+  --bfi-success:      #2E8B57;
+  --bfi-success-bg:   #DEF0E6;
+  --bfi-warning:      #F4B400;
+  --bfi-warning-bg:   #FCEFC7;
+  --bfi-error:        #D64545;
+  --bfi-error-bg:     #FAE3E3;
+  --bfi-info:         #2F80ED;
+  --bfi-info-bg:      #DEEAFB;
+
+  /* ============================================================
+     Semantic aliases — reference these in components
+     ============================================================ */
+  --color-primary:        var(--bfi-petroleum-700);
+  --color-primary-hover:  var(--bfi-petroleum-800);
+  --color-primary-active: var(--bfi-petroleum-900);
+  --color-secondary:      var(--bfi-emerald-600);
+  --color-accent:         var(--bfi-gold-600);
+
+  --surface-page:    var(--bfi-bg);
+  --surface-subtle:  var(--bfi-bg-subtle);
+  --surface-section: var(--bfi-bg-section);
+  --surface-card:    var(--bfi-white);
+  --surface-brand:   var(--bfi-petroleum-700);
+
+  --text-strong:  var(--bfi-ink);
+  --text-body:    var(--bfi-body);
+  --text-muted:   var(--bfi-muted);
+  --text-on-brand:var(--bfi-white);
+  --text-link:    var(--bfi-petroleum-700);
+  --text-accent:  var(--bfi-gold-700);
+
+  --border-default: var(--bfi-border);
+  --border-strong:  var(--bfi-petroleum-700);
+  --divider:        var(--bfi-divider);
+
+  --focus-ring: 0 0 0 3px rgba(18, 60, 86, 0.28);
+}

@@ -1,0 +1,31 @@
+/* ============================================================
+   BFI — Spacing, layout & sizing tokens
+   Base unit: 4px. Generous rhythm with abundant whitespace.
+   ============================================================ */
+:root {
+  --space-0: 0;
+  --space-1: 0.25rem;  /* 4 */
+  --space-2: 0.5rem;   /* 8 */
+  --space-3: 0.75rem;  /* 12 */
+  --space-4: 1rem;     /* 16 */
+  --space-5: 1.5rem;   /* 24 */
+  --space-6: 2rem;     /* 32 */
+  --space-7: 3rem;     /* 48 */
+  --space-8: 4rem;     /* 64 */
+  --space-9: 6rem;     /* 96 */
+  --space-10: 8rem;    /* 128 */
+
+  /* ---- Layout ---- */
+  --content-max: 1200px;   /* generous max content width */
+  --content-narrow: 720px; /* prose / forms */
+  --gutter: 1.5rem;        /* mobile gutter */
+
+  /* ---- Control sizing ---- */
+  --control-h-sm: 36px;
+  --control-h-md: 44px;   /* default — 44px min touch target */
+  --control-h-lg: 52px;
+}
+
+@media (min-width: 768px) {
+  :root { --gutter: 2rem; }
+}
