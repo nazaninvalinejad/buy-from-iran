@@ -934,5 +934,20 @@ function goSearch() {
   if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 24, behavior: 'smooth' });
 }
 </script>
+
+<!-- ElevenLabs Conversational AI Widget -->
+<style>
+  .elevenlabs-widget-wrapper {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+  }
+</style>
+<div class="elevenlabs-widget-wrapper">
+  <elevenlabs-convai agent-id="agent_4001kw4zymzwev8ae8g8ca87mxs3"></elevenlabs-convai>
+</div>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
 </body>
 </html>
