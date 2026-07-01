@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Membership Plans — Buy From Iran</title>
+<meta name="description" content="Choose the right membership plan for your sourcing needs. From free buyer access to verified supplier listings, to full enterprise sourcing support — Buy From Iran has a plan for every business.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Sans 3',sans-serif;color:#4B5563;background:#F7F9FB;overflow-x:hidden}
+a{text-decoration:none}
+img,svg{display:block}
+button,input,select{font-family:inherit}
+
+:root{
+  --petroleum:#123C56;--petroleum-d:#0F3146;--petroleum-dd:#0A2535;
+  --emerald:#2E8B57;--gold:#C9A227;--gold-d:#9A7B1D;--gold-pale:#E8C75A;
+  --ink:#1F2937;--body:#4B5563;--muted:#6B7280;
+  --border:#D9E2EC;--divider:#E5E7EB;--bg-subtle:#F7F9FB;--bg-section:#EEF3F7;
+  --font-display:'Playfair Display',serif;
+}
+
+.container{max-width:1280px;margin:0 auto;padding:0 32px}
+
+/* ── Util bar ── */
+.util-bar{background:var(--petroleum-dd)}
+.util-bar__inner{max-width:1280px;margin:0 auto;padding:0 32px;height:40px;display:flex;align-items:center;justify-content:space-between}
+.util-bar__left{display:flex;align-items:center;gap:18px}
+.util-bar__socials{display:flex;align-items:center;gap:12px}
+.util-bar__socials a{color:rgba(255,255,255,.82);display:flex;transition:color .15s}
+.util-bar__socials a:hover{color:#fff}
+.util-bar__sep{width:1px;height:16px;background:rgba(255,255,255,.18);flex-shrink:0}
+.util-bar__link{color:rgba(255,255,255,.82);display:inline-flex;align-items:center;gap:7px;font-size:13px;transition:color .15s}
+.util-bar__link:hover{color:#fff}
+.util-bar__right{display:flex;align-items:center;gap:16px}
+.lang-bar{display:flex;gap:2px}
+.lang-btn{background:transparent;color:rgba(255,255,255,.8);border:none;font-size:12px;font-weight:600;letter-spacing:.04em;padding:5px 9px;border-radius:7px;cursor:pointer;transition:background .15s,color .15s}
+.lang-btn.active{background:rgba(255,255,255,.18);color:#fff}
+
+/* ── Main nav ── */
+.main-nav{background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--divider)}
+.main-nav__inner{max-width:1280px;margin:0 auto;padding:0 32px;height:74px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.logo__icon{width:46px;height:46px;border-radius:13px;background:var(--petroleum);display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,60,86,.18)}
+.logo__name{font-family:var(--font-display);font-size:21px;font-weight:700;color:var(--petroleum);letter-spacing:-.01em}
+.logo__sub{font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-d);margin-top:3px}
+.nav-links{display:flex;align-items:center;gap:2px;margin:0 auto}
+.nav-links a{padding:9px 13px;font-size:14.5px;color:var(--body);border-radius:8px;transition:background .15s,color .15s;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+.nav-links a:hover{background:var(--bg-section);color:var(--petroleum)}
+.nav-links a.active{color:var(--petroleum);font-weight:700;background:var(--bg-section)}
+.nav-dropdown{position:relative}
+.nav-dropdown>a::after{content:'';display:inline-block;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:4.5px solid currentColor;opacity:.55;margin-top:1px}
+.nav-dropdown__menu{display:none;position:absolute;top:calc(100% + 10px);left:0;background:#fff;border:1px solid var(--divider);border-radius:12px;box-shadow:0 10px 28px rgba(18,60,86,.13);padding:8px;min-width:200px;z-index:200}
+.nav-dropdown:hover .nav-dropdown__menu{display:block}
+.nav-dropdown__menu a{display:block;padding:9px 14px;font-size:14px;color:var(--body);border-radius:8px;transition:background .12s}
+.nav-dropdown__menu a:hover{background:var(--bg-section);color:var(--petroleum)}
+.nav-search{display:flex;align-items:center;gap:8px;background:var(--bg-subtle);border:1px solid var(--border);border-radius:9px;padding:7px 12px;flex-shrink:0}
+.nav-search input{border:none;outline:none;background:transparent;font-size:13.5px;color:var(--ink);width:155px}
+.nav-search input::placeholder{color:var(--muted)}
+.nav-signin{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--petroleum);flex-shrink:0}
+.btn-add-listing{flex-shrink:0;background:var(--gold);color:var(--petroleum-dd);font-weight:700;font-size:13px;padding:10px 18px;border-radius:10px;border:none;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;transition:background .15s}
+.btn-add-listing:hover{background:var(--gold-pale)}
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:6px;flex-shrink:0}
+.hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px}
+.mobile-nav{display:none;flex-direction:column;background:#fff;border-top:1px solid var(--divider);padding:8px 28px 20px}
+.mobile-nav.open{display:flex}
+.mobile-nav a{padding:12px 0;font-size:15px;color:var(--body);border-bottom:1px solid var(--divider);transition:color .15s}
+.mobile-nav a:last-of-type{border-bottom:none}
+.mobile-nav a:hover{color:var(--petroleum)}
+.mobile-nav__actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:16px}
+.mobile-nav__search{display:flex;align-items:center;gap:8px;background:var(--bg-subtle);border:1px solid var(--border);border-radius:9px;padding:9px 13px;flex:1;min-width:0}
+.mobile-nav__search input{border:none;outline:none;background:transparent;font-size:14px;color:var(--ink);width:100%}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(155deg,#0A2535 0%,#123C56 55%,#1C5273 100%);padding:68px 0 80px;position:relative;overflow:hidden;text-align:center}
+.hero__dots{position:absolute;inset:0;opacity:.07;background-image:radial-gradient(circle at 22px 22px,#fff 1.5px,transparent 0);background-size:34px 34px}
+.hero__inner{position:relative;max-width:760px;margin:0 auto;padding:0 32px}
+.hero__pill{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:999px;font-size:12.5px;font-weight:600;color:#B0C8D6;margin-bottom:20px}
+.hero__h1{font-family:var(--font-display);font-size:52px;line-height:1.07;letter-spacing:-.025em;color:#fff;margin-bottom:16px}
+.hero__h1 em{font-style:italic;color:var(--gold-pale)}
+.hero__sub{font-size:18px;line-height:1.58;color:#9FB2BF;margin-bottom:32px}
+.toggle-wrap{display:inline-flex;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:5px}
+.toggle-btn{background:transparent;border:none;color:rgba(255,255,255,.75);font-size:14px;font-weight:600;padding:9px 24px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
+.toggle-btn.active{background:#fff;color:var(--petroleum)}
+
+/* ── Breadcrumb ── */
+.breadcrumb{background:#fff;border-bottom:1px solid var(--divider);padding:13px 0}
+.breadcrumb__inner{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted)}
+.breadcrumb__inner a{color:var(--petroleum)}
+.breadcrumb__sep{color:var(--border)}
+
+/* ── Pricing section ── */
+.pricing-section{padding:64px 0 0}
+.pricing-grid{max-width:1100px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;align-items:start}
+
+/* Plan card */
+.plan{background:#fff;border:1px solid var(--divider);border-radius:20px;padding:0;overflow:hidden;box-shadow:0 2px 16px rgba(18,60,86,.06);position:relative;transition:box-shadow .2s,transform .2s}
+.plan:hover{box-shadow:0 8px 32px rgba(18,60,86,.12);transform:translateY(-2px)}
+.plan.featured{border:2px solid var(--petroleum);box-shadow:0 8px 40px rgba(18,60,86,.16)}
+.plan.featured:hover{box-shadow:0 16px 48px rgba(18,60,86,.2)}
+.plan__badge{position:absolute;top:20px;right:20px;background:var(--gold);color:var(--petroleum-dd);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
+.plan__head{padding:32px 32px 28px}
+.plan.featured .plan__head{background:linear-gradient(135deg,#0A2535,#123C56);color:#fff}
+.plan__icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.plan__name{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.plan.featured .plan__name{color:rgba(255,255,255,.6)}
+.plan__price-row{display:flex;align-items:baseline;gap:4px;margin-bottom:6px}
+.plan__price{font-family:var(--font-display);font-size:46px;font-weight:700;color:var(--ink);line-height:1}
+.plan.featured .plan__price{color:#fff}
+.plan__currency{font-size:22px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.plan.featured .plan__currency{color:rgba(255,255,255,.7)}
+.plan__period{font-size:14px;color:var(--muted);margin-left:2px}
+.plan.featured .plan__period{color:rgba(255,255,255,.55)}
+.plan__price-note{font-size:13px;color:var(--muted);margin-bottom:16px}
+.plan.featured .plan__price-note{color:rgba(255,255,255,.55)}
+.plan__desc{font-size:14.5px;color:var(--body);line-height:1.55}
+.plan.featured .plan__desc{color:rgba(255,255,255,.8)}
+.plan__body{padding:28px 32px 32px}
+.plan__section-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.plan__features{display:flex;flex-direction:column;gap:11px;margin-bottom:28px}
+.plan__feat{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--body);line-height:1.45}
+.feat-check{flex-shrink:0;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.feat-check.on{background:#DEF0E6}
+.feat-check.off{background:var(--bg-section)}
+.feat-check.on svg{color:#2E8B57}
+.feat-check.off svg{color:#D1D5DB}
+.feat-muted{color:var(--muted)}
+.plan__cta{display:flex;flex-direction:column;gap:10px}
+.btn-plan-primary{width:100%;background:var(--petroleum);color:#fff;font-size:15px;font-weight:700;padding:14px;border-radius:11px;border:none;cursor:pointer;transition:background .15s;letter-spacing:.01em}
+.btn-plan-primary:hover{background:var(--petroleum-d)}
+.btn-plan-featured{background:var(--gold);color:var(--petroleum-dd)}
+.btn-plan-featured:hover{background:var(--gold-pale)}
+.btn-plan-outline{width:100%;background:#fff;color:var(--petroleum);font-size:15px;font-weight:700;padding:14px;border-radius:11px;border:1.5px solid var(--border);cursor:pointer;transition:border-color .15s,background .15s}
+.btn-plan-outline:hover{border-color:var(--petroleum);background:var(--bg-section)}
+.plan__cta-note{text-align:center;font-size:12.5px;color:var(--muted)}
+
+/* ── Divider ── */
+.section-divider{max-width:1100px;margin:0 auto;padding:0 32px}
+.section-divider hr{border:none;border-top:1px solid var(--divider);margin:60px 0}
+
+/* ── Comparison table ── */
+.compare-section{padding:0 0 0}
+.compare-inner{max-width:1100px;margin:0 auto;padding:0 32px 72px}
+.compare-head{text-align:center;margin-bottom:48px}
+.section-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--emerald);margin-bottom:10px}
+.section-h2{font-family:var(--font-display);font-size:36px;color:var(--ink);margin-bottom:0}
+.section-h2 em{font-style:italic;color:var(--petroleum)}
+.table-wrap{overflow-x:auto;border-radius:16px;border:1px solid var(--divider);box-shadow:0 2px 16px rgba(18,60,86,.05)}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:14.5px}
+thead th{padding:20px 24px;text-align:left;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:#fff;border-bottom:1px solid var(--divider)}
+thead th:not(:first-child){text-align:center}
+thead th.th-featured{background:var(--bg-section);color:var(--petroleum)}
+tbody tr:hover td{background:#FAFBFC}
+tbody td{padding:16px 24px;border-bottom:1px solid var(--divider);color:var(--body);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody td.td-featured{background:rgba(18,60,86,.03)}
+tbody td:not(:first-child){text-align:center}
+tbody td.row-group{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--bg-subtle);padding:10px 24px}
+.td-check{color:#2E8B57}
+.td-cross{color:#D1D5DB}
+.td-dash{color:#D1D5DB}
+
+/* ── Trust band ── */
+.trust-band{background:var(--petroleum);padding:64px 0}
+.trust-band__inner{max-width:1100px;margin:0 auto;padding:0 32px}
+.trust-band__head{text-align:center;margin-bottom:48px}
+.trust-band__eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-pale);margin-bottom:10px}
+.trust-band__h2{font-family:var(--font-display);font-size:34px;color:#fff}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.trust-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:28px 24px;text-align:center}
+.trust-card__num{font-family:var(--font-display);font-size:40px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:6px}
+.trust-card__label{font-size:14px;color:#9FB2BF;line-height:1.45}
+
+/* ── How it works ── */
+.how-section{padding:72px 0}
+.how-inner{max-width:1100px;margin:0 auto;padding:0 32px}
+.how-head{text-align:center;margin-bottom:56px}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.how-step{position:relative}
+.how-step::after{content:'';position:absolute;top:22px;left:calc(50% + 28px);width:calc(100% - 56px);height:1.5px;background:var(--border)}
+.how-step:last-child::after{display:none}
+.how-num{width:44px;height:44px;border-radius:50%;background:var(--petroleum);color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;position:relative;z-index:1}
+.how-title{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px;text-align:center}
+.how-desc{font-size:14px;color:var(--muted);line-height:1.55;text-align:center}
+
+/* ── Testimonials ── */
+.testimonial-section{background:var(--bg-section);padding:72px 0}
+.testimonial-inner{max-width:1100px;margin:0 auto;padding:0 32px}
+.testimonial-head{text-align:center;margin-bottom:48px}
+.testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.tcard{background:#fff;border:1px solid var(--divider);border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(18,60,86,.05)}
+.tcard__quote{font-size:14.5px;color:var(--body);line-height:1.65;margin-bottom:20px;font-style:italic}
+.tcard__quote::before{content:'\201C';font-family:var(--font-display);font-size:36px;color:var(--petroleum);line-height:0;vertical-align:-14px;margin-right:4px}
+.tcard__author{display:flex;align-items:center;gap:12px}
+.tcard__avatar{width:40px;height:40px;border-radius:50%;background:var(--petroleum);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;flex-shrink:0}
+.tcard__name{font-size:14px;font-weight:700;color:var(--ink)}
+.tcard__role{font-size:12.5px;color:var(--muted)}
+.tcard__plan{display:inline-flex;align-items:center;gap:5px;background:var(--bg-section);color:var(--petroleum);font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;margin-top:4px}
+
+/* ── FAQ ── */
+.faq-section{padding:72px 0}
+.faq-inner{max-width:760px;margin:0 auto;padding:0 32px}
+.faq-head{text-align:center;margin-bottom:48px}
+.faq-list{display:flex;flex-direction:column;gap:2px}
+.faq-item{background:#fff;border:1px solid var(--divider);border-radius:12px;overflow:hidden;margin-bottom:4px}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;cursor:pointer;font-size:15.5px;font-weight:600;color:var(--ink);gap:16px;user-select:none;transition:background .12s}
+.faq-q:hover{background:var(--bg-subtle)}
+.faq-q .faq-ico{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--bg-section);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .25s}
+.faq-item.open .faq-q .faq-ico{background:var(--petroleum);transform:rotate(45deg)}
+.faq-item.open .faq-q .faq-ico svg{color:#fff}
+.faq-a{display:none;padding:0 24px 20px;font-size:14.5px;color:var(--body);line-height:1.65}
+.faq-item.open .faq-a{display:block}
+
+/* ── Bottom CTA ── */
+.bottom-cta{background:linear-gradient(135deg,#0A2535 0%,#123C56 60%,#1C5273 100%);padding:80px 0;position:relative;overflow:hidden;text-align:center}
+.bottom-cta__dots{position:absolute;inset:0;opacity:.06;background-image:radial-gradient(circle at 22px 22px,#fff 1.5px,transparent 0);background-size:34px 34px}
+.bottom-cta__inner{position:relative;max-width:640px;margin:0 auto;padding:0 32px}
+.bottom-cta__h2{font-family:var(--font-display);font-size:40px;color:#fff;margin-bottom:14px}
+.bottom-cta__h2 em{font-style:italic;color:var(--gold-pale)}
+.bottom-cta__sub{font-size:17px;color:#9FB2BF;margin-bottom:32px;line-height:1.55}
+.bottom-cta__btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.btn-gold-lg{background:var(--gold);color:var(--petroleum-dd);font-size:16px;font-weight:700;padding:16px 34px;border-radius:12px;border:none;cursor:pointer;transition:background .15s;letter-spacing:.01em}
+.btn-gold-lg:hover{background:var(--gold-pale)}
+.btn-outline-lg{background:transparent;color:#fff;font-size:16px;font-weight:600;padding:15px 30px;border-radius:12px;border:1.5px solid rgba(255,255,255,.3);cursor:pointer;transition:border-color .15s,background .15s}
+.btn-outline-lg:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+
+/* ── Footer ── */
+footer{background:#0A2535;color:#9FB2BF;padding:60px 0 0}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px}
+.footer-logo{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.footer-logo__icon{width:44px;height:44px;background:var(--petroleum);border-radius:12px;display:inline-flex;align-items:center;justify-content:center}
+.footer-logo__name{font-family:var(--font-display);font-size:20px;font-weight:700;color:#fff}
+.footer-about{font-size:14.5px;line-height:1.6;color:#8FA3B1;max-width:300px;margin:0 0 18px}
+.footer-socials{display:flex;gap:10px}
+.footer-social{width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,.07);display:inline-flex;align-items:center;justify-content:center;color:#cdd9e2;transition:background .15s}
+.footer-social:hover{background:rgba(255,255,255,.16);color:#fff}
+.footer-col-title{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:11px}
+.footer-links a{font-size:14.5px;color:#9FB2BF;transition:color .15s}
+.footer-links a:hover{color:#fff}
+.footer-bottom{max-width:1280px;margin:40px auto 0;padding:20px 32px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13.5px}
+.footer-bottom__copy{color:#7E92A0}
+.footer-bottom__links{display:flex;gap:20px}
+.footer-bottom__links a{color:#7E92A0;transition:color .15s}
+.footer-bottom__links a:hover{color:#fff}
+
+/* ── Responsive ── */
+@media(max-width:1024px){
+  .nav-links,.nav-search,.nav-signin,.btn-add-listing{display:none}
+  .hamburger{display:flex}
+  .pricing-grid{grid-template-columns:1fr}
+  .trust-grid{grid-template-columns:1fr 1fr}
+  .how-grid{grid-template-columns:1fr 1fr}
+  .how-step::after{display:none}
+  .testimonial-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:680px){
+  .hero__h1{font-size:36px}
+  .hero{padding:48px 0 60px}
+  .bottom-cta__h2{font-size:30px}
+  .trust-grid{grid-template-columns:1fr 1fr}
+  .how-grid{grid-template-columns:1fr}
+  .pricing-grid,.compare-inner,.how-inner,.testimonial-inner,.faq-inner,.section-divider{padding:0 16px}
+  .container,.hero__inner,.breadcrumb__inner,.trust-band__inner,.bottom-cta__inner{padding-left:16px;padding-right:16px}
+  .util-bar__left{display:none}
+  .footer-grid{grid-template-columns:1fr}
+  .bottom-cta__btns{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header style="position:sticky;top:0;z-index:60;">
+  <div class="util-bar">
+    <div class="util-bar__inner">
+      <div class="util-bar__left">
+        <div class="util-bar__socials">
+          <a href="#" aria-label="Facebook"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3l.4-3H14V4.5c0-.9.3-1.5 1.6-1.5H17V.2C16.7.1 15.8 0 14.7 0 12.3 0 10.8 1.4 10.8 4v2H8v3h2.8v8H14V9z"/></svg></a>
+          <a href="#" aria-label="X"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7 8 8 12h-6l-5-6-5 6H2l8-9L2 2h6l4 5 6-5z"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 8h4v13H2V8zm6 0h4v2h.1c.6-1 2-2 3.9-2 4 0 5 2.5 5 6v7h-4v-6c0-1.5 0-3.3-2-3.3s-2.3 1.6-2.3 3.2V21H8V8z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.7 0 3 0 4.1.1 1 .05 1.6.2 2 .35.5.2.9.45 1.3.85.4.4.65.8.85 1.3.15.4.3 1 .35 2C20.99 9 21 9.3 21 12s0 3-.06 4.1c-.05 1-.2 1.6-.35 2a3.6 3.6 0 0 1-.85 1.3 3.6 3.6 0 0 1-1.3.85c-.4.15-1 .3-2 .35C15 20.99 14.7 21 12 21s-3 0-4.1-.06c-1-.05-1.6-.2-2-.35a3.6 3.6 0 0 1-1.3-.85 3.6 3.6 0 0 1-.85-1.3c-.15-.4-.3-1-.35-2C3.01 15 3 14.7 3 12s0-3 .06-4.1c.05-1 .2-1.6.35-2 .2-.5.45-.9.85-1.3.4-.4.8-.65 1.3-.85.4-.15 1-.3 2-.35C9 2.01 9.3 2 12 2zm0 2c-2.6 0-2.9 0-4 .1-.8.03-1.2.17-1.5.28-.4.15-.6.32-.9.6-.28.28-.45.5-.6.9-.1.3-.25.7-.28 1.5C4.6 9.1 4.6 9.4 4.6 12s0 2.9.1 4c.03.8.17 1.2.28 1.5.15.4.32.6.6.9.28.28.5.45.9.6.3.1.7.25 1.5.28 1.1.05 1.4.06 4 .06s2.9 0 4-.06c.8-.03 1.2-.17 1.5-.28.4-.15.6-.32.9-.6.28-.28.45-.5.6-.9.1-.3.25-.7.28-1.5.05-1.1.06-1.4.06-4s0-2.9-.06-4c-.03-.8-.17-1.2-.28-1.5a2.4 2.4 0 0 0-.6-.9 2.4 2.4 0 0 0-.9-.6c-.3-.1-.7-.25-1.5-.28C14.9 4.01 14.6 4 12 4zm0 3.4a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2zm0 2a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2zm4.8-3.9a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z"/></svg></a>
+          <a href="mailto:hello@buyfromiran.com" class="util-bar__link" aria-label="Email"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
+        </div>
+      </div>
+      <div class="util-bar__right">
+        <a href="tel:+982140005000" class="util-bar__link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.83 19.05A16 16 0 0 1 4.95 10.17 2 2 0 0 1 6.9 7.5l1.27.13a2 2 0 0 1 1.7 1.45l.34 1.36a2 2 0 0 1-.5 1.9l-.7.7a12 12 0 0 0 4 4l.7-.7a2 2 0 0 1 1.9-.5l1.36.34a2 2 0 0 1 1.45 1.7l.13 1.27a2 2 0 0 1-2.67 1.95Z"/></svg> +98 21 4000 5000</a>
+        <span class="util-bar__sep"></span>
+        <div class="lang-bar">
+          <button class="lang-btn active" onclick="selectLang(this)">AR</button>
+          <button class="lang-btn" onclick="selectLang(this)">EN</button>
+          <button class="lang-btn" onclick="selectLang(this)">FR</button>
+          <button class="lang-btn" onclick="selectLang(this)">RU</button>
+          <button class="lang-btn" onclick="selectLang(this)">ES</button>
+          <button class="lang-btn" onclick="selectLang(this)">TR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main-nav">
+    <div class="main-nav__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__icon"><svg width="46" height="46" viewBox="0 0 52 52" fill="none"><path d="M14 17L26 26L14 35" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 17L26 26L38 35" stroke="#C9A227" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span style="display:flex;flex-direction:column;line-height:1;"><span class="logo__name">Buy From Iran</span><span class="logo__sub">Global Sourcing Hub</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="about.html">About</a>
+        <div class="nav-dropdown"><a href="#">Listing</a><div class="nav-dropdown__menu"><a href="#">Products</a><a href="index.html#categories">Categories</a><a href="index.html#suppliers">Suppliers</a><a href="#">Export Services</a></div></div>
+        <div class="nav-dropdown"><a href="#">Blog</a><div class="nav-dropdown__menu"><a href="#">Latest Articles</a><a href="#">Industry News</a><a href="#">Guides &amp; Reports</a></div></div>
+        <a href="quote.html">Get a Quote</a>
+        <a href="membership.html" class="active">Membership</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="nav-search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" placeholder="Type your search…" aria-label="Search"></div>
+      <a href="#" class="nav-signin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg> Sign in or Register</a>
+      <button class="btn-add-listing">ADD LISTING</button>
+      <button class="hamburger" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="about.html">About</a><a href="#">Listing</a><a href="#">Blog</a>
+      <a href="quote.html">Get a Quote</a>
+      <a href="membership.html" style="color:var(--petroleum);font-weight:700;">Membership</a>
+      <a href="contact.html">Contact</a>
+      <div class="mobile-nav__actions">
+        <div class="mobile-nav__search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" placeholder="Search…" aria-label="Search"></div>
+        <a href="#" class="nav-signin" style="display:inline-flex;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg> Sign in or Register</a>
+        <button class="btn-add-listing" style="display:block;">ADD LISTING</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero__dots"></div>
+  <div class="hero__inner">
+    <div class="hero__pill">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7FBA98" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 18l-6.2 3.1 1.2-6.9-5-4.9 6.9-1z"/></svg>
+      No contracts · Cancel any time
+    </div>
+    <h1 class="hero__h1">Plans built for serious <em>sourcing</em></h1>
+    <p class="hero__sub">Whether you're a first-time buyer or a large procurement team, there's a plan designed around your volume, speed, and support needs.</p>
+    <div class="toggle-wrap" role="group" aria-label="Billing period">
+      <button class="toggle-btn active" id="toggleMonthly" onclick="setBilling('monthly')">Monthly</button>
+      <button class="toggle-btn" id="toggleAnnual" onclick="setBilling('annual')">Annual <span style="font-size:11px;background:rgba(201,162,39,.25);color:#E8C75A;padding:2px 8px;border-radius:999px;margin-left:6px;">Save 20%</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BREADCRUMB ═══ -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="breadcrumb__inner">
+    <a href="index.html">Home</a><span class="breadcrumb__sep">›</span><span>Membership</span>
+  </div>
+</nav>
+
+
+<!-- ═══ PRICING CARDS ═══ -->
+<section class="pricing-section">
+  <div class="pricing-grid">
+
+    <!-- Starter -->
+    <div class="plan">
+      <div class="plan__head">
+        <div class="plan__icon" style="background:#EEF3F7;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#123C56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+        </div>
+        <div class="plan__name">Starter</div>
+        <div class="plan__price-row">
+          <span class="plan__currency">$</span>
+          <span class="plan__price" id="price-starter">0</span>
+          <span class="plan__period">/mo</span>
+        </div>
+        <div class="plan__price-note" id="note-starter">Free forever — no card required</div>
+        <div class="plan__desc">Perfect for buyers exploring Iranian products for the first time. Browse, search, and make initial contact.</div>
+      </div>
+      <div class="plan__body">
+        <div class="plan__section-title">What's included</div>
+        <div class="plan__features">
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Browse all supplier listings</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Up to 3 quote requests/month</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Basic supplier profiles</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Email support (48 h SLA)</div>
+          <div class="plan__feat"><span class="feat-check off"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span class="feat-muted">Priority supplier matching</span></div>
+          <div class="plan__feat"><span class="feat-check off"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span class="feat-muted">Verified compliance docs</span></div>
+          <div class="plan__feat"><span class="feat-check off"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span class="feat-muted">Dedicated account manager</span></div>
+        </div>
+        <div class="plan__cta">
+          <button class="btn-plan-outline" onclick="choosePlan('Starter')">Get started free</button>
+          <div class="plan__cta-note">No credit card needed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pro — featured -->
+    <div class="plan featured">
+      <div class="plan__badge">Most popular</div>
+      <div class="plan__head">
+        <div class="plan__icon" style="background:rgba(255,255,255,.12);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 18l-6.2 3.1 1.2-6.9-5-4.9 6.9-1z"/></svg>
+        </div>
+        <div class="plan__name">Pro Buyer</div>
+        <div class="plan__price-row">
+          <span class="plan__currency">$</span>
+          <span class="plan__price" id="price-pro">79</span>
+          <span class="plan__period">/mo</span>
+        </div>
+        <div class="plan__price-note" id="note-pro">Billed monthly · cancel any time</div>
+        <div class="plan__desc">For active importers who need speed, supplier depth, and verified documentation on every order.</div>
+      </div>
+      <div class="plan__body">
+        <div class="plan__section-title">Everything in Starter, plus</div>
+        <div class="plan__features">
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><strong>Unlimited</strong> quote requests</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Priority supplier matching (24 h)</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Full verified compliance docs</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>WhatsApp &amp; priority email support</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Saved searches &amp; watchlists</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Shipping &amp; logistics guidance</div>
+          <div class="plan__feat"><span class="feat-check off"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span class="feat-muted">Dedicated account manager</span></div>
+        </div>
+        <div class="plan__cta">
+          <button class="btn-plan-primary btn-plan-featured" onclick="choosePlan('Pro Buyer')">Start Pro — $<span id="cta-pro-price">79</span>/mo</button>
+          <div class="plan__cta-note" style="color:rgba(255,255,255,.5)">14-day free trial · no card needed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enterprise -->
+    <div class="plan">
+      <div class="plan__head">
+        <div class="plan__icon" style="background:#F6EECF;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9A7B1D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M4 20V8l8-6 8 6v12"/><path d="M10 20v-6h4v6"/></svg>
+        </div>
+        <div class="plan__name">Enterprise</div>
+        <div class="plan__price-row">
+          <span class="plan__price" style="font-size:36px;line-height:1.1;color:var(--ink);">Custom</span>
+        </div>
+        <div class="plan__price-note">Volume pricing · annual contract</div>
+        <div class="plan__desc">For procurement teams, trading companies, and large-volume importers who need a dedicated sourcing partner.</div>
+      </div>
+      <div class="plan__body">
+        <div class="plan__section-title">Everything in Pro, plus</div>
+        <div class="plan__features">
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Dedicated account manager</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Custom supplier vetting service</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Factory visit coordination</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Multi-seat team access</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>ERP/API integration support</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Quarterly sourcing strategy calls</div>
+          <div class="plan__feat"><span class="feat-check on"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>SLA-backed response guarantee</div>
+        </div>
+        <div class="plan__cta">
+          <button class="btn-plan-primary" onclick="choosePlan('Enterprise')">Talk to our team</button>
+          <div class="plan__cta-note">We'll build a plan around your needs</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══ TRUST STATS ═══ -->
+<section class="trust-band" style="margin-top:64px;">
+  <div class="trust-band__inner">
+    <div class="trust-band__head">
+      <div class="trust-band__eyebrow">Trusted globally</div>
+      <h2 class="trust-band__h2">Numbers that speak for themselves</h2>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card"><div class="trust-card__num">9,000+</div><div class="trust-card__label">Verified Iranian suppliers across 12 categories</div></div>
+      <div class="trust-card"><div class="trust-card__num">120+</div><div class="trust-card__label">Countries where our buyers are based</div></div>
+      <div class="trust-card"><div class="trust-card__num">48 h</div><div class="trust-card__label">Average supplier response on Pro plan</div></div>
+      <div class="trust-card"><div class="trust-card__num">98%</div><div class="trust-card__label">Buyer satisfaction rate across all memberships</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ COMPARISON TABLE ═══ -->
+<section class="compare-section" style="padding-top:72px;">
+  <div class="compare-inner">
+    <div class="compare-head">
+      <div class="section-eyebrow">Full feature breakdown</div>
+      <h2 class="section-h2">Compare all <em>plans</em></h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:40%;">Feature</th>
+            <th>Starter</th>
+            <th class="th-featured">Pro Buyer</th>
+            <th>Enterprise</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="row-group" colspan="4">Sourcing</td></tr>
+          <tr><td>Browse supplier listings</td><td><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td><td class="td-featured"><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td><td><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td></tr>
+          <tr><td>Quote requests per month</td><td>3</td><td class="td-featured"><strong>Unlimited</strong></td><td><strong>Unlimited</strong></td></tr>
+          <tr><td>Priority supplier matching</td><td><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td class="td-featured">24-hour SLA</td><td>Custom SLA</td></tr>
+          <tr><td>Verified compliance documents</td><td><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td class="td-featured"><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td><td><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td></tr>
+          <tr><td>Custom vetting service</td><td><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td class="td-featured"><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td></tr>
+          <tr><td>Factory visit coordination</td><td><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td class="td-featured"><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td></tr>
+
+          <tr><td class="row-group" colspan="4">Tools &amp; access</td></tr>
+          <tr><td>Saved searches &amp; watchlists</td><td><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td class="td-featured"><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td><td><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td></tr>
+          <tr><td>Shipping &amp; logistics guidance</td><td><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td class="td-featured"><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td><td><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td></tr>
+          <tr><td>Multi-seat team access</td><td><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td class="td-featured"><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td></tr>
+          <tr><td>API / ERP integration</td><td><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td class="td-featured"><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td></tr>
+
+          <tr><td class="row-group" colspan="4">Support</td></tr>
+          <tr><td>Email support</td><td>48 h SLA</td><td class="td-featured">Priority (12 h)</td><td>Dedicated</td></tr>
+          <tr><td>WhatsApp support</td><td><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td class="td-featured"><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td><td><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td></tr>
+          <tr><td>Dedicated account manager</td><td><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td class="td-featured"><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td></tr>
+          <tr><td>Quarterly strategy calls</td><td><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td class="td-featured"><svg class="td-cross" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></td><td><svg class="td-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how-section">
+  <div class="how-inner">
+    <div class="how-head">
+      <div class="section-eyebrow">Getting started</div>
+      <h2 class="section-h2">Up and sourcing in <em>four steps</em></h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <div class="how-title">Choose your plan</div>
+        <div class="how-desc">Pick the plan that matches your sourcing volume. Start free and upgrade any time — no lock-in.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <div class="how-title">Create your account</div>
+        <div class="how-desc">Sign up in under two minutes. Tell us what you source so we can personalise your supplier feed.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <div class="how-title">Submit a quote request</div>
+        <div class="how-desc">Describe what you need. We match it to verified suppliers and send your request directly to them.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">4</div>
+        <div class="how-title">Compare &amp; order</div>
+        <div class="how-desc">Review quotes, check compliance docs, and proceed when you're ready. We're here every step of the way.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="testimonial-section">
+  <div class="testimonial-inner">
+    <div class="testimonial-head">
+      <div class="section-eyebrow">Member stories</div>
+      <h2 class="section-h2">What our buyers say</h2>
+    </div>
+    <div class="testimonial-grid">
+      <div class="tcard">
+        <div class="tcard__quote">Within 36 hours of upgrading to Pro, I had three competitive quotes for Iranian saffron with full lab certificates attached. I've never sourced this fast from any other platform.</div>
+        <div class="tcard__author">
+          <div class="tcard__avatar">KA</div>
+          <div>
+            <div class="tcard__name">Khalid Al-Amin</div>
+            <div class="tcard__role">Head of Procurement · Dubai Spice Trading Co.</div>
+            <div class="tcard__plan"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 18l-6.2 3.1 1.2-6.9-5-4.9 6.9-1z"/></svg> Pro Buyer</div>
+          </div>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="tcard__quote">The compliance documentation alone is worth the Pro subscription. I used to spend weeks chasing certificates — now they're attached to every supplier profile before I even ask.</div>
+        <div class="tcard__author">
+          <div class="tcard__avatar">MV</div>
+          <div>
+            <div class="tcard__name">Maria Vasquez</div>
+            <div class="tcard__role">Import Manager · Iberian Tiles Group, Spain</div>
+            <div class="tcard__plan"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 18l-6.2 3.1 1.2-6.9-5-4.9 6.9-1z"/></svg> Pro Buyer</div>
+          </div>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="tcard__quote">We brought our entire procurement team onto the Enterprise plan. Our account manager coordinates factory visits, handles vetting, and runs monthly check-ins. It's like having a sourcing office in Tehran.</div>
+        <div class="tcard__author">
+          <div class="tcard__avatar">RN</div>
+          <div>
+            <div class="tcard__name">Ravi Nair</div>
+            <div class="tcard__role">VP Supply Chain · Mumbai Infrastructure Ltd.</div>
+            <div class="tcard__plan"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 18l-6.2 3.1 1.2-6.9-5-4.9 6.9-1z"/></svg> Enterprise</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ FAQ ═══ -->
+<section class="faq-section">
+  <div class="faq-inner">
+    <div class="faq-head">
+      <div class="section-eyebrow">Questions</div>
+      <h2 class="section-h2">Frequently asked</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Can I switch plans at any time?<span class="faq-ico"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></div>
+        <div class="faq-a">Yes. You can upgrade, downgrade, or cancel your membership at any time from your account dashboard. Upgrades take effect immediately; downgrades apply at the end of your current billing cycle.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Is there a free trial for the Pro plan?<span class="faq-ico"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></div>
+        <div class="faq-a">Yes. Pro Buyer comes with a 14-day free trial — no credit card required. If you decide Pro isn't right for you, you'll automatically roll back to the free Starter plan at the end of the trial.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How does "verified supplier" status work?<span class="faq-ico"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></div>
+        <div class="faq-a">Every supplier on Buy From Iran goes through our three-stage verification: business licence check, export history review, and a capacity assessment by our in-country team. Verified badges are reviewed annually and can be revoked if standards are not maintained.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What currencies and payment methods do you accept?<span class="faq-ico"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></div>
+        <div class="faq-a">Membership fees are billed in USD. We accept all major credit and debit cards (Visa, Mastercard, Amex), as well as SEPA bank transfer for annual Enterprise contracts. Invoicing is available for annual plans.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Does my membership cover the cost of goods or shipping?<span class="faq-ico"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></div>
+        <div class="faq-a">No. Membership gives you access to our platform, tools, and support. All commercial transactions — goods pricing, payment, and shipping — are negotiated directly between you and the supplier. We provide guidance and facilitation, not financial intermediation.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What is the difference between a Supplier and a Buyer membership?<span class="faq-ico"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span></div>
+        <div class="faq-a">The plans shown here are for buyers (importers, procurement teams, trading companies). If you are an Iranian manufacturer or exporter looking to list your products, please visit our supplier registration page or contact us — supplier listing plans are separate and structured around visibility and lead volume.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ BOTTOM CTA ═══ -->
+<section class="bottom-cta">
+  <div class="bottom-cta__dots"></div>
+  <div class="bottom-cta__inner">
+    <h2 class="bottom-cta__h2">Start sourcing from Iran <em>today</em></h2>
+    <p class="bottom-cta__sub">Join thousands of buyers already connected to Iran's best manufacturers through Buy From Iran.</p>
+    <div class="bottom-cta__btns">
+      <button class="btn-gold-lg" onclick="choosePlan('Pro Buyer')">Start 14-day free trial</button>
+      <a href="contact.html"><button class="btn-outline-lg">Talk to our team</button></a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-logo"><span class="footer-logo__icon"><svg width="44" height="44" viewBox="0 0 52 52" fill="none"><path d="M14 17L26 26L14 35" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 17L26 26L38 35" stroke="#C9A227" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="footer-logo__name">Buy From Iran</span></div>
+      <p class="footer-about">The trusted B2B hub connecting global buyers with verified Iranian manufacturers, exporters and wholesalers.</p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3l.4-3H14V4.5c0-.9.3-1.5 1.6-1.5H17V.2C16.7.1 15.8 0 14.7 0 12.3 0 10.8 1.4 10.8 4v2H8v3h2.8v8H14V9z"/></svg></a>
+        <a href="#" class="footer-social" aria-label="X"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7 8 8 12h-6l-5-6-5 6H2l8-9L2 2h6l4 5 6-5z"/></svg></a>
+        <a href="#" class="footer-social" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 8h4v13H2V8zm6 0h4v2h.1c.6-1 2-2 3.9-2 4 0 5 2.5 5 6v7h-4v-6c0-1.5 0-3.3-2-3.3s-2.3 1.6-2.3 3.2V21H8V8z"/></svg></a>
+        <a href="#" class="footer-social" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.7 0 3 0 4.1.1 1 .05 1.6.2 2 .35.5.2.9.45 1.3.85.4.4.65.8.85 1.3.15.4.3 1 .35 2C20.99 9 21 9.3 21 12s0 3-.06 4.1c-.05 1-.2 1.6-.35 2a3.6 3.6 0 0 1-.85 1.3 3.6 3.6 0 0 1-1.3.85c-.4.15-1 .3-2 .35C15 20.99 14.7 21 12 21s-3 0-4.1-.06c-1-.05-1.6-.2-2-.35a3.6 3.6 0 0 1-1.3-.85 3.6 3.6 0 0 1-.85-1.3c-.15-.4-.3-1-.35-2C3.01 15 3 14.7 3 12s0-3 .06-4.1c.05-1 .2-1.6.35-2 .2-.5.45-.9.85-1.3.4-.4.8-.65 1.3-.85.4-.15 1-.3 2-.35C9 2.01 9.3 2 12 2zm0 2c-2.6 0-2.9 0-4 .1-.8.03-1.2.17-1.5.28-.4.15-.6.32-.9.6-.28.28-.45.5-.6.9-.1.3-.25.7-.28 1.5C4.6 9.1 4.6 9.4 4.6 12s0 2.9.1 4c.03.8.17 1.2.28 1.5.15.4.32.6.6.9.28.28.5.45.9.6.3.1.7.25 1.5.28 1.1.05 1.4.06 4 .06s2.9 0 4-.06c.8-.03 1.2-.17 1.5-.28.4-.15.6-.32.9-.6.28-.28.45-.5.6-.9.1-.3.25-.7.28-1.5.05-1.1.06-1.4.06-4s0-2.9-.06-4c-.03-.8-.17-1.2-.28-1.5a2.4 2.4 0 0 0-.6-.9 2.4 2.4 0 0 0-.9-.6c-.3-.1-.7-.25-1.5-.28C14.9 4.01 14.6 4 12 4zm0 3.4a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2zm0 2a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2zm4.8-3.9a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Marketplace</div>
+      <div class="footer-links"><a href="#">Products</a><a href="index.html#categories">Categories</a><a href="index.html#suppliers">Suppliers</a><a href="#">Export Services</a></div>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <div class="footer-links"><a href="about.html">About</a><a href="membership.html">Membership</a><a href="#">Blog</a><a href="contact.html">Contact</a></div>
+    </div>
+    <div>
+      <div class="footer-col-title">Get in touch</div>
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:14.5px;">
+        <span style="display:inline-flex;align-items:center;gap:9px;color:#9FB2BF;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7FA3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>hello@buyfromiran.com</span>
+        <span style="display:inline-flex;align-items:center;gap:9px;color:#9FB2BF;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7FA3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.83 19.05A16 16 0 0 1 4.95 10.17 2 2 0 0 1 6.9 7.5l1.27.13a2 2 0 0 1 1.7 1.45l.34 1.36a2 2 0 0 1-.5 1.9l-.7.7a12 12 0 0 0 4 4l.7-.7a2 2 0 0 1 1.9-.5l1.36.34a2 2 0 0 1 1.45 1.7l.13 1.27a2 2 0 0 1-2.67 1.95Z"/></svg>+98 21 4000 5000</span>
+        <span style="display:inline-flex;align-items:flex-start;gap:9px;color:#9FB2BF;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7FA3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px;flex-shrink:0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Valiasr St, Tehran, Iran</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-bottom__copy">© 2026 Buy From Iran. All rights reserved.</span>
+    <div class="footer-bottom__links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Buyer protection</a></div>
+  </div>
+</footer>
+
+<script>
+function selectLang(btn){btn.parentNode.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+function toggleMobileNav(){const n=document.getElementById('mobileNav'),b=document.querySelector('.hamburger'),o=n.classList.toggle('open');b.setAttribute('aria-expanded',o)}
+
+/* Billing toggle */
+const prices={monthly:{starter:0,pro:79},annual:{starter:0,pro:63}};
+function setBilling(mode){
+  document.getElementById('toggleMonthly').classList.toggle('active',mode==='monthly');
+  document.getElementById('toggleAnnual').classList.toggle('active',mode==='annual');
+  const p=prices[mode];
+  document.getElementById('price-pro').textContent=p.pro;
+  document.getElementById('cta-pro-price').textContent=p.pro;
+  document.getElementById('note-pro').textContent=mode==='annual'?'Billed $'+Math.round(p.pro*12)+'/yr · save 20%':'Billed monthly · cancel any time';
+}
+
+/* FAQ accordion */
+function toggleFaq(el){
+  const item=el.parentElement;
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+
+/* Plan selection */
+function choosePlan(name){
+  alert('Redirecting to registration for: '+name+'\n\n(Connect this to your auth/checkout flow)');
+}
+</script>
+
+<!-- ElevenLabs widget -->
+<style>.elevenlabs-widget-wrapper{position:fixed;bottom:24px;right:24px;z-index:9999}</style>
+<div class="elevenlabs-widget-wrapper"><elevenlabs-convai agent-id="agent_4001kw4zymzwev8ae8g8ca87mxs3"></elevenlabs-convai></div>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
+</body>
+</html>
