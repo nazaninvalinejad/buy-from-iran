@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -83,6 +83,14 @@ input, select, button, textarea { font-family: inherit; }
 .nav-dropdown:hover .nav-dropdown__menu { display: block; }
 .nav-dropdown__menu a { display: block; padding: 9px 14px; font-size: 14px; color: var(--body); border-radius: 8px; white-space: nowrap; transition: background .12s, color .12s; }
 .nav-dropdown__menu a:hover { background: var(--bg-section); color: var(--petroleum); }
+/* Mega menu */
+.mega-menu{display:none;position:absolute;top:calc(100% + 8px);left:-80px;background:#fff;border:1px solid var(--divider);border-radius:16px;box-shadow:0 16px 56px rgba(18,60,86,.16);padding:28px 20px;width:900px;z-index:500}
+.nav-dropdown:hover .mega-menu{display:flex;gap:0}
+.mega-col{flex:1;padding:0 14px}
+.mega-col+.mega-col{border-left:1px solid var(--divider)}
+.mega-col__title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--petroleum);margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--gold);white-space:nowrap}
+.mega-col a{display:block;font-size:13px;color:var(--body);padding:4px 2px;transition:color .12s,padding-left .12s;line-height:1.5}
+.mega-col a:hover{color:var(--petroleum);padding-left:6px}
 .nav-search { display: flex; align-items: center; gap: 8px; background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 9px; padding: 7px 12px; flex-shrink: 0; }
 .nav-search input { border: none; outline: none; background: transparent; font-size: 13.5px; color: var(--ink); width: 155px; }
 .nav-search input::placeholder { color: var(--muted); }

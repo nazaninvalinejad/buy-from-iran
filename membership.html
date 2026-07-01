@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -58,6 +58,14 @@ button,input,select{font-family:inherit}
 .nav-dropdown:hover .nav-dropdown__menu{display:block}
 .nav-dropdown__menu a{display:block;padding:9px 14px;font-size:14px;color:var(--body);border-radius:8px;transition:background .12s}
 .nav-dropdown__menu a:hover{background:var(--bg-section);color:var(--petroleum)}
+/* Mega menu */
+.mega-menu{display:none;position:absolute;top:calc(100% + 8px);left:-80px;background:#fff;border:1px solid var(--divider);border-radius:16px;box-shadow:0 16px 56px rgba(18,60,86,.16);padding:28px 20px;width:900px;z-index:500}
+.nav-dropdown:hover .mega-menu{display:flex;gap:0}
+.mega-col{flex:1;padding:0 14px}
+.mega-col+.mega-col{border-left:1px solid var(--divider)}
+.mega-col__title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--petroleum);margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--gold);white-space:nowrap}
+.mega-col a{display:block;font-size:13px;color:var(--body);padding:4px 2px;transition:color .12s,padding-left .12s;line-height:1.5}
+.mega-col a:hover{color:var(--petroleum);padding-left:6px}
 .nav-search{display:flex;align-items:center;gap:8px;background:var(--bg-subtle);border:1px solid var(--border);border-radius:9px;padding:7px 12px;flex-shrink:0}
 .nav-search input{border:none;outline:none;background:transparent;font-size:13.5px;color:var(--ink);width:155px}
 .nav-search input::placeholder{color:var(--muted)}
@@ -334,7 +342,7 @@ footer{background:#0A2535;color:#9FB2BF;padding:60px 0 0}
       </a>
       <nav class="nav-links">
         <a href="about.html">About</a>
-        <div class="nav-dropdown"><a href="#">Listing</a><div class="nav-dropdown__menu"><a href="#">Products</a><a href="index.html#categories">Categories</a><a href="index.html#suppliers">Suppliers</a><a href="#">Export Services</a></div></div>
+        <div class="nav-dropdown"><a href="#">Listing</a><div class="mega-menu"><div class="mega-col"><div class="mega-col__title">Food &amp; Agriculture</div><a href="#">Commodity Foods</a><a href="#">Tomato Paste</a><a href="#">Canned Foods</a><a href="#">Pasta</a><a href="#">Biscuits</a><a href="#">Wafers</a><a href="#">Cakes</a><a href="#">Chocolate</a><a href="#">Chips</a><a href="#">Snacks</a><a href="#">Pistachios</a><a href="#">Dates</a><a href="#">Raisins</a><a href="#">Dried Fruits</a><a href="#">Saffron</a><a href="#">Honey</a><a href="#">Herbal Products</a></div><div class="mega-col"><div class="mega-col__title">Beverages</div><a href="#">Fruit Juices</a><a href="#">Malt Beverages</a><a href="#">Energy Drinks</a><a href="#">Tea</a><a href="#">Herbal Tea</a><a href="#">Coffee</a><a href="#">Syrups</a></div><div class="mega-col"><div class="mega-col__title">Personal Care</div><a href="#">Shampoo</a><a href="#">Conditioner</a><a href="#">Hair Care</a><a href="#">Soap</a><a href="#">Liquid Hand Soap</a><a href="#">Body Wash</a><a href="#">Toothpaste</a></div><div class="mega-col"><div class="mega-col__title">Home Care</div><a href="#">Laundry Detergent</a><a href="#">Dishwashing Liquid</a><a href="#">Surface Cleaner</a><a href="#">Bleach</a><a href="#">Disinfectants</a></div><div class="mega-col"><div class="mega-col__title">Packaging</div><a href="#">Plastic Packaging</a><a href="#">PET Packaging</a><a href="#">Flexible Packaging</a><a href="#">Food Packaging</a></div></div></div>
         <div class="nav-dropdown"><a href="#">Blog</a><div class="nav-dropdown__menu"><a href="#">Latest Articles</a><a href="#">Industry News</a><a href="#">Guides &amp; Reports</a></div></div>
         <a href="quote.html">Get a Quote</a>
         <a href="membership.html" class="active">Membership</a>
