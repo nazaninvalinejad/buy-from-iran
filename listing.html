@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product Listing — Buy From Iran</title>
+<meta name="description" content="Browse verified Iranian product categories. From Food & Agriculture to Beverages, Personal Care, Home Care and Packaging — source directly from Iranian manufacturers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── Reset ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Sans 3',sans-serif;color:#4B5563;background:#F7F9FB;overflow-x:hidden}
+a{text-decoration:none}
+img,svg{display:block}
+input,select,button{font-family:inherit}
+
+/* ─── Tokens ─── */
+:root{
+  --petroleum:#123C56;--petroleum-d:#0F3146;--petroleum-dd:#0A2535;
+  --emerald:#2E8B57;--gold:#C9A227;--gold-d:#9A7B1D;--gold-pale:#E8C75A;
+  --ink:#1F2937;--body:#4B5563;--muted:#6B7280;
+  --border:#D9E2EC;--divider:#E5E7EB;--bg-subtle:#F7F9FB;--bg-section:#EEF3F7;
+  --font-display:'Playfair Display',serif;--radius-card:16px;
+}
+
+/* ─── Layout ─── */
+.container{max-width:1280px;margin:0 auto;padding:0 32px}
+
+/* ─── Util bar ─── */
+.util-bar{background:var(--petroleum-dd)}
+.util-bar__inner{max-width:1280px;margin:0 auto;padding:0 32px;height:40px;display:flex;align-items:center;justify-content:space-between}
+.util-bar__left{display:flex;align-items:center;gap:18px}
+.util-bar__socials{display:flex;align-items:center;gap:12px}
+.util-bar__socials a{color:rgba(255,255,255,.82);display:flex;transition:color .15s}
+.util-bar__socials a:hover{color:#fff}
+.util-bar__sep{width:1px;height:16px;background:rgba(255,255,255,.18);flex-shrink:0}
+.util-bar__link{color:rgba(255,255,255,.82);display:inline-flex;align-items:center;gap:7px;font-size:13px;transition:color .15s}
+.util-bar__link:hover{color:#fff}
+.util-bar__right{display:flex;align-items:center;gap:16px}
+.lang-bar{display:flex;gap:2px}
+.lang-btn{background:transparent;color:rgba(255,255,255,.8);border:none;font-size:12px;font-weight:600;letter-spacing:.04em;padding:5px 9px;border-radius:7px;cursor:pointer;transition:background .15s,color .15s}
+.lang-btn.active{background:rgba(255,255,255,.18);color:#fff}
+
+/* ─── Main nav ─── */
+.main-nav{background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--divider)}
+.main-nav__inner{max-width:1280px;margin:0 auto;padding:0 32px;height:74px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.logo__icon{width:46px;height:46px;border-radius:13px;background:var(--petroleum);display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,60,86,.18)}
+.logo__name{font-family:var(--font-display);font-size:21px;font-weight:700;color:var(--petroleum);letter-spacing:-.01em}
+.logo__sub{font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-d);margin-top:3px}
+.nav-links{display:flex;align-items:center;gap:2px;margin:0 auto}
+.nav-links a{padding:9px 13px;font-size:14.5px;color:var(--body);border-radius:8px;transition:background .15s,color .15s;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+.nav-links a:hover{background:var(--bg-section);color:var(--petroleum)}
+.nav-links a.active{color:var(--petroleum);font-weight:700;background:var(--bg-section)}
+.nav-dropdown{position:relative}
+.nav-dropdown>a::after{content:'';display:inline-block;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:4.5px solid currentColor;opacity:.55;margin-top:1px;flex-shrink:0}
+.nav-dropdown__menu{display:none;position:absolute;top:calc(100% + 10px);left:0;background:#fff;border:1px solid var(--divider);border-radius:12px;box-shadow:0 10px 28px rgba(18,60,86,.13);padding:8px;min-width:210px;z-index:200}
+.nav-dropdown:hover .nav-dropdown__menu{display:block}
+.nav-dropdown__menu a{display:block;padding:9px 14px;font-size:14px;color:var(--body);border-radius:8px;white-space:nowrap;transition:background .12s,color .12s}
+.nav-dropdown__menu a:hover{background:var(--bg-section);color:var(--petroleum)}
+/* Mega menu */
+.mega-menu{display:none;position:absolute;top:calc(100% + 8px);left:-80px;background:#fff;border:1px solid var(--divider);border-radius:16px;box-shadow:0 16px 56px rgba(18,60,86,.16);padding:28px 20px;width:900px;z-index:500}
+.nav-dropdown:hover .mega-menu{display:flex;gap:0}
+.mega-col{flex:1;padding:0 14px}
+.mega-col+.mega-col{border-left:1px solid var(--divider)}
+.mega-col__title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--petroleum);margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--gold);white-space:nowrap}
+.mega-col a{display:block;font-size:13px;color:var(--body);padding:4px 2px;transition:color .12s,padding-left .12s;line-height:1.5}
+.mega-col a:hover{color:var(--petroleum);padding-left:6px}
+.nav-search{display:flex;align-items:center;gap:8px;background:var(--bg-subtle);border:1px solid var(--border);border-radius:9px;padding:7px 12px;flex-shrink:0}
+.nav-search input{border:none;outline:none;background:transparent;font-size:13.5px;color:var(--ink);width:155px}
+.nav-search input::placeholder{color:var(--muted)}
+.nav-signin{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--petroleum);white-space:nowrap;flex-shrink:0}
+.btn-add-listing{flex-shrink:0;background:var(--gold);color:var(--petroleum-dd);font-weight:700;font-size:13px;padding:10px 18px;border-radius:10px;border:none;cursor:pointer;transition:background .15s;white-space:nowrap;letter-spacing:.06em;text-transform:uppercase}
+.btn-add-listing:hover{background:var(--gold-pale)}
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:6px;flex-shrink:0}
+.hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px}
+.mobile-nav{display:none;flex-direction:column;background:#fff;border-top:1px solid var(--divider);padding:16px 24px 20px}
+.mobile-nav.open{display:flex}
+.mobile-nav a{padding:11px 0;font-size:15px;color:var(--body);border-bottom:1px solid var(--divider)}
+.mobile-nav__actions{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.mobile-nav__search{display:flex;align-items:center;gap:8px;background:var(--bg-subtle);border:1px solid var(--border);border-radius:9px;padding:8px 12px}
+.mobile-nav__search input{border:none;outline:none;background:transparent;font-size:14px;color:var(--ink);width:100%}
+
+/* Auth modal */
+.auth-overlay{display:none;position:fixed;inset:0;background:rgba(10,37,53,.55);z-index:2000;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:16px}
+.auth-overlay.open{display:flex}
+.auth-modal{background:#fff;border-radius:18px;width:100%;max-width:440px;box-shadow:0 24px 64px rgba(10,37,53,.22);overflow:hidden;position:relative;animation:authIn .2s ease}
+@keyframes authIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+.auth-modal__close{position:absolute;top:14px;right:16px;background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:24px;line-height:1;padding:2px 8px;border-radius:6px;transition:background .12s}
+.auth-modal__close:hover{background:#F3F4F6;color:#374151}
+.auth-tabs{display:flex;border-bottom:1px solid #E5E7EB}
+.auth-tab{flex:1;background:none;border:none;border-bottom:2.5px solid transparent;margin-bottom:-1px;padding:18px;font-size:15px;font-weight:600;color:#6B7280;cursor:pointer;transition:color .15s,border-color .15s;font-family:inherit}
+.auth-tab.active{color:var(--petroleum);border-bottom-color:var(--petroleum)}
+.auth-pane{display:none;padding:28px 32px 32px}
+.auth-pane.active{display:block}
+.auth-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.auth-field label{font-size:13.5px;font-weight:600;color:#374151}
+.auth-field input{border:1.5px solid #D1D5DB;border-radius:9px;padding:11px 14px;font-size:14.5px;color:#111827;outline:none;transition:border-color .15s;font-family:inherit}
+.auth-field input:focus{border-color:var(--petroleum)}
+.auth-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;font-size:13.5px}
+.auth-remember{display:flex;align-items:center;gap:7px;color:#374151;cursor:pointer;user-select:none}
+.auth-remember input[type=checkbox]{width:15px;height:15px;accent-color:var(--petroleum);cursor:pointer}
+.auth-forgot{color:var(--petroleum);font-weight:600;text-decoration:none;font-size:13.5px}
+.auth-forgot:hover{text-decoration:underline}
+.auth-btn{width:100%;background:var(--petroleum);color:#fff;font-size:15px;font-weight:700;padding:13px;border-radius:10px;border:none;cursor:pointer;transition:background .15s;font-family:inherit}
+.auth-btn:hover{background:var(--petroleum-d)}
+.auth-privacy{font-size:12.5px;color:#6B7280;margin-top:14px;line-height:1.55}
+.auth-privacy a{color:var(--petroleum)}
+
+/* ─── Page Hero ─── */
+.page-hero{background:linear-gradient(135deg,var(--petroleum-dd) 0%,var(--petroleum) 100%);padding:40px 0;position:relative;overflow:hidden}
+.page-hero__dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:22px 22px;pointer-events:none}
+.page-hero__inner{position:relative;z-index:1}
+.page-hero__pill{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:99px;padding:5px 14px;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.85);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+.page-hero h1{font-family:var(--font-display);font-size:36px;color:#fff;letter-spacing:-.02em;font-style:italic;margin-bottom:8px}
+.page-hero p{font-size:15px;color:rgba(255,255,255,.72);max-width:520px}
+
+/* ─── Breadcrumb ─── */
+.breadcrumb{background:#fff;border-bottom:1px solid var(--divider);padding:12px 0}
+.breadcrumb__inner{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.breadcrumb__inner a{color:var(--muted);transition:color .12s}
+.breadcrumb__inner a:hover{color:var(--petroleum)}
+.breadcrumb__sep{opacity:.4}
+
+/* ─── Listing Layout ─── */
+.listing-body{padding:40px 0 72px}
+.listing-layout{display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start}
+
+/* Sidebar */
+.cat-sidebar{background:#fff;border-radius:var(--radius-card);border:1px solid var(--divider);overflow:hidden;position:sticky;top:100px}
+.cat-sidebar__header{background:var(--petroleum);padding:16px 20px}
+.cat-sidebar__title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.cat-sidebar__list{padding:8px 0}
+.cat-btn{width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:13px 20px;font-size:14.5px;font-weight:600;color:var(--body);cursor:pointer;transition:background .12s,color .12s;text-align:left;gap:10px;font-family:inherit}
+.cat-btn:hover{background:var(--bg-subtle);color:var(--petroleum)}
+.cat-btn.active{background:var(--bg-section);color:var(--petroleum)}
+.cat-btn__icon{flex-shrink:0;font-size:20px;line-height:1}
+.cat-btn__count{font-size:11.5px;font-weight:600;color:var(--muted);background:var(--bg-subtle);border-radius:20px;padding:2px 8px;flex-shrink:0}
+.cat-btn.active .cat-btn__count{background:var(--petroleum);color:#fff}
+
+/* Product panel */
+.products-panel{}
+.panel{display:none}
+.panel.active{display:block}
+.panel__header{margin-bottom:24px}
+.panel__eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-d);margin-bottom:6px}
+.panel__title{font-family:var(--font-display);font-size:28px;color:var(--petroleum);font-style:italic;margin-bottom:8px}
+.panel__desc{font-size:15px;color:var(--muted);line-height:1.6}
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.product-card{background:#fff;border:1px solid var(--divider);border-radius:14px;padding:20px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative}
+.product-card:hover{border-color:var(--petroleum);box-shadow:0 6px 24px rgba(18,60,86,.1);transform:translateY(-2px)}
+.product-card__icon{width:44px;height:44px;border-radius:12px;background:var(--bg-section);display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:22px}
+.product-card__name{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.product-card__tag{font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
+.product-card__arrow{position:absolute;top:16px;right:16px;color:var(--border);transition:color .15s}
+.product-card:hover .product-card__arrow{color:var(--petroleum)}
+.quote-cta{margin-top:32px;background:linear-gradient(135deg,var(--petroleum) 0%,var(--petroleum-d) 100%);border-radius:16px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.quote-cta__text h3{font-family:var(--font-display);font-size:20px;color:#fff;font-style:italic;margin-bottom:4px}
+.quote-cta__text p{font-size:14px;color:rgba(255,255,255,.7)}
+.quote-cta__btn{background:var(--gold);color:var(--petroleum-dd);font-weight:700;font-size:14px;padding:12px 24px;border-radius:10px;border:none;cursor:pointer;white-space:nowrap;transition:background .15s;font-family:inherit;text-decoration:none;display:inline-block}
+.quote-cta__btn:hover{background:var(--gold-pale)}
+
+/* ─── Footer ─── */
+.footer{background:var(--petroleum-dd);color:rgba(255,255,255,.7);padding:48px 0 28px}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{font-size:13.5px;line-height:1.65;margin-top:12px;max-width:260px}
+.footer-col h4{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px}
+.footer-col a{display:block;font-size:13.5px;color:rgba(255,255,255,.65);margin-bottom:8px;transition:color .15s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;align-items:center;justify-content:space-between;font-size:13px}
+.footer-links{display:flex;gap:20px}
+.footer-links a{color:rgba(255,255,255,.5);transition:color .15s}
+.footer-links a:hover{color:#fff}
+
+/* ─── Responsive ─── */
+@media(max-width:1024px){
+  .nav-links,.nav-search,.nav-signin,.btn-add-listing{display:none}
+  .hamburger{display:flex}
+  .listing-layout{grid-template-columns:1fr}
+  .cat-sidebar{position:static}
+  .products-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .products-grid{grid-template-columns:1fr}
+  .quote-cta{flex-direction:column;align-items:flex-start}
+  .page-hero h1{font-size:26px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header style="position:sticky;top:0;z-index:60;">
+  <div class="util-bar">
+    <div class="util-bar__inner">
+      <div class="util-bar__left">
+        <div class="util-bar__socials">
+          <a href="#" aria-label="Facebook"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3l.4-3H14V4.5c0-.9.3-1.5 1.6-1.5H17V.2C16.7.1 15.8 0 14.7 0 12.3 0 10.8 1.4 10.8 4v2H8v3h2.8v8H14V9z"/></svg></a>
+          <a href="#" aria-label="X"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7 8 8 12h-6l-5-6-5 6H2l8-9L2 2h6l4 5 6-5z"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 8h4v13H2V8zm6 0h4v2h.1c.6-1 2-2 3.9-2 4 0 5 2.5 5 6v7h-4v-6c0-1.5 0-3.3-2-3.3s-2.3 1.6-2.3 3.2V21H8V8z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.7 0 3 0 4.1.1 1 .05 1.6.2 2 .35.5.2.9.45 1.3.85.4.4.65.8.85 1.3.15.4.3 1 .35 2C20.99 9 21 9.3 21 12s0 3-.06 4.1c-.05 1-.2 1.6-.35 2a3.6 3.6 0 0 1-.85 1.3 3.6 3.6 0 0 1-1.3.85c-.4.15-1 .3-2 .35C15 20.99 14.7 21 12 21s-3 0-4.1-.06c-1-.05-1.6-.2-2-.35a3.6 3.6 0 0 1-1.3-.85 3.6 3.6 0 0 1-.85-1.3c-.15-.4-.3-1-.35-2C3.01 15 3 14.7 3 12s0-3 .06-4.1c.05-1 .2-1.6.35-2 .2-.5.45-.9.85-1.3.4-.4.8-.65 1.3-.85.4-.15 1-.3 2-.35C9 2.01 9.3 2 12 2zm0 2c-2.6 0-2.9 0-4 .1-.8.03-1.2.17-1.5.28-.4.15-.6.32-.9.6-.28.28-.45.5-.6.9-.1.3-.25.7-.28 1.5C4.6 9.1 4.6 9.4 4.6 12s0 2.9.1 4c.03.8.17 1.2.28 1.5.15.4.32.6.6.9.28.28.5.45.9.6.3.1.7.25 1.5.28 1.1.05 1.4.06 4 .06s2.9 0 4-.06c.8-.03 1.2-.17 1.5-.28.4-.15.6-.32.9-.6.28-.28.45-.5.6-.9.1-.3.25-.7.28-1.5.05-1.1.06-1.4.06-4s0-2.9-.06-4c-.03-.8-.17-1.2-.28-1.5a2.4 2.4 0 0 0-.6-.9 2.4 2.4 0 0 0-.9-.6c-.3-.1-.7-.25-1.5-.28C14.9 4.01 14.6 4 12 4zm0 3.4a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2zm0 2a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2zm4.8-3.9a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z"/></svg></a>
+          <a href="mailto:hello@buyfromiran.com" class="util-bar__link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
+        </div>
+      </div>
+      <div class="util-bar__right">
+        <a href="tel:+982140005000" class="util-bar__link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.83 19.05A16 16 0 0 1 4.95 10.17 2 2 0 0 1 6.9 7.5l1.27.13a2 2 0 0 1 1.7 1.45l.34 1.36a2 2 0 0 1-.5 1.9l-.7.7a12 12 0 0 0 4 4l.7-.7a2 2 0 0 1 1.9-.5l1.36.34a2 2 0 0 1 1.45 1.7l.13 1.27a2 2 0 0 1-2.67 1.95Z"/></svg> +98 21 4000 5000</a>
+        <span class="util-bar__sep"></span>
+        <div class="lang-bar">
+          <button class="lang-btn active" onclick="selectLang(this)">AR</button>
+          <button class="lang-btn" onclick="selectLang(this)">EN</button>
+          <button class="lang-btn" onclick="selectLang(this)">FR</button>
+          <button class="lang-btn" onclick="selectLang(this)">RU</button>
+          <button class="lang-btn" onclick="selectLang(this)">ES</button>
+          <button class="lang-btn" onclick="selectLang(this)">TR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-nav">
+    <div class="main-nav__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__icon"><svg width="46" height="46" viewBox="0 0 52 52" fill="none"><path d="M14 17L26 26L14 35" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 17L26 26L38 35" stroke="#C9A227" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span style="display:flex;flex-direction:column;line-height:1;"><span class="logo__name">Buy From Iran</span><span class="logo__sub">Global Sourcing Hub</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="about.html">About</a>
+        <div class="nav-dropdown">
+          <a href="#" class="active">Listing</a>
+          <div class="mega-menu">
+            <div class="mega-col">
+              <div class="mega-col__title">Food &amp; Agriculture</div>
+              <a href="listing.html?cat=food">Commodity Foods</a><a href="listing.html?cat=food">Tomato Paste</a><a href="listing.html?cat=food">Canned Foods</a><a href="listing.html?cat=food">Pasta</a><a href="listing.html?cat=food">Biscuits</a><a href="listing.html?cat=food">Wafers</a><a href="listing.html?cat=food">Cakes</a><a href="listing.html?cat=food">Chocolate</a><a href="listing.html?cat=food">Chips</a><a href="listing.html?cat=food">Snacks</a><a href="listing.html?cat=food">Pistachios</a><a href="listing.html?cat=food">Dates</a><a href="listing.html?cat=food">Raisins</a><a href="listing.html?cat=food">Dried Fruits</a><a href="listing.html?cat=food">Saffron</a><a href="listing.html?cat=food">Honey</a><a href="listing.html?cat=food">Herbal Products</a>
+            </div>
+            <div class="mega-col">
+              <div class="mega-col__title">Beverages</div>
+              <a href="listing.html?cat=beverages">Fruit Juices</a><a href="listing.html?cat=beverages">Malt Beverages</a><a href="listing.html?cat=beverages">Energy Drinks</a><a href="listing.html?cat=beverages">Tea</a><a href="listing.html?cat=beverages">Herbal Tea</a><a href="listing.html?cat=beverages">Coffee</a><a href="listing.html?cat=beverages">Syrups</a>
+            </div>
+            <div class="mega-col">
+              <div class="mega-col__title">Personal Care</div>
+              <a href="listing.html?cat=personal">Shampoo</a><a href="listing.html?cat=personal">Conditioner</a><a href="listing.html?cat=personal">Hair Care</a><a href="listing.html?cat=personal">Soap</a><a href="listing.html?cat=personal">Liquid Hand Soap</a><a href="listing.html?cat=personal">Body Wash</a><a href="listing.html?cat=personal">Toothpaste</a>
+            </div>
+            <div class="mega-col">
+              <div class="mega-col__title">Home Care</div>
+              <a href="listing.html?cat=home">Laundry Detergent</a><a href="listing.html?cat=home">Dishwashing Liquid</a><a href="listing.html?cat=home">Surface Cleaner</a><a href="listing.html?cat=home">Bleach</a><a href="listing.html?cat=home">Disinfectants</a>
+            </div>
+            <div class="mega-col">
+              <div class="mega-col__title">Packaging</div>
+              <a href="listing.html?cat=packaging">Plastic Packaging</a><a href="listing.html?cat=packaging">PET Packaging</a><a href="listing.html?cat=packaging">Flexible Packaging</a><a href="listing.html?cat=packaging">Food Packaging</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <a href="#">Blog</a>
+          <div class="nav-dropdown__menu">
+            <a href="#">Latest Articles</a><a href="#">Industry News</a><a href="#">Guides &amp; Reports</a>
+          </div>
+        </div>
+        <a href="quote.html">Get a Quote</a>
+        <a href="membership.html">Membership</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="nav-search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" placeholder="Type your search…" aria-label="Search"></div>
+      <button onclick="openAuthModal('signin')" class="nav-signin" style="background:none;border:none;cursor:pointer;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg> Sign in or Register</button>
+      <button class="btn-add-listing">ADD LISTING</button>
+      <button class="hamburger" onclick="toggleMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="about.html">About</a><a href="listing.html" style="color:var(--petroleum);font-weight:700;">Listing</a><a href="#">Blog</a>
+      <a href="quote.html">Get a Quote</a><a href="membership.html">Membership</a><a href="contact.html">Contact</a>
+      <div class="mobile-nav__actions">
+        <div class="mobile-nav__search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" placeholder="Type your search…" aria-label="Search"></div>
+        <button onclick="openAuthModal('signin')" class="nav-signin" style="display:inline-flex;background:none;border:none;cursor:pointer;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg> Sign in or Register</button>
+        <button class="btn-add-listing" style="display:block;">ADD LISTING</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="page-hero">
+  <div class="page-hero__dots"></div>
+  <div class="container page-hero__inner">
+    <div class="page-hero__pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Product Listing</div>
+    <h1>Browse by Category</h1>
+    <p>Explore verified Iranian products across all major export categories. Select a category to view available products.</p>
+  </div>
+</section>
+
+<!-- ─── Breadcrumb ─── -->
+<div class="breadcrumb">
+  <div class="container breadcrumb__inner">
+    <a href="index.html">Home</a>
+    <span class="breadcrumb__sep">›</span>
+    <span style="color:var(--petroleum);font-weight:600;">Product Listing</span>
+  </div>
+</div>
+
+<!-- ═══ LISTING BODY ═══ -->
+<section class="listing-body">
+  <div class="container">
+    <div class="listing-layout">
+
+      <!-- Sidebar -->
+      <aside class="cat-sidebar">
+        <div class="cat-sidebar__header">
+          <div class="cat-sidebar__title">Product Categories</div>
+        </div>
+        <div class="cat-sidebar__list">
+          <button class="cat-btn active" onclick="switchCat('food',this)">
+            <span class="cat-btn__icon">🌾</span>
+            <span style="flex:1;text-align:left;">Food &amp; Agriculture</span>
+            <span class="cat-btn__count">17</span>
+          </button>
+          <button class="cat-btn" onclick="switchCat('beverages',this)">
+            <span class="cat-btn__icon">🥤</span>
+            <span style="flex:1;text-align:left;">Beverages</span>
+            <span class="cat-btn__count">7</span>
+          </button>
+          <button class="cat-btn" onclick="switchCat('personal',this)">
+            <span class="cat-btn__icon">🧴</span>
+            <span style="flex:1;text-align:left;">Personal Care</span>
+            <span class="cat-btn__count">7</span>
+          </button>
+          <button class="cat-btn" onclick="switchCat('home',this)">
+            <span class="cat-btn__icon">🏠</span>
+            <span style="flex:1;text-align:left;">Home Care</span>
+            <span class="cat-btn__count">5</span>
+          </button>
+          <button class="cat-btn" onclick="switchCat('packaging',this)">
+            <span class="cat-btn__icon">📦</span>
+            <span style="flex:1;text-align:left;">Packaging</span>
+            <span class="cat-btn__count">4</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Products Panel -->
+      <div class="products-panel">
+
+        <!-- Food & Agriculture -->
+        <div class="panel active" id="panel-food">
+          <div class="panel__header">
+            <div class="panel__eyebrow">🌾 Food &amp; Agriculture</div>
+            <h2 class="panel__title">Iranian Food &amp; Agricultural Products</h2>
+            <p class="panel__desc">Iran is one of the world's leading exporters of premium food products. From saffron and pistachios to processed foods, source directly from verified manufacturers.</p>
+          </div>
+          <div class="products-grid">
+            <div class="product-card"><div class="product-card__icon">🌾</div><div class="product-card__name">Commodity Foods</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍅</div><div class="product-card__name">Tomato Paste</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🥫</div><div class="product-card__name">Canned Foods</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍝</div><div class="product-card__name">Pasta</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍪</div><div class="product-card__name">Biscuits</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🧇</div><div class="product-card__name">Wafers</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🎂</div><div class="product-card__name">Cakes</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍫</div><div class="product-card__name">Chocolate</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍟</div><div class="product-card__name">Chips</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍿</div><div class="product-card__name">Snacks</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🫘</div><div class="product-card__name">Pistachios</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🌴</div><div class="product-card__name">Dates</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍇</div><div class="product-card__name">Raisins</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍑</div><div class="product-card__name">Dried Fruits</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🌺</div><div class="product-card__name">Saffron</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍯</div><div class="product-card__name">Honey</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🌿</div><div class="product-card__name">Herbal Products</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+          </div>
+          <div class="quote-cta"><div class="quote-cta__text"><h3>Need a quote for Food &amp; Agriculture?</h3><p>Get competitive offers from verified Iranian suppliers within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
+        </div>
+
+        <!-- Beverages -->
+        <div class="panel" id="panel-beverages">
+          <div class="panel__header">
+            <div class="panel__eyebrow">🥤 Beverages</div>
+            <h2 class="panel__title">Iranian Beverage Products</h2>
+            <p class="panel__desc">From refreshing fruit juices to premium teas and energy drinks — source high-quality beverages from Iranian manufacturers with global export experience.</p>
+          </div>
+          <div class="products-grid">
+            <div class="product-card"><div class="product-card__icon">🍊</div><div class="product-card__name">Fruit Juices</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍺</div><div class="product-card__name">Malt Beverages</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">⚡</div><div class="product-card__name">Energy Drinks</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍵</div><div class="product-card__name">Tea</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🌿</div><div class="product-card__name">Herbal Tea</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">☕</div><div class="product-card__name">Coffee</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍬</div><div class="product-card__name">Syrups</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+          </div>
+          <div class="quote-cta"><div class="quote-cta__text"><h3>Looking for Beverage suppliers?</h3><p>Get competitive offers from verified Iranian suppliers within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
+        </div>
+
+        <!-- Personal Care -->
+        <div class="panel" id="panel-personal">
+          <div class="panel__header">
+            <div class="panel__eyebrow">🧴 Personal Care</div>
+            <h2 class="panel__title">Personal Care Products</h2>
+            <p class="panel__desc">Quality personal care and hygiene products from ISO-certified Iranian manufacturers, exported to markets across the Middle East, Africa and Europe.</p>
+          </div>
+          <div class="products-grid">
+            <div class="product-card"><div class="product-card__icon">🧴</div><div class="product-card__name">Shampoo</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">💆</div><div class="product-card__name">Conditioner</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">💇</div><div class="product-card__name">Hair Care</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🧼</div><div class="product-card__name">Soap</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🫧</div><div class="product-card__name">Liquid Hand Soap</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🚿</div><div class="product-card__name">Body Wash</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🦷</div><div class="product-card__name">Toothpaste</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+          </div>
+          <div class="quote-cta"><div class="quote-cta__text"><h3>Need Personal Care products?</h3><p>Get competitive offers from verified Iranian suppliers within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
+        </div>
+
+        <!-- Home Care -->
+        <div class="panel" id="panel-home">
+          <div class="panel__header">
+            <div class="panel__eyebrow">🏠 Home Care</div>
+            <h2 class="panel__title">Home Care &amp; Cleaning Products</h2>
+            <p class="panel__desc">High-performance household cleaning and care products manufactured in Iran, meeting international safety and quality standards.</p>
+          </div>
+          <div class="products-grid">
+            <div class="product-card"><div class="product-card__icon">🫧</div><div class="product-card__name">Laundry Detergent</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍽️</div><div class="product-card__name">Dishwashing Liquid</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🧹</div><div class="product-card__name">Surface Cleaner</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🧪</div><div class="product-card__name">Bleach</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🦠</div><div class="product-card__name">Disinfectants</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+          </div>
+          <div class="quote-cta"><div class="quote-cta__text"><h3>Need Home Care products?</h3><p>Get competitive offers from verified Iranian suppliers within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
+        </div>
+
+        <!-- Packaging -->
+        <div class="panel" id="panel-packaging">
+          <div class="panel__header">
+            <div class="panel__eyebrow">📦 Packaging</div>
+            <h2 class="panel__title">Packaging Solutions</h2>
+            <p class="panel__desc">Versatile and cost-effective packaging materials from Iranian manufacturers — suitable for food, beverage, pharmaceutical and industrial applications.</p>
+          </div>
+          <div class="products-grid">
+            <div class="product-card"><div class="product-card__icon">♻️</div><div class="product-card__name">Plastic Packaging</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🍶</div><div class="product-card__name">PET Packaging</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">🎁</div><div class="product-card__name">Flexible Packaging</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+            <div class="product-card"><div class="product-card__icon">📦</div><div class="product-card__name">Food Packaging</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
+          </div>
+          <div class="quote-cta"><div class="quote-cta__text"><h3>Need Packaging solutions?</h3><p>Get competitive offers from verified Iranian suppliers within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
+        </div>
+
+      </div><!-- /products-panel -->
+    </div><!-- /listing-layout -->
+  </div><!-- /container -->
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.1);display:inline-flex;align-items:center;justify-content:center;"><svg width="36" height="36" viewBox="0 0 52 52" fill="none"><path d="M14 17L26 26L14 35" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 17L26 26L38 35" stroke="#C9A227" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff;">Buy From Iran</span>
+        </div>
+        <p>The global B2B marketplace connecting international buyers with verified Iranian manufacturers across all major product categories.</p>
+      </div>
+      <div class="footer-col"><h4>Products</h4><a href="listing.html?cat=food">Food &amp; Agriculture</a><a href="listing.html?cat=beverages">Beverages</a><a href="listing.html?cat=personal">Personal Care</a><a href="listing.html?cat=home">Home Care</a><a href="listing.html?cat=packaging">Packaging</a></div>
+      <div class="footer-col"><h4>Company</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="membership.html">Membership</a><a href="#">Blog</a></div>
+      <div class="footer-col"><h4>Services</h4><a href="quote.html">Get a Quote</a><a href="#">Supplier Verification</a><a href="#">Export Consulting</a><a href="#">Logistics Support</a></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Buy From Iran. All rights reserved.</span>
+      <div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Sitemap</a></div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ AUTH MODAL ═══ -->
+<div class="auth-overlay" id="authOverlay" onclick="handleOverlayClick(event)">
+  <div class="auth-modal">
+    <button class="auth-modal__close" onclick="closeAuthModal()" aria-label="Close">&times;</button>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="signin" onclick="switchAuthTab('signin')">Sign In</button>
+      <button class="auth-tab" data-tab="register" onclick="switchAuthTab('register')">Register</button>
+    </div>
+    <div class="auth-pane active" data-pane="signin">
+      <div class="auth-field"><label for="si-username">Username</label><input type="text" id="si-username" placeholder="Enter your username" autocomplete="username"></div>
+      <div class="auth-field"><label for="si-password">Password</label><input type="password" id="si-password" placeholder="Enter your password" autocomplete="current-password"></div>
+      <div class="auth-row"><label class="auth-remember"><input type="checkbox"> Remember me</label><a href="#" class="auth-forgot">Forgot password?</a></div>
+      <button class="auth-btn">Sign In</button>
+    </div>
+    <div class="auth-pane" data-pane="register">
+      <div class="auth-field"><label for="reg-email">Email</label><input type="email" id="reg-email" placeholder="Enter your email" autocomplete="email"></div>
+      <div class="auth-field"><label for="reg-username">Username</label><input type="text" id="reg-username" placeholder="Choose a username" autocomplete="username"></div>
+      <div class="auth-field"><label for="reg-password">Password</label><input type="password" id="reg-password" placeholder="Create a password" autocomplete="new-password"></div>
+      <button class="auth-btn">Sign Up</button>
+      <p class="auth-privacy">Your personal data will be used to support your experience on this website, to manage access to your account and for other purposes described in our <a href="#">privacy policy</a>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ElevenLabs -->
+<style>.elevenlabs-widget-wrapper{position:fixed;bottom:24px;right:24px;z-index:9999}</style>
+<div class="elevenlabs-widget-wrapper"><elevenlabs-convai agent-id="agent_4001kw4zymzwev8ae8g8ca87mxs3"></elevenlabs-convai></div>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
+<script>
+// Category switcher
+function switchCat(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Read URL param on load
+(function(){
+  const cat = new URLSearchParams(location.search).get('cat');
+  if(cat){
+    const btn = document.querySelector('.cat-btn[onclick*="' + cat + '"]');
+    if(btn) { btn.click(); }
+  }
+})();
+
+// Nav & auth helpers
+function toggleMobileNav(){const n=document.getElementById('mobileNav');n.classList.toggle('open')}
+function selectLang(btn){document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+function openAuthModal(tab){document.getElementById('authOverlay').classList.add('open');if(tab)switchAuthTab(tab)}
+function closeAuthModal(){document.getElementById('authOverlay').classList.remove('open')}
+function handleOverlayClick(e){if(e.target===document.getElementById('authOverlay'))closeAuthModal()}
+function switchAuthTab(name){
+  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
+  document.querySelectorAll('.auth-pane').forEach(p=>p.classList.toggle('active',p.dataset.pane===name));
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAuthModal()});
+</script>
+</body>
+</html>
