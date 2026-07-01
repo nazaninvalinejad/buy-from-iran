@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Buy From Iran</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── Reset & Base ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Source Sans 3', sans-serif; color: #4B5563; background: #fff; overflow-x: hidden; }
+a { text-decoration: none; }
+img, svg { display: block; }
+input, select, button { font-family: inherit; }
+
+/* ─── Tokens ─── */
+:root {
+  --petroleum:   #123C56;
+  --petroleum-d: #0F3146;
+  --petroleum-dd:#0A2535;
+  --emerald:     #2E8B57;
+  --emerald-d:   #246E45;
+  --gold:        #C9A227;
+  --gold-d:      #9A7B1D;
+  --gold-pale:   #E8C75A;
+  --ink:         #1F2937;
+  --body:        #4B5563;
+  --muted:       #6B7280;
+  --border:      #D9E2EC;
+  --divider:     #E5E7EB;
+  --bg-subtle:   #F7F9FB;
+  --bg-section:  #EEF3F7;
+  --font-display:'Playfair Display', serif;
+  --font-body:   'Source Sans 3', sans-serif;
+  --radius-btn:  10px;
+  --radius-card: 14px;
+  --radius-lg:   20px;
+}
+
+/* ─── Layout helpers ─── */
+.container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+/* ─── Utility bar ─── */
+.util-bar { background: var(--petroleum-dd); color: #fff; font-size: 13px; }
+.util-bar__inner {
+  max-width: 1280px; margin: 0 auto; padding: 0 32px;
+  height: 40px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.util-bar__left { display: flex; align-items: center; gap: 18px; }
+.util-bar__socials { display: flex; align-items: center; gap: 12px; }
+.util-bar__socials a { color: rgba(255,255,255,.82); display: flex; transition: color .15s; }
+.util-bar__socials a:hover { color: #fff; }
+.util-bar__sep { width: 1px; height: 16px; background: rgba(255,255,255,.18); flex-shrink: 0; }
+.util-bar__link { color: rgba(255,255,255,.82); display: inline-flex; align-items: center; gap: 7px; font-size: 13px; transition: color .15s; }
+.util-bar__link:hover { color: #fff; }
+.util-bar__right { display: flex; align-items: center; gap: 16px; margin-left: auto; }
+.lang-bar { display: flex; align-items: center; gap: 2px; }
+.lang-btn { background: transparent; color: rgba(255,255,255,.8); border: none; font-size: 12px; font-weight: 600; letter-spacing: .04em; padding: 5px 9px; border-radius: 7px; cursor: pointer; transition: background .15s, color .15s; }
+.lang-btn.active { background: rgba(255,255,255,.18); color: #fff; }
+
+/* ─── Main nav ─── */
+.main-nav { background: rgba(255,255,255,.95); backdrop-filter: saturate(180%) blur(12px); -webkit-backdrop-filter: saturate(180%) blur(12px); border-bottom: 1px solid var(--divider); }
+.main-nav__inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; height: 74px; display: flex; align-items: center; gap: 28px; }
+.logo { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.logo__icon { display: inline-flex; width: 46px; height: 46px; border-radius: 13px; background: var(--petroleum); align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(18,60,86,.18); }
+.logo__text { display: flex; flex-direction: column; line-height: 1; }
+.logo__name  { font-family: var(--font-display); font-size: 21px; font-weight: 700; color: var(--petroleum); letter-spacing: -.01em; }
+.logo__sub   { font-size: 10.5px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-d); margin-top: 3px; }
+.nav-links { display: flex; align-items: center; gap: 2px; margin: 0 auto; }
+.nav-links a { padding: 9px 13px; font-size: 14.5px; color: var(--body); border-radius: 8px; transition: background .15s, color .15s; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; }
+.nav-links a:hover { background: var(--bg-section); color: var(--petroleum); }
+.nav-links a.active { color: var(--petroleum); font-weight: 600; }
+.nav-dropdown { position: relative; }
+.nav-dropdown > a::after { content: ''; display: inline-block; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4.5px solid currentColor; opacity: .55; margin-top: 1px; flex-shrink: 0; }
+.nav-dropdown__menu { display: none; position: absolute; top: calc(100% + 10px); left: 0; background: #fff; border: 1px solid var(--divider); border-radius: 12px; box-shadow: 0 10px 28px rgba(18,60,86,.13); padding: 8px; min-width: 210px; z-index: 200; }
+.nav-dropdown:hover .nav-dropdown__menu { display: block; }
+.nav-dropdown__menu a { display: block; padding: 9px 14px; font-size: 14px; color: var(--body); border-radius: 8px; white-space: nowrap; transition: background .12s, color .12s; }
+.nav-dropdown__menu a:hover { background: var(--bg-section); color: var(--petroleum); }
+.nav-search { display: flex; align-items: center; gap: 8px; background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 9px; padding: 7px 12px; flex-shrink: 0; }
+.nav-search input { border: none; outline: none; background: transparent; font-family: inherit; font-size: 13.5px; color: var(--ink); width: 155px; }
+.nav-search input::placeholder { color: var(--muted); }
+.nav-signin { display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px; font-weight: 600; color: var(--petroleum); white-space: nowrap; transition: color .15s; flex-shrink: 0; }
+.nav-signin:hover { color: var(--petroleum-d); }
+.btn-add-listing { flex-shrink: 0; background: var(--gold); color: var(--petroleum-dd); font-weight: 700; font-size: 13px; padding: 10px 18px; border-radius: var(--radius-btn); border: none; cursor: pointer; transition: background .15s; white-space: nowrap; letter-spacing: .06em; text-transform: uppercase; }
+.btn-add-listing:hover { background: var(--gold-pale); }
+.hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; flex-shrink: 0; }
+.hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; }
+.mobile-nav { display: none; flex-direction: column; background: #fff; border-top: 1px solid var(--divider); padding: 8px 28px 20px; }
+.mobile-nav.open { display: flex; }
+.mobile-nav a { padding: 12px 0; font-size: 15px; color: var(--body); border-bottom: 1px solid var(--divider); transition: color .15s; }
+.mobile-nav a:last-of-type { border-bottom: none; }
+.mobile-nav a:hover { color: var(--petroleum); }
+.mobile-nav__actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+.mobile-nav__search { display: flex; align-items: center; gap: 8px; background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 9px; padding: 9px 13px; flex: 1; min-width: 0; }
+.mobile-nav__search input { border: none; outline: none; background: transparent; font-family: inherit; font-size: 14px; color: var(--ink); width: 100%; }
+.mobile-nav__search input::placeholder { color: var(--muted); }
+
+/* ─── Page hero ─── */
+.page-hero {
+  background: linear-gradient(160deg, #0A2535 0%, #123C56 58%, #1C5273 100%);
+  padding: 72px 0 80px; position: relative; overflow: hidden;
+}
+.page-hero__dots {
+  position: absolute; inset: 0; opacity: .07;
+  background-image: radial-gradient(circle at 22px 22px, #fff 1.5px, transparent 0);
+  background-size: 34px 34px;
+}
+.page-hero__inner { position: relative; max-width: 860px; margin: 0 auto; padding: 0 32px; }
+.page-hero__eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 15px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+  border-radius: 999px; font-size: 13px; font-weight: 600; color: #EAF1F6; margin-bottom: 22px;
+}
+.page-hero__h1 { font-family: var(--font-display); font-size: 52px; line-height: 1.08; letter-spacing: -.025em; color: #fff; margin: 0 0 18px; }
+.page-hero__h1 em { font-style: italic; color: var(--gold-pale); }
+.page-hero__sub { font-size: 18.5px; line-height: 1.6; color: #B8CCDA; max-width: 680px; }
+
+/* ─── Breadcrumb ─── */
+.breadcrumb { background: var(--bg-subtle); border-bottom: 1px solid var(--divider); padding: 14px 0; }
+.breadcrumb__inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--muted); }
+.breadcrumb__inner a { color: var(--petroleum); transition: color .15s; }
+.breadcrumb__inner a:hover { color: var(--petroleum-d); }
+.breadcrumb__sep { color: var(--border); }
+
+/* ─── About body layout ─── */
+.about-body { padding: 80px 0; }
+.about-body .container { display: grid; grid-template-columns: 1fr 340px; gap: 72px; align-items: start; }
+
+/* ─── Prose content ─── */
+.prose-section { margin-bottom: 60px; }
+.prose-section:last-child { margin-bottom: 0; }
+.section-eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--emerald); margin-bottom: 10px; }
+.prose-h2 { font-family: var(--font-display); font-size: 32px; color: var(--ink); letter-spacing: -.02em; margin: 0 0 20px; line-height: 1.2; }
+.prose-h2 em { font-style: italic; color: var(--petroleum); }
+.prose-p { font-size: 16.5px; line-height: 1.72; color: var(--body); margin-bottom: 18px; }
+.prose-p:last-child { margin-bottom: 0; }
+.prose-p strong { font-weight: 700; color: var(--ink); }
+
+/* ─── Process steps (How we work) ─── */
+.process-list { display: flex; flex-direction: column; gap: 28px; margin-top: 8px; }
+.process-step { display: flex; gap: 20px; align-items: flex-start; }
+.process-step__num {
+  flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--petroleum); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 15px; margin-top: 2px;
+}
+.process-step__body {}
+.process-step__title { font-weight: 700; font-size: 16px; color: var(--ink); margin-bottom: 4px; }
+.process-step__desc { font-size: 15.5px; line-height: 1.65; color: var(--body); }
+
+/* ─── Sidebar card ─── */
+.about-sidebar { position: sticky; top: 90px; display: flex; flex-direction: column; gap: 24px; }
+
+.stat-card {
+  background: var(--petroleum); border-radius: var(--radius-card);
+  padding: 32px 28px; color: #fff;
+}
+.stat-card__title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--gold-pale); margin-bottom: 24px; }
+.stat-card__list { display: flex; flex-direction: column; gap: 20px; }
+.stat-card__item {}
+.stat-card__num { font-family: var(--font-display); font-size: 36px; font-weight: 700; color: #fff; line-height: 1; }
+.stat-card__label { font-size: 13.5px; color: #9FB2BF; margin-top: 4px; }
+.stat-card__divider { height: 1px; background: rgba(255,255,255,.1); }
+
+.values-card { background: var(--bg-subtle); border: 1px solid var(--divider); border-radius: var(--radius-card); padding: 28px; }
+.values-card__title { font-weight: 700; font-size: 15px; color: var(--ink); margin-bottom: 18px; }
+.value-item { display: flex; gap: 13px; align-items: flex-start; margin-bottom: 16px; }
+.value-item:last-child { margin-bottom: 0; }
+.value-icon { flex-shrink: 0; width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+.value-item__title { font-weight: 700; font-size: 14px; color: var(--ink); margin-bottom: 2px; }
+.value-item__desc { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+
+.cta-card {
+  background: linear-gradient(135deg, #123C56, #0A2535);
+  border-radius: var(--radius-card); padding: 28px;
+}
+.cta-card__title { font-family: var(--font-display); font-size: 20px; color: #fff; margin-bottom: 10px; line-height: 1.3; }
+.cta-card__title em { color: var(--gold-pale); font-style: italic; }
+.cta-card__p { font-size: 14px; color: #9FB2BF; line-height: 1.55; margin-bottom: 20px; }
+.cta-card__btns { display: flex; flex-direction: column; gap: 10px; }
+.btn-gold { background: var(--gold); color: var(--petroleum-dd); font-weight: 700; font-size: 14.5px; padding: 11px 24px; border-radius: var(--radius-btn); border: none; cursor: pointer; transition: background .15s; white-space: nowrap; width: 100%; }
+.btn-gold:hover { background: var(--gold-pale); }
+.btn-secondary { background: transparent; color: rgba(255,255,255,.9); font-weight: 700; font-size: 14.5px; padding: 10px 24px; border-radius: var(--radius-btn); border: 1.5px solid rgba(255,255,255,.3); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: border-color .15s, color .15s; width: 100%; }
+.btn-secondary:hover { border-color: rgba(255,255,255,.7); color: #fff; }
+
+/* ─── Timeline section ─── */
+.timeline-section { background: var(--bg-subtle); border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); padding: 80px 0; }
+.timeline-section .container { max-width: 860px; }
+.timeline { position: relative; padding-left: 32px; margin-top: 40px; }
+.timeline::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; background: var(--divider); }
+.timeline-item { position: relative; margin-bottom: 44px; }
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-dot { position: absolute; left: -40px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--petroleum); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--petroleum); }
+.timeline-year { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-d); margin-bottom: 6px; }
+.timeline-title { font-family: var(--font-display); font-size: 21px; color: var(--ink); margin-bottom: 8px; }
+.timeline-desc { font-size: 15.5px; line-height: 1.65; color: var(--body); max-width: 640px; }
+
+/* ─── Mission band ─── */
+.mission-band { background: var(--petroleum); padding: 80px 0; position: relative; overflow: hidden; }
+.mission-band__dots { position: absolute; inset: 0; opacity: .06; background-image: radial-gradient(circle at 22px 22px, #fff 1.5px, transparent 0); background-size: 34px 34px; }
+.mission-band__inner { position: relative; max-width: 820px; margin: 0 auto; padding: 0 32px; text-align: center; }
+.mission-band__label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-pale); margin-bottom: 18px; }
+.mission-band__quote { font-family: var(--font-display); font-size: 34px; line-height: 1.25; color: #fff; letter-spacing: -.02em; margin-bottom: 28px; }
+.mission-band__quote em { font-style: italic; color: var(--gold-pale); }
+.mission-band__sub { font-size: 17px; color: #9FB2BF; line-height: 1.6; max-width: 620px; margin: 0 auto; }
+
+/* ─── CTA band ─── */
+.cta-band { background: #fff; padding: 80px 0; }
+.cta-inner { background: linear-gradient(135deg, #123C56, #0A2535); border-radius: 24px; padding: 56px 52px; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; position: relative; overflow: hidden; }
+.cta-inner::before { content: ''; position: absolute; right: -50px; top: -50px; width: 260px; height: 260px; border-radius: 50%; background: rgba(201,162,39,.12); }
+.cta-inner::after { content: ''; position: absolute; right: 120px; bottom: -80px; width: 200px; height: 200px; border-radius: 50%; background: rgba(46,139,87,.1); }
+.cta-copy { position: relative; max-width: 560px; }
+.cta-h2 { font-family: var(--font-display); color: #fff; font-size: 36px; margin: 0 0 12px; letter-spacing: -.02em; }
+.cta-h2 em { font-style: italic; color: var(--gold-pale); }
+.cta-p { color: #CBD8E2; font-size: 17px; line-height: 1.55; }
+.cta-btns { display: flex; gap: 14px; position: relative; flex-wrap: wrap; }
+.cta-btns .btn-gold { width: auto; }
+.cta-btns .btn-secondary { width: auto; }
+
+/* ─── Footer ─── */
+footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
+.footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; }
+.footer-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.footer-logo__icon { display: inline-flex; width: 44px; height: 44px; border-radius: 12px; background: var(--petroleum); align-items: center; justify-content: center; }
+.footer-logo__name { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: #fff; }
+.footer-about { font-size: 14.5px; line-height: 1.6; color: #8FA3B1; max-width: 320px; margin: 0 0 18px; }
+.footer-socials { display: flex; gap: 10px; }
+.footer-social { width: 36px; height: 36px; border-radius: 9px; background: rgba(255,255,255,.07); display: inline-flex; align-items: center; justify-content: center; color: #cdd9e2; transition: background .15s, color .15s; }
+.footer-social:hover { background: rgba(255,255,255,.16); color: #fff; }
+.footer-col-title { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #fff; margin-bottom: 16px; }
+.footer-links { display: flex; flex-direction: column; gap: 11px; }
+.footer-links a { font-size: 14.5px; color: #9FB2BF; transition: color .15s; }
+.footer-links a:hover { color: #fff; }
+.footer-contact { display: flex; flex-direction: column; gap: 12px; font-size: 14.5px; }
+.footer-contact-item { display: inline-flex; align-items: center; gap: 9px; color: #9FB2BF; }
+.footer-contact-item.top { align-items: flex-start; }
+.footer-bottom { max-width: 1280px; margin: 40px auto 0; padding: 20px 32px; border-top: 1px solid rgba(255,255,255,.08); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 13.5px; }
+.footer-bottom__copy { color: #7E92A0; }
+.footer-bottom__links { display: flex; gap: 20px; }
+.footer-bottom__links a { color: #7E92A0; transition: color .15s; }
+.footer-bottom__links a:hover { color: #fff; }
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .about-body .container { grid-template-columns: 1fr; gap: 48px; }
+  .about-sidebar { position: static; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+  .nav-search { display: none; }
+  .nav-signin { display: none; }
+  .btn-add-listing { display: none; }
+  .hamburger { display: flex; }
+}
+@media (max-width: 720px) {
+  .page-hero__h1 { font-size: 36px; }
+  .page-hero { padding: 52px 0 60px; }
+  .about-body { padding: 48px 0; }
+  .container, .page-hero__inner { padding-left: 20px; padding-right: 20px; }
+  .timeline-section .container { padding-left: 20px; padding-right: 20px; }
+  .cta-inner { padding: 40px 28px; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .util-bar__left { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header style="position:sticky;top:0;z-index:60;">
+
+  <!-- Utility bar -->
+  <div class="util-bar">
+    <div class="util-bar__inner">
+      <div class="util-bar__left">
+        <div class="util-bar__socials">
+          <a href="#" aria-label="Facebook"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3l.4-3H14V4.5c0-.9.3-1.5 1.6-1.5H17V.2C16.7.1 15.8 0 14.7 0 12.3 0 10.8 1.4 10.8 4v2H8v3h2.8v8H14V9z"/></svg></a>
+          <a href="#" aria-label="X / Twitter"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7 8 8 12h-6l-5-6-5 6H2l8-9L2 2h6l4 5 6-5z"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 8h4v13H2V8zm6 0h4v2h.1c.6-1 2-2 3.9-2 4 0 5 2.5 5 6v7h-4v-6c0-1.5 0-3.3-2-3.3s-2.3 1.6-2.3 3.2V21H8V8z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.7 0 3 0 4.1.1 1 .05 1.6.2 2 .35.5.2.9.45 1.3.85.4.4.65.8.85 1.3.15.4.3 1 .35 2 .05 1.1.06 1.4.06 4.1s0 3-.06 4.1c-.05 1-.2 1.6-.35 2a3.6 3.6 0 0 1-.85 1.3 3.6 3.6 0 0 1-1.3.85c-.4.15-1 .3-2 .35-1.1.05-1.4.06-4.1.06s-3 0-4.1-.06c-1-.05-1.6-.2-2-.35a3.6 3.6 0 0 1-1.3-.85 3.6 3.6 0 0 1-.85-1.3c-.15-.4-.3-1-.35-2C3.01 15 3 14.7 3 12s0-3 .06-4.1c.05-1 .2-1.6.35-2 .2-.5.45-.9.85-1.3.4-.4.8-.65 1.3-.85.4-.15 1-.3 2-.35C9 2.01 9.3 2 12 2zm0 2c-2.6 0-2.9 0-4 .1-.8.03-1.2.17-1.5.28-.4.15-.6.32-.9.6-.28.28-.45.5-.6.9-.1.3-.25.7-.28 1.5C4.6 9.1 4.6 9.4 4.6 12s0 2.9.1 4c.03.8.17 1.2.28 1.5.15.4.32.6.6.9.28.28.5.45.9.6.3.1.7.25 1.5.28 1.1.05 1.4.06 4 .06s2.9 0 4-.06c.8-.03 1.2-.17 1.5-.28.4-.15.6-.32.9-.6.28-.28.45-.5.6-.9.1-.3.25-.7.28-1.5.05-1.1.06-1.4.06-4s0-2.9-.06-4c-.03-.8-.17-1.2-.28-1.5a2.4 2.4 0 0 0-.6-.9 2.4 2.4 0 0 0-.9-.6c-.3-.1-.7-.25-1.5-.28-1.1-.05-1.4-.1-4-.1zm0 3.4a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2zm0 2a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2zm4.8-3.9a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z"/></svg></a>
+          <a href="mailto:hello@buyfromiran.com" class="util-bar__link" aria-label="Email"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
+        </div>
+      </div>
+      <div class="util-bar__right">
+        <a href="tel:+982140005000" class="util-bar__link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.83 19.05A16 16 0 0 1 4.95 10.17 2 2 0 0 1 6.9 7.5l1.27.13a2 2 0 0 1 1.7 1.45l.34 1.36a2 2 0 0 1-.5 1.9l-.7.7a12 12 0 0 0 4 4l.7-.7a2 2 0 0 1 1.9-.5l1.36.34a2 2 0 0 1 1.45 1.7l.13 1.27a2 2 0 0 1-2.67 1.95Z"/></svg>
+          +98 21 4000 5000
+        </a>
+        <span class="util-bar__sep"></span>
+        <div class="lang-bar" id="langBar">
+          <button class="lang-btn active" onclick="selectLang(this)">AR</button>
+          <button class="lang-btn" onclick="selectLang(this)">EN</button>
+          <button class="lang-btn" onclick="selectLang(this)">FR</button>
+          <button class="lang-btn" onclick="selectLang(this)">RU</button>
+          <button class="lang-btn" onclick="selectLang(this)">ES</button>
+          <button class="lang-btn" onclick="selectLang(this)">TR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main nav -->
+  <div class="main-nav">
+    <div class="main-nav__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__icon">
+          <svg width="46" height="46" viewBox="0 0 52 52" fill="none">
+            <path d="M14 17 L26 26 L14 35" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M38 17 L26 26 L38 35" stroke="#C9A227" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="logo__text">
+          <span class="logo__name">Buy From Iran</span>
+          <span class="logo__sub">Global Sourcing Hub</span>
+        </span>
+      </a>
+      <nav class="nav-links">
+        <a href="about.html" class="active">About</a>
+        <div class="nav-dropdown">
+          <a href="#">Listing</a>
+          <div class="nav-dropdown__menu">
+            <a href="#">Products</a>
+            <a href="index.html#categories">Categories</a>
+            <a href="index.html#suppliers">Suppliers</a>
+            <a href="#">Export Services</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <a href="#">Blog</a>
+          <div class="nav-dropdown__menu">
+            <a href="#">Latest Articles</a>
+            <a href="#">Industry News</a>
+            <a href="#">Guides &amp; Reports</a>
+          </div>
+        </div>
+        <a href="#">Get a Quote</a>
+        <a href="#">Membership</a>
+        <a href="#">Contact</a>
+      </nav>
+      <div class="nav-search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" placeholder="Type your search..." aria-label="Search">
+      </div>
+      <a href="#" class="nav-signin">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+        Sign in or Register
+      </a>
+      <button class="btn-add-listing">ADD LISTING</button>
+      <button class="hamburger" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="about.html">About</a>
+      <a href="#">Listing</a>
+      <a href="index.html#categories">Categories</a>
+      <a href="index.html#suppliers">Suppliers</a>
+      <a href="#">Export Services</a>
+      <a href="#">Blog</a>
+      <a href="#">Get a Quote</a>
+      <a href="#">Membership</a>
+      <a href="#">Contact</a>
+      <div class="mobile-nav__actions">
+        <div class="mobile-nav__search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Type your search..." aria-label="Search">
+        </div>
+        <a href="#" class="nav-signin" style="display:inline-flex;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+          Sign in or Register
+        </a>
+        <button class="btn-add-listing" style="display:block;">ADD LISTING</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+<!-- ═══════════════ PAGE HERO ═══════════════ -->
+<section class="page-hero">
+  <div class="page-hero__dots"></div>
+  <div class="page-hero__inner">
+    <div class="page-hero__eyebrow">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7FBA98" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg>
+      Founded 2020 · Tehran, Iran
+    </div>
+    <h1 class="page-hero__h1">Connecting the world with<br>Iran's finest <em>manufacturers</em></h1>
+    <p class="page-hero__sub">Buy From Iran is a B2B sourcing platform built to make one thing simple: finding and working with trustworthy Iranian suppliers shouldn't be complicated.</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════ BREADCRUMB ═══════════════ -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="breadcrumb__inner">
+    <a href="index.html">Home</a>
+    <span class="breadcrumb__sep">›</span>
+    <span>About</span>
+  </div>
+</nav>
+
+
+<!-- ═══════════════ ABOUT BODY ═══════════════ -->
+<section class="about-body">
+  <div class="container">
+
+    <!-- Main prose column -->
+    <div>
+
+      <!-- Intro -->
+      <div class="prose-section">
+        <div class="section-eyebrow">Who we are</div>
+        <h2 class="prose-h2">A platform built on<br><em>trust</em>, not just listings</h2>
+        <p class="prose-p">Buy From Iran (BFI) brings international buyers face-to-face with verified manufacturers, exporters, and wholesalers from across Iran — cutting through the noise of unreliable middlemen and unverifiable claims.</p>
+        <p class="prose-p">We built BFI because we saw the same problem repeat itself: buyers had no reliable way to distinguish a capable, export-ready factory from a trader with a borrowed catalogue. Every listing on our platform reflects a real, audited business — not just a name on a page.</p>
+      </div>
+
+      <!-- How it started -->
+      <div class="prose-section">
+        <div class="section-eyebrow">How it started</div>
+        <h2 class="prose-h2">Three people. One clear <em>problem</em> to solve.</h2>
+        <p class="prose-p">BFI was founded in 2020 by a team with more than <strong>20 years of combined experience</strong> in international supply chains, market development, and the construction industry. That experience taught us something simple but important: buyers don't just need a list of suppliers — they need a way to know which ones they can actually trust.</p>
+        <p class="prose-p">We started with just three people. Within our first year, that number had grown to seventeen — a team united by one goal: introducing the quality and diversity of Iranian-made products to buyers around the world, and making the process of sourcing from Iran as straightforward as sourcing from anywhere else.</p>
+      </div>
+
+      <!-- What drives us -->
+      <div class="prose-section">
+        <div class="section-eyebrow">What drives us</div>
+        <h2 class="prose-h2">Iran's manufacturers deserve a<br>global <em>audience</em></h2>
+        <p class="prose-p">Iran is home to a vast and often underrepresented base of manufacturers — from cement and bitumen producers to saffron growers, carpet weavers, and industrial equipment makers. Much of it never reaches international markets, not because the quality isn't there, but because the pathway to reach global buyers has historically been fragmented, informal, or simply invisible.</p>
+        <p class="prose-p">Our mission is to close that gap. We do this by combining industry expertise with a rigorous approach to supplier verification, so that every listing on our platform reflects a real, capable, export-ready business.</p>
+      </div>
+
+      <!-- How we work -->
+      <div class="prose-section">
+        <div class="section-eyebrow">How we work</div>
+        <h2 class="prose-h2">Verification first.<br>Always.</h2>
+        <p class="prose-p" style="margin-bottom:28px;">Every supplier on Buy From Iran goes through a structured verification process before they appear on the platform. Buyers can browse, compare, quote, and ship — with support at every step.</p>
+        <div class="process-list">
+          <div class="process-step">
+            <div class="process-step__num">1</div>
+            <div class="process-step__body">
+              <div class="process-step__title">Documentation review</div>
+              <div class="process-step__desc">We review business registration, export licences, and relevant certifications before any supplier is listed. If something is missing, we don't list until it's provided.</div>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="process-step__num">2</div>
+            <div class="process-step__body">
+              <div class="process-step__title">Capacity &amp; track record evaluation</div>
+              <div class="process-step__desc">We assess production capacity, past export history, and quality certifications such as ISO, SGS, and product-specific standards relevant to each category.</div>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="process-step__num">3</div>
+            <div class="process-step__body">
+              <div class="process-step__title">Ongoing buyer ratings</div>
+              <div class="process-step__desc">After each transaction, buyers rate their experience. Suppliers whose performance slips are reviewed and, if necessary, suspended — keeping the network's quality high.</div>
+            </div>
+          </div>
+          <div class="process-step">
+            <div class="process-step__num">4</div>
+            <div class="process-step__body">
+              <div class="process-step__title">Logistics &amp; inspection support</div>
+              <div class="process-step__desc">Buyers can coordinate pre-shipment inspection, payment terms, and port-to-port logistics through BFI — from first contact to a delivered order.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Where we're headed -->
+      <div class="prose-section">
+        <div class="section-eyebrow">Where we're headed</div>
+        <h2 class="prose-h2">A starting point,<br>not a <em>finish line</em></h2>
+        <p class="prose-p">Today, BFI serves as a bridge between global buyers and Iranian producers across dozens of industries. But we see this as a starting point. As more buyers discover what Iranian manufacturers have to offer — and as more suppliers join our verified network — we're committed to making that connection faster, safer, and more transparent with every step.</p>
+        <p class="prose-p">Whether you're sourcing construction materials, agricultural products, textiles, or industrial equipment, our team is here to help you find the right partner in Iran — and make sure the partnership works.</p>
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="about-sidebar">
+
+      <!-- Stats -->
+      <div class="stat-card">
+        <div class="stat-card__title">BFI by the numbers</div>
+        <div class="stat-card__list">
+          <div class="stat-card__item">
+            <div class="stat-card__num">2020</div>
+            <div class="stat-card__label">Year founded</div>
+          </div>
+          <div class="stat-card__divider"></div>
+          <div class="stat-card__item">
+            <div class="stat-card__num">20+</div>
+            <div class="stat-card__label">Years of combined industry expertise</div>
+          </div>
+          <div class="stat-card__divider"></div>
+          <div class="stat-card__item">
+            <div class="stat-card__num">17</div>
+            <div class="stat-card__label">Trade specialists on the team</div>
+          </div>
+          <div class="stat-card__divider"></div>
+          <div class="stat-card__item">
+            <div class="stat-card__num">120+</div>
+            <div class="stat-card__label">Buyer countries served</div>
+          </div>
+          <div class="stat-card__divider"></div>
+          <div class="stat-card__item">
+            <div class="stat-card__num">9,000+</div>
+            <div class="stat-card__label">Verified suppliers listed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Values -->
+      <div class="values-card">
+        <div class="values-card__title">What we stand for</div>
+        <div class="value-item">
+          <div class="value-icon" style="background:#DEF0E6;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E8B57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <div>
+            <div class="value-item__title">Verified, always</div>
+            <div class="value-item__desc">No supplier appears without passing our documentation and capacity review.</div>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon" style="background:#DCE7EE;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#123C56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div>
+            <div class="value-item__title">Radical transparency</div>
+            <div class="value-item__desc">Ratings, reviews, and documentation are visible — no hidden information, no surprises.</div>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon" style="background:#F6EECF;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9A7B1D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="value-item__title">Buyer-first</div>
+            <div class="value-item__desc">Every feature we build starts with the question: does this make sourcing easier for buyers?</div>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon" style="background:#DEF0E6;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E8B57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          </div>
+          <div>
+            <div class="value-item__title">Global reach</div>
+            <div class="value-item__desc">Buyers in 120+ countries trust BFI to connect them with the right Iranian supplier.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inline CTA -->
+      <div class="cta-card">
+        <div class="cta-card__title">Ready to start <em>sourcing</em>?</div>
+        <p class="cta-card__p">Join thousands of buyers already working with verified Iranian manufacturers through BFI.</p>
+        <div class="cta-card__btns">
+          <button class="btn-gold">Join as a Buyer</button>
+          <button class="btn-secondary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Become a Supplier
+          </button>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</section>
+
+
+<!-- ═══════════════ TIMELINE ═══════════════ -->
+<section class="timeline-section">
+  <div class="container">
+    <div class="section-eyebrow">Our story</div>
+    <h2 class="prose-h2" style="font-size:36px;">From three people to<br>a <em>global</em> platform</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2020</div>
+        <div class="timeline-title">BFI is founded</div>
+        <p class="timeline-desc">Three industry veterans — with backgrounds in construction materials, export logistics, and market development — launch Buy From Iran with a simple mission: make Iranian manufacturing discoverable and trustworthy for global buyers.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2020 — Year one</div>
+        <div class="timeline-title">Team grows to 17</div>
+        <p class="timeline-desc">Within the first twelve months, BFI's team expands from 3 to 17 specialists spanning supplier verification, logistics coordination, customer support, and platform development. The first wave of verified suppliers goes live.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2021 – 2022</div>
+        <div class="timeline-title">Verification framework launched</div>
+        <p class="timeline-desc">BFI introduces its structured supplier verification process — covering documentation, export history, capacity, and quality certifications — making it the most rigorous vetting standard in the Iran B2B sourcing space.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2023 – 2024</div>
+        <div class="timeline-title">120+ buyer countries</div>
+        <p class="timeline-desc">Buyers from over 120 countries have now used BFI to source Iranian products — from construction materials and petrochemicals to agricultural goods and handicrafts. Port-to-port logistics support is added to the platform.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background:var(--gold);box-shadow:0 0 0 2px var(--gold);"></div>
+        <div class="timeline-year">Today</div>
+        <div class="timeline-title">9,000+ verified suppliers and growing</div>
+        <p class="timeline-desc">BFI now lists over 9,000 verified Iranian suppliers across dozens of industries, with more than 50,000 products available. We remain committed to making every connection faster, safer, and more transparent than the last.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════ MISSION BAND ═══════════════ -->
+<section class="mission-band">
+  <div class="mission-band__dots"></div>
+  <div class="mission-band__inner">
+    <div class="mission-band__label">Our mission</div>
+    <blockquote class="mission-band__quote">"To make sourcing from Iran as simple, safe, and <em>transparent</em> as sourcing from anywhere else in the world."</blockquote>
+    <p class="mission-band__sub">We believe Iranian manufacturers deserve a direct line to global buyers — and that buyers deserve a platform they can actually trust. BFI exists to make both of those things true.</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════ CTA BAND ═══════════════ -->
+<section class="cta-band">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-copy">
+        <h2 class="cta-h2">Work with us — as a <em>buyer</em> or a supplier</h2>
+        <p class="cta-p">Whether you're sourcing construction materials, agricultural products, textiles, or industrial equipment, our team is here to help you find the right partner in Iran — and make sure the partnership works.</p>
+      </div>
+      <div class="cta-btns">
+        <button class="btn-gold">Join as a Buyer</button>
+        <button class="btn-secondary">Become a Supplier</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-logo">
+        <span class="footer-logo__icon">
+          <svg width="44" height="44" viewBox="0 0 52 52" fill="none">
+            <path d="M14 17 L26 26 L14 35" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M38 17 L26 26 L38 35" stroke="#C9A227" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="footer-logo__name">Buy From Iran</span>
+      </div>
+      <p class="footer-about">The trusted B2B hub connecting global buyers with verified Iranian manufacturers, exporters and wholesalers.</p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3l.4-3H14V4.5c0-.9.3-1.5 1.6-1.5H17V.2C16.7.1 15.8 0 14.7 0 12.3 0 10.8 1.4 10.8 4v2H8v3h2.8v8H14V9z"/></svg></a>
+        <a href="#" class="footer-social" aria-label="X"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7 8 8 12h-6l-5-6-5 6H2l8-9L2 2h6l4 5 6-5z"/></svg></a>
+        <a href="#" class="footer-social" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 8h4v13H2V8zm6 0h4v2h.1c.6-1 2-2 3.9-2 4 0 5 2.5 5 6v7h-4v-6c0-1.5 0-3.3-2-3.3s-2.3 1.6-2.3 3.2V21H8V8z"/></svg></a>
+        <a href="#" class="footer-social" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.7 0 3 0 4.1.1 1 .05 1.6.2 2 .35.5.2.9.45 1.3.85.4.4.65.8.85 1.3.15.4.3 1 .35 2 .05 1.1.06 1.4.06 4.1s0 3-.06 4.1c-.05 1-.2 1.6-.35 2a3.6 3.6 0 0 1-.85 1.3 3.6 3.6 0 0 1-1.3.85c-.4.15-1 .3-2 .35-1.1.05-1.4.06-4.1.06s-3 0-4.1-.06c-1-.05-1.6-.2-2-.35a3.6 3.6 0 0 1-1.3-.85 3.6 3.6 0 0 1-.85-1.3c-.15-.4-.3-1-.35-2C3.01 15 3 14.7 3 12s0-3 .06-4.1c.05-1 .2-1.6.35-2 .2-.5.45-.9.85-1.3.4-.4.8-.65 1.3-.85.4-.15 1-.3 2-.35C9 2.01 9.3 2 12 2zm0 2c-2.6 0-2.9 0-4 .1-.8.03-1.2.17-1.5.28-.4.15-.6.32-.9.6-.28.28-.45.5-.6.9-.1.3-.25.7-.28 1.5C4.6 9.1 4.6 9.4 4.6 12s0 2.9.1 4c.03.8.17 1.2.28 1.5.15.4.32.6.6.9.28.28.5.45.9.6.3.1.7.25 1.5.28 1.1.05 1.4.06 4 .06s2.9 0 4-.06c.8-.03 1.2-.17 1.5-.28.4-.15.6-.32.9-.6.28-.28.45-.5.6-.9.1-.3.25-.7.28-1.5.05-1.1.06-1.4.06-4s0-2.9-.06-4c-.03-.8-.17-1.2-.28-1.5a2.4 2.4 0 0 0-.6-.9 2.4 2.4 0 0 0-.9-.6c-.3-.1-.7-.25-1.5-.28-1.1-.05-1.4-.1-4-.1zm0 3.4a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2zm0 2a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2zm4.8-3.9a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Marketplace</div>
+      <div class="footer-links">
+        <a href="#">Products</a>
+        <a href="index.html#categories">Categories</a>
+        <a href="index.html#suppliers">Suppliers</a>
+        <a href="#">Export Services</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="#">Membership</a>
+        <a href="#">Blog</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Get in touch</div>
+      <div class="footer-contact">
+        <span class="footer-contact-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7FA3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> hello@buyfromiran.com</span>
+        <span class="footer-contact-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7FA3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.83 19.05A16 16 0 0 1 4.95 10.17 2 2 0 0 1 6.9 7.5l1.27.13a2 2 0 0 1 1.7 1.45l.34 1.36a2 2 0 0 1-.5 1.9l-.7.7a12 12 0 0 0 4 4l.7-.7a2 2 0 0 1 1.9-.5l1.36.34a2 2 0 0 1 1.45 1.7l.13 1.27a2 2 0 0 1-2.67 1.95Z"/></svg> +98 21 4000 5000</span>
+        <span class="footer-contact-item top"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7FA3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px;flex-shrink:0;"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Valiasr St, Tehran, Iran</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-bottom__copy">© 2026 Buy From Iran. All rights reserved.</span>
+    <div class="footer-bottom__links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Buyer protection</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function selectLang(btn) {
+  btn.parentNode.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function toggleMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const btn = document.querySelector('.hamburger');
+  const open = nav.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+}
+</script>
+
+<!-- ElevenLabs Conversational AI Widget -->
+<style>
+  .elevenlabs-widget-wrapper { position: fixed; bottom: 24px; right: 24px; z-index: 9999; }
+</style>
+<div class="elevenlabs-widget-wrapper">
+  <elevenlabs-convai agent-id="agent_4001kw4zymzwev8ae8g8ca87mxs3"></elevenlabs-convai>
+</div>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
+</body>
+</html>
