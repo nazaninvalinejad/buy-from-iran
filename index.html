@@ -114,6 +114,84 @@ input, select, button { font-family: inherit; }
 }
 .btn-supplier:hover { background: var(--gold-pale); }
 
+/* ─── Nav dropdowns ─── */
+.nav-dropdown { position: relative; }
+.nav-dropdown > a { display: inline-flex; align-items: center; gap: 4px; }
+.nav-dropdown > a::after { content: ''; display: inline-block; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4.5px solid currentColor; opacity: .55; margin-top: 1px; flex-shrink: 0; }
+.nav-dropdown__menu {
+  display: none; position: absolute; top: calc(100% + 10px); left: 0;
+  background: #fff; border: 1px solid var(--divider); border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(18,60,86,.13); padding: 8px; min-width: 210px; z-index: 200;
+}
+.nav-dropdown:hover .nav-dropdown__menu { display: block; }
+.nav-dropdown__menu a {
+  display: block; padding: 9px 14px; font-size: 14px; color: var(--body);
+  border-radius: 8px; white-space: nowrap; transition: background .12s, color .12s;
+}
+.nav-dropdown__menu a:hover { background: var(--bg-section); color: var(--petroleum); }
+
+/* ─── Inline nav search ─── */
+.nav-search {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 9px;
+  padding: 7px 12px; flex-shrink: 0;
+}
+.nav-search input {
+  border: none; outline: none; background: transparent;
+  font-family: inherit; font-size: 13.5px; color: var(--ink); width: 155px;
+}
+.nav-search input::placeholder { color: var(--muted); }
+
+/* ─── Sign in link ─── */
+.nav-signin {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 13.5px; font-weight: 600; color: var(--petroleum);
+  white-space: nowrap; transition: color .15s; flex-shrink: 0;
+}
+.nav-signin:hover { color: var(--petroleum-d); }
+
+/* ─── ADD LISTING button ─── */
+.btn-add-listing {
+  flex-shrink: 0; background: var(--gold); color: var(--petroleum-dd);
+  font-weight: 700; font-size: 13px; padding: 10px 18px; border-radius: var(--radius-btn);
+  border: none; cursor: pointer; transition: background .15s; white-space: nowrap;
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.btn-add-listing:hover { background: var(--gold-pale); }
+
+/* ─── Hamburger ─── */
+.hamburger {
+  display: none; flex-direction: column; justify-content: center; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 6px; flex-shrink: 0;
+}
+.hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform .2s, opacity .2s; }
+
+/* ─── Mobile nav panel ─── */
+.mobile-nav {
+  display: none; flex-direction: column;
+  background: #fff; border-top: 1px solid var(--divider); padding: 8px 28px 20px;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  padding: 12px 0; font-size: 15px; color: var(--body);
+  border-bottom: 1px solid var(--divider); transition: color .15s;
+}
+.mobile-nav a:last-of-type { border-bottom: none; }
+.mobile-nav a:hover { color: var(--petroleum); }
+.mobile-nav__actions {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 16px;
+}
+.mobile-nav__search {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 9px;
+  padding: 9px 13px; flex: 1; min-width: 0;
+}
+.mobile-nav__search input {
+  border: none; outline: none; background: transparent;
+  font-family: inherit; font-size: 14px; color: var(--ink); width: 100%;
+}
+.mobile-nav__search input::placeholder { color: var(--muted); }
+
 /* ─── Hero ─── */
 .hero {
   position: relative;
@@ -389,6 +467,10 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
 /* ─── Responsive ─── */
 @media (max-width: 1024px) {
   .nav-links { display: none; }
+  .nav-search { display: none; }
+  .nav-signin { display: none; }
+  .btn-add-listing { display: none; }
+  .hamburger { display: flex; }
   .search-grid { grid-template-columns: 1fr 1fr; }
   .search-btn-wrap { grid-column: 1 / -1; }
   .suppliers-grid, .how-grid, .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -427,31 +509,25 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
           <a href="#" aria-label="Instagram">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.7 0 3 0 4.1.1 1 .05 1.6.2 2 .35.5.2.9.45 1.3.85.4.4.65.8.85 1.3.15.4.3 1 .35 2 .05 1.1.06 1.4.06 4.1s0 3-.06 4.1c-.05 1-.2 1.6-.35 2a3.6 3.6 0 0 1-.85 1.3 3.6 3.6 0 0 1-1.3.85c-.4.15-1 .3-2 .35-1.1.05-1.4.06-4.1.06s-3 0-4.1-.06c-1-.05-1.6-.2-2-.35a3.6 3.6 0 0 1-1.3-.85 3.6 3.6 0 0 1-.85-1.3c-.15-.4-.3-1-.35-2C3.01 15 3 14.7 3 12s0-3 .06-4.1c.05-1 .2-1.6.35-2 .2-.5.45-.9.85-1.3.4-.4.8-.65 1.3-.85.4-.15 1-.3 2-.35C9 2.01 9.3 2 12 2zm0 2c-2.6 0-2.9 0-4 .1-.8.03-1.2.17-1.5.28-.4.15-.6.32-.9.6-.28.28-.45.5-.6.9-.1.3-.25.7-.28 1.5C4.6 9.1 4.6 9.4 4.6 12s0 2.9.1 4c.03.8.17 1.2.28 1.5.15.4.32.6.6.9.28.28.5.45.9.6.3.1.7.25 1.5.28 1.1.05 1.4.06 4 .06s2.9 0 4-.06c.8-.03 1.2-.17 1.5-.28.4-.15.6-.32.9-.6.28-.28.45-.5.6-.9.1-.3.25-.7.28-1.5.05-1.1.06-1.4.06-4s0-2.9-.06-4c-.03-.8-.17-1.2-.28-1.5a2.4 2.4 0 0 0-.6-.9 2.4 2.4 0 0 0-.9-.6c-.3-.1-.7-.25-1.5-.28-1.1-.05-1.4-.1-4-.1zm0 3.4a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2zm0 2a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2zm4.8-3.9a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z"/></svg>
           </a>
+          <a href="mailto:hello@buyfromiran.com" class="util-bar__link" aria-label="Email">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </a>
         </div>
-        <span class="util-bar__sep"></span>
-        <a href="mailto:hello@buyfromiran.com" class="util-bar__link">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-          hello@buyfromiran.com
-        </a>
+      </div>
+      <div class="util-bar__right">
         <a href="tel:+982140005000" class="util-bar__link">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.83 19.05A16 16 0 0 1 4.95 10.17 2 2 0 0 1 6.9 7.5l1.27.13a2 2 0 0 1 1.7 1.45l.34 1.36a2 2 0 0 1-.5 1.9l-.7.7a12 12 0 0 0 4 4l.7-.7a2 2 0 0 1 1.9-.5l1.36.34a2 2 0 0 1 1.45 1.7l.13 1.27a2 2 0 0 1-2.67 1.95Z"/></svg>
           +98 21 4000 5000
         </a>
-      </div>
-      <div class="util-bar__right">
+        <span class="util-bar__sep"></span>
         <div class="lang-bar" id="langBar">
-          <button class="lang-btn active" onclick="selectLang(this)">EN</button>
-          <button class="lang-btn" onclick="selectLang(this)">AR</button>
+          <button class="lang-btn active" onclick="selectLang(this)">AR</button>
+          <button class="lang-btn" onclick="selectLang(this)">EN</button>
           <button class="lang-btn" onclick="selectLang(this)">FR</button>
           <button class="lang-btn" onclick="selectLang(this)">RU</button>
           <button class="lang-btn" onclick="selectLang(this)">ES</button>
           <button class="lang-btn" onclick="selectLang(this)">TR</button>
         </div>
-        <span class="util-bar__sep"></span>
-        <a href="#" class="util-bar__login">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
-          Login / Register
-        </a>
       </div>
     </div>
   </div>
@@ -472,18 +548,65 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
         </span>
       </a>
       <nav class="nav-links">
-        <a href="#" class="active">Home</a>
-        <a href="#">Products</a>
-        <a href="#categories">Categories</a>
-        <a href="#suppliers">Suppliers</a>
-        <a href="#">Export Services</a>
-        <a href="#">Membership</a>
-        <a href="#">Blog</a>
         <a href="#">About</a>
+        <div class="nav-dropdown">
+          <a href="#">Listing</a>
+          <div class="nav-dropdown__menu">
+            <a href="#">Products</a>
+            <a href="#categories">Categories</a>
+            <a href="#suppliers">Suppliers</a>
+            <a href="#">Export Services</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <a href="#">Blog</a>
+          <div class="nav-dropdown__menu">
+            <a href="#">Latest Articles</a>
+            <a href="#">Industry News</a>
+            <a href="#">Guides &amp; Reports</a>
+          </div>
+        </div>
+        <a href="#">Get a Quote</a>
+        <a href="#">Membership</a>
         <a href="#">Contact</a>
       </nav>
-      <button class="btn-supplier">Become a Supplier</button>
+      <div class="nav-search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" placeholder="Type your search..." aria-label="Search">
+      </div>
+      <a href="#" class="nav-signin">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+        Sign in or Register
+      </a>
+      <button class="btn-add-listing">ADD LISTING</button>
+      <button class="hamburger" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
+    <!-- Mobile nav panel -->
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="#">About</a>
+      <a href="#">Listing</a>
+      <a href="#">Products</a>
+      <a href="#categories">Categories</a>
+      <a href="#suppliers">Suppliers</a>
+      <a href="#">Export Services</a>
+      <a href="#">Blog</a>
+      <a href="#">Get a Quote</a>
+      <a href="#">Membership</a>
+      <a href="#">Contact</a>
+      <div class="mobile-nav__actions">
+        <div class="mobile-nav__search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Type your search..." aria-label="Search">
+        </div>
+        <a href="#" class="nav-signin" style="display:inline-flex;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+          Sign in or Register
+        </a>
+        <button class="btn-add-listing">ADD LISTING</button>
+      </div>
+    </nav>
   </div>
 </header>
 
@@ -932,6 +1055,12 @@ function selectLang(btn) {
 function goSearch() {
   const el = document.getElementById('categories');
   if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 24, behavior: 'smooth' });
+}
+function toggleMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const btn = document.querySelector('.hamburger');
+  const open = nav.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
 }
 </script>
 
