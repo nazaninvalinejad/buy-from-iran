@@ -84,6 +84,30 @@ input, select, button { font-family: inherit; }
 .nav-search input::placeholder { color: var(--muted); }
 .nav-signin { display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px; font-weight: 600; color: var(--petroleum); white-space: nowrap; transition: color .15s; flex-shrink: 0; }
 .nav-signin:hover { color: var(--petroleum-d); }
+.auth-overlay{display:none;position:fixed;inset:0;background:rgba(10,37,53,.55);z-index:2000;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:16px}
+.auth-overlay.open{display:flex}
+.auth-modal{background:#fff;border-radius:18px;width:100%;max-width:440px;box-shadow:0 24px 64px rgba(10,37,53,.22);overflow:hidden;position:relative;animation:authIn .2s ease}
+@keyframes authIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+.auth-modal__close{position:absolute;top:14px;right:16px;background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:24px;line-height:1;padding:2px 8px;border-radius:6px;transition:background .12s}
+.auth-modal__close:hover{background:#F3F4F6;color:#374151}
+.auth-tabs{display:flex;border-bottom:1px solid #E5E7EB}
+.auth-tab{flex:1;background:none;border:none;border-bottom:2.5px solid transparent;margin-bottom:-1px;padding:18px;font-size:15px;font-weight:600;color:#6B7280;cursor:pointer;transition:color .15s,border-color .15s;font-family:inherit}
+.auth-tab.active{color:var(--petroleum);border-bottom-color:var(--petroleum)}
+.auth-pane{display:none;padding:28px 32px 32px}
+.auth-pane.active{display:block}
+.auth-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.auth-field label{font-size:13.5px;font-weight:600;color:#374151}
+.auth-field input{border:1.5px solid #D1D5DB;border-radius:9px;padding:11px 14px;font-size:14.5px;color:#111827;outline:none;transition:border-color .15s;font-family:inherit}
+.auth-field input:focus{border-color:var(--petroleum)}
+.auth-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;font-size:13.5px}
+.auth-remember{display:flex;align-items:center;gap:7px;color:#374151;cursor:pointer;user-select:none}
+.auth-remember input[type=checkbox]{width:15px;height:15px;accent-color:var(--petroleum);cursor:pointer}
+.auth-forgot{color:var(--petroleum);font-weight:600;text-decoration:none;font-size:13.5px}
+.auth-forgot:hover{text-decoration:underline}
+.auth-btn{width:100%;background:var(--petroleum);color:#fff;font-size:15px;font-weight:700;padding:13px;border-radius:10px;border:none;cursor:pointer;transition:background .15s;font-family:inherit;letter-spacing:.01em}
+.auth-btn:hover{background:var(--petroleum-d)}
+.auth-privacy{font-size:12.5px;color:#6B7280;margin-top:14px;line-height:1.55}
+.auth-privacy a{color:var(--petroleum)}
 .btn-add-listing { flex-shrink: 0; background: var(--gold); color: var(--petroleum-dd); font-weight: 700; font-size: 13px; padding: 10px 18px; border-radius: var(--radius-btn); border: none; cursor: pointer; transition: background .15s; white-space: nowrap; letter-spacing: .06em; text-transform: uppercase; }
 .btn-add-listing:hover { background: var(--gold-pale); }
 .hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; flex-shrink: 0; }
@@ -344,10 +368,10 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         <input type="text" placeholder="Type your search..." aria-label="Search">
       </div>
-      <a href="#" class="nav-signin">
+      <button onclick="openAuthModal('signin')" class="nav-signin" style="background:none;border:none;cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
         Sign in or Register
-      </a>
+      </button>
       <button class="btn-add-listing">ADD LISTING</button>
       <button class="hamburger" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -368,10 +392,10 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <input type="text" placeholder="Type your search..." aria-label="Search">
         </div>
-        <a href="#" class="nav-signin" style="display:inline-flex;">
+        <button onclick="openAuthModal('signin')" class="nav-signin" style="display:inline-flex;background:none;border:none;cursor:pointer;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
           Sign in or Register
-        </a>
+        </button>
         <button class="btn-add-listing" style="display:block;">ADD LISTING</button>
       </div>
     </nav>
@@ -634,6 +658,43 @@ function toggleMobileNav() {
   <elevenlabs-convai agent-id="agent_4001kw4zymzwev8ae8g8ca87mxs3"></elevenlabs-convai>
 </div>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
+<!-- ═══ AUTH MODAL ═══ -->
+<div class="auth-overlay" id="authOverlay" onclick="handleOverlayClick(event)">
+  <div class="auth-modal">
+    <button class="auth-modal__close" onclick="closeAuthModal()" aria-label="Close">&times;</button>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="signin" onclick="switchAuthTab('signin')">Sign In</button>
+      <button class="auth-tab" data-tab="register" onclick="switchAuthTab('register')">Register</button>
+    </div>
+    <div class="auth-pane active" data-pane="signin">
+      <div class="auth-field"><label for="si-username">Username</label><input type="text" id="si-username" placeholder="Enter your username" autocomplete="username"></div>
+      <div class="auth-field"><label for="si-password">Password</label><input type="password" id="si-password" placeholder="Enter your password" autocomplete="current-password"></div>
+      <div class="auth-row">
+        <label class="auth-remember"><input type="checkbox"> Remember me</label>
+        <a href="#" class="auth-forgot">Forgot password?</a>
+      </div>
+      <button class="auth-btn">Sign In</button>
+    </div>
+    <div class="auth-pane" data-pane="register">
+      <div class="auth-field"><label for="reg-email">Email</label><input type="email" id="reg-email" placeholder="Enter your email" autocomplete="email"></div>
+      <div class="auth-field"><label for="reg-username">Username</label><input type="text" id="reg-username" placeholder="Choose a username" autocomplete="username"></div>
+      <div class="auth-field"><label for="reg-password">Password</label><input type="password" id="reg-password" placeholder="Create a password" autocomplete="new-password"></div>
+      <button class="auth-btn">Sign Up</button>
+      <p class="auth-privacy">Your personal data will be used to support your experience on this website, to manage access to your account and for other purposes described in our <a href="#">privacy policy</a>.</p>
+    </div>
+  </div>
+</div>
+<script>
+function openAuthModal(tab){document.getElementById('authOverlay').classList.add('open');if(tab)switchAuthTab(tab)}
+function closeAuthModal(){document.getElementById('authOverlay').classList.remove('open')}
+function handleOverlayClick(e){if(e.target===document.getElementById('authOverlay'))closeAuthModal()}
+function switchAuthTab(name){
+  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
+  document.querySelectorAll('.auth-pane').forEach(p=>p.classList.toggle('active',p.dataset.pane===name));
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAuthModal()});
+</script>
 
 </body>
 </html>
