@@ -20,7 +20,7 @@ input,select,button{font-family:inherit}
 /* ─── Tokens ─── */
 :root{
   --petroleum:#123C56;--petroleum-d:#0F3146;--petroleum-dd:#0A2535;
-  --emerald:#2E8B57;--gold:#C9A227;--gold-d:#9A7B1D;--gold-pale:#E8C75A;
+  --emerald:#2E8B57;--gold: #2B7FFF;--gold-d:#9A7B1D;--gold-pale:#E8C75A;
   --ink:#1F2937;--body:#4B5563;--muted:#6B7280;
   --border:#D9E2EC;--divider:#E5E7EB;--bg-subtle:#F7F9FB;--bg-section:#EEF3F7;
   --font-display:'Playfair Display',serif;--radius-card:16px;
@@ -159,6 +159,9 @@ input,select,button{font-family:inherit}
 .product-card__tag{font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
 .product-card__arrow{position:absolute;top:16px;right:16px;color:var(--border);transition:color .15s}
 .product-card:hover .product-card__arrow{color:var(--petroleum)}
+.product-card__img-wrap{margin-bottom:12px}
+.product-card__body{}
+.product-card__meta{font-size:12px;color:var(--muted);margin-top:4px}
 .quote-cta{margin-top:32px;background:linear-gradient(135deg,var(--petroleum) 0%,var(--petroleum-d) 100%);border-radius:16px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .quote-cta__text h3{font-family:var(--font-display);font-size:20px;color:#fff;font-style:italic;margin-bottom:4px}
 .quote-cta__text p{font-size:14px;color:rgba(255,255,255,.7)}
@@ -225,7 +228,7 @@ input,select,button{font-family:inherit}
   <div class="main-nav">
     <div class="main-nav__inner">
       <a href="index.html" class="logo">
-        <span class="logo__icon"><svg width="46" height="46" viewBox="0 0 52 52" fill="none"><path d="M14 17L26 26L14 35" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 17L26 26L38 35" stroke="#C9A227" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="logo__icon"><svg width="46" height="46" viewBox="0 0 52 52" fill="none"><path d="M14 17L26 26L14 35" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 17L26 26L38 35" stroke="#2B7FFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         <span style="display:flex;flex-direction:column;line-height:1;"><span class="logo__name">Buy From Iran</span><span class="logo__sub">Global Sourcing Hub</span></span>
       </a>
       <nav class="nav-links">
@@ -369,9 +372,10 @@ input,select,button{font-family:inherit}
             <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Honey','🍯')"><div class="product-card__icon">🍯</div><div class="product-card__name">Honey</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
             <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Herbal Products','🌿')"><div class="product-card__icon">🌿</div><div class="product-card__name">Herbal Products</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
           </div>
-          <div style="margin:32px 0 12px;padding-bottom:10px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:10px;">
+          <div style="margin:32px 0 12px;padding-bottom:10px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="openFoodSub('mahram')">
             <span style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--petroleum);">🫙 Featured Supplier — Mahram Co.</span>
             <span style="font-size:12px;color:var(--muted);">ISO 9001 · HACCP Certified · Est. 1970</span>
+            <span style="margin-left:auto;font-size:12px;color:var(--gold);font-weight:600;">View all 60+ products →</span>
           </div>
           <div class="products-grid">
             <div class="product-card"><img class="product-card__img" src="img/mahram/mayonnaise-reduced-fat.png" alt="Mayonnaise" loading="lazy"><div class="product-card__name">Mayonnaise</div><div class="product-card__sub">Reduced Fat · 630g</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Mahram</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
@@ -559,6 +563,110 @@ input,select,button{font-family:inherit}
           </div>
           <div class="quote-cta"><div class="quote-cta__text"><h3>Source Biscuits &amp; Crackers from Iran?</h3><p>Get competitive offers from verified Iranian biscuit manufacturers — including Champion, Mahfel and Janeh — within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
           </div><!-- /food-sub-biscuits -->
+
+          <!-- Mahram sub-panel -->
+          <div id="food-sub-mahram" style="display:none;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px;font-size:13px;">
+              <button onclick="closeFoodSub()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;font-weight:600;color:var(--petroleum);display:flex;align-items:center;gap:6px;">← Food &amp; Agriculture</button>
+              <span style="color:var(--muted);">/</span>
+              <span style="font-weight:700;color:var(--petroleum);">🫙 Mahram Co.</span>
+            </div>
+            <div class="panel__header" style="margin-bottom:28px;">
+              <div class="panel__eyebrow">🫙 Featured Supplier — Mahram Co.</div>
+              <h2 class="panel__title">Mahram — Full Product Catalog</h2>
+              <p class="panel__desc">Mahram Co. (Est. 1970) is one of Iran's most recognized food brands, producing 60+ products across dressings, sauces, ketchup, mayonnaise, canned foods, pickles, olives, jams, juices, and more. ISO 9001 &amp; HACCP Certified.</p>
+            </div>
+
+            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🥗 Dressings &amp; Vinaigrettes</span></div>
+            <div class="products-grid" style="margin-bottom:32px;">
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Ranch Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Ranch Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Caesar Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Caesar Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="French Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">French Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Italian Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Italian Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Thousand Island" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Thousand Island</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Honey Mustard Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Honey Mustard Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Balsamic Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Balsamic Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Garlic Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Garlic Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
+            </div>
+
+            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🥚 Mayonnaise</span></div>
+            <div class="products-grid" style="margin-bottom:32px;">
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-mayonnaise.png" alt="Classic Mayonnaise" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Classic Mayonnaise</div><div class="product-card__meta">Mahram Co. · 430g / 900g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/mayonnaise-reduced-fat.png" alt="Reduced Fat Mayonnaise" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Reduced Fat Mayonnaise</div><div class="product-card__meta">Mahram Co. · 430g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-mayonnaise.png" alt="Spicy Mayonnaise" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Spicy Mayonnaise</div><div class="product-card__meta">Mahram Co. · 430g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-mayonnaise.png" alt="Garlic Mayonnaise" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Garlic Mayonnaise</div><div class="product-card__meta">Mahram Co. · 430g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-mayonnaise.png" alt="Olive Oil Mayonnaise" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Olive Oil Mayonnaise</div><div class="product-card__meta">Mahram Co. · 430g</div></div></div>
+            </div>
+
+            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🌶️ Sauces &amp; Ketchup</span></div>
+            <div class="products-grid" style="margin-bottom:32px;">
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/pasta-sauce.png" alt="Pasta Sauce" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Pasta Sauce</div><div class="product-card__meta">Mahram Co. · 650g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/thai-sauce.png" alt="Thai Sweet Chili Sauce" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Thai Sweet Chili Sauce</div><div class="product-card__meta">Mahram Co. · 380g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/sriracha-sauce.png" alt="Sriracha Sauce" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Sriracha Hot Chili Sauce</div><div class="product-card__meta">Mahram Co. · 480g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/dijon-mustard.png" alt="Dijon Mustard" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Dijon Mustard</div><div class="product-card__meta">Mahram Co. · 200g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-ketchup.png" alt="Classic Ketchup" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Classic Ketchup</div><div class="product-card__meta">Mahram Co. · 570g / 1kg</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-ketchup.png" alt="Spicy Ketchup" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Spicy Ketchup</div><div class="product-card__meta">Mahram Co. · 570g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-ketchup.png" alt="Mushroom Ketchup" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Mushroom Ketchup</div><div class="product-card__meta">Mahram Co. · 570g</div></div></div>
+            </div>
+
+            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🧀 Dips &amp; Spreads</span></div>
+            <div class="products-grid" style="margin-bottom:32px;">
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/nacho-cheese-dip.png" alt="Nacho Cheese Dip" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Nacho Cheese Dip</div><div class="product-card__meta">Mahram Co. · 310g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dip.png" alt="Salsa Dip" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Salsa Dip</div><div class="product-card__meta">Mahram Co. · 310g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dip.png" alt="Guacamole Dip" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Guacamole Dip</div><div class="product-card__meta">Mahram Co. · 280g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-paste.png" alt="Tomato Paste" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Tomato Paste</div><div class="product-card__meta">Mahram Co. · 800g</div></div></div>
+            </div>
+
+            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🥫 Canned Foods</span></div>
+            <div class="products-grid" style="margin-bottom:32px;">
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/chickpeas.png" alt="Canned Chickpeas" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Canned Chickpeas</div><div class="product-card__meta">Mahram Co. · 400g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/chopped-tomato.png" alt="Chopped Tomatoes" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Chopped Tomatoes</div><div class="product-card__meta">Mahram Co. · 400g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/eggplant-puree.png" alt="Eggplant Puree" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Eggplant Puree</div><div class="product-card__meta">Mahram Co. · 380g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-cans.png" alt="Mixed Vegetables" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Mixed Vegetables</div><div class="product-card__meta">Mahram Co. · 400g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-cans.png" alt="Canned Corn" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Canned Corn</div><div class="product-card__meta">Mahram Co. · 340g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-cans.png" alt="Canned Green Peas" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Canned Green Peas</div><div class="product-card__meta">Mahram Co. · 400g</div></div></div>
+            </div>
+
+            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🫙 Pickles</span></div>
+            <div class="products-grid" style="margin-bottom:32px;">
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/andalusian-pickle.png" alt="Andalusian Pickle" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Andalusian Pickle</div><div class="product-card__meta">Mahram Co. · 670g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/loghmeh-pickle.png" alt="Loghmeh Pickle" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Loghmeh Pickle</div><div class="product-card__meta">Mahram Co. · 680g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-pickled.png" alt="Mixed Pickle" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Mixed Pickle</div><div class="product-card__meta">Mahram Co. · 670g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-pickled.png" alt="Cucumber Pickle" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Cucumber Pickle</div><div class="product-card__meta">Mahram Co. · 670g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-pickled.png" alt="Hot Pepper Pickle" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Hot Pepper Pickle</div><div class="product-card__meta">Mahram Co. · 670g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-vinegar.png" alt="White Wine Vinegar" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">White Wine Vinegar</div><div class="product-card__meta">Mahram Co. · 500ml</div></div></div>
+            </div>
+
+            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🫒 Olives</span></div>
+            <div class="products-grid" style="margin-bottom:32px;">
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/indian-olive.png" alt="Indian Style Olive" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Indian Style Olive</div><div class="product-card__meta">Mahram Co. · 350g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-olive.png" alt="Green Olives" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Green Olives</div><div class="product-card__meta">Mahram Co. · 350g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-olive.png" alt="Black Olives" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Black Olives</div><div class="product-card__meta">Mahram Co. · 350g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-olive.png" alt="Stuffed Olives" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Stuffed Olives</div><div class="product-card__meta">Mahram Co. · 300g</div></div></div>
+            </div>
+
+            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🍓 Jams &amp; Honey</span></div>
+            <div class="products-grid" style="margin-bottom:32px;">
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-jam.png" alt="Strawberry Jam" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Strawberry Jam</div><div class="product-card__meta">Mahram Co. · 360g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-jam.png" alt="Cherry Jam" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Cherry Jam</div><div class="product-card__meta">Mahram Co. · 360g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-jam.png" alt="Apricot Jam" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Apricot Jam</div><div class="product-card__meta">Mahram Co. · 360g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-jam.png" alt="Fig Jam" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Fig Jam</div><div class="product-card__meta">Mahram Co. · 360g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-jam.png" alt="Mixed Fruit Jam" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Mixed Fruit Jam</div><div class="product-card__meta">Mahram Co. · 360g</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-felifia.png" alt="Felifia Fruit Spread" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Felifia Fruit Spread</div><div class="product-card__meta">Mahram Co. · 360g</div></div></div>
+            </div>
+
+            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🧃 Juices &amp; Drinks</span></div>
+            <div class="products-grid" style="margin-bottom:32px;">
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-juice.png" alt="Orange Juice" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Orange Juice</div><div class="product-card__meta">Mahram Co. · 1L</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-juice.png" alt="Apple Juice" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Apple Juice</div><div class="product-card__meta">Mahram Co. · 1L</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-juice.png" alt="Grape Juice" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Grape Juice</div><div class="product-card__meta">Mahram Co. · 1L</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-juice.png" alt="Peach Juice" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Peach Juice</div><div class="product-card__meta">Mahram Co. · 1L</div></div></div>
+              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-juice.png" alt="Mixed Fruit Juice" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Mixed Fruit Juice</div><div class="product-card__meta">Mahram Co. · 1L</div></div></div>
+            </div>
+
+            <div class="quote-cta"><div class="quote-cta__text"><h3>Source Mahram Products from Iran?</h3><p>Get competitive wholesale offers from Mahram Co.'s authorized export partners within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
+          </div><!-- /food-sub-mahram -->
+
         </div>
 
       </div><!-- /products-panel -->
@@ -572,8 +680,7 @@ input,select,button{font-family:inherit}
     <div class="footer-grid">
       <div class="footer-brand">
         <div style="display:flex;align-items:center;gap:10px;">
-          <span style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.1);display:inline-flex;align-items:center;justify-content:center;"><svg width="36" height="36" viewBox="0 0 52 52" fill="none"><path d="M14 17L26 26L14 35" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 17L26 26L38 35" stroke="#C9A227" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff;">Buy From Iran</span>
+          <img src="img/logo-bfi.png" alt="Buy From Iran" style="height:44px;width:auto;filter:brightness(0) invert(1);">
         </div>
         <p>The global B2B marketplace connecting international buyers with verified Iranian manufacturers across all major product categories.</p>
       </div>
@@ -623,8 +730,11 @@ function openFoodSub(type, name, icon) {
   document.getElementById('food-main-content').style.display = 'none';
   document.getElementById('food-sub-generic').style.display = 'none';
   document.getElementById('food-sub-biscuits').style.display = 'none';
+  document.getElementById('food-sub-mahram').style.display = 'none';
   if (type === 'biscuits') {
     document.getElementById('food-sub-biscuits').style.display = 'block';
+  } else if (type === 'mahram') {
+    document.getElementById('food-sub-mahram').style.display = 'block';
   } else {
     document.getElementById('food-sub-generic-icon').textContent = icon || '📦';
     document.getElementById('food-sub-generic-name').textContent = name || type;
@@ -637,6 +747,7 @@ function openFoodSub(type, name, icon) {
 function closeFoodSub() {
   document.getElementById('food-sub-generic').style.display = 'none';
   document.getElementById('food-sub-biscuits').style.display = 'none';
+  document.getElementById('food-sub-mahram').style.display = 'none';
   document.getElementById('food-main-content').style.display = 'block';
 }
 
@@ -671,4 +782,6 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAuthMod
 </script>
 </body>
 </html>
+
+
 

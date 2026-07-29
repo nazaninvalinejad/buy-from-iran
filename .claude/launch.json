@@ -1,10 +1,10 @@
-﻿{
+{
   "version": "0.0.1",
   "configurations": [
     {
       "name": "buy-from-iran",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-l", "3456", "."],
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NonInteractive", "-File", "serve.ps1"],
       "port": 3456
     }
   ]
