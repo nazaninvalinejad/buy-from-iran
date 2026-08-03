@@ -1,0 +1,10 @@
+<svg width="220" height="56" viewBox="0 0 220 56" xmlns="http://www.w3.org/2000/svg">
+  <!-- Navy outer C arc (gap on upper-right) -->
+  <path d="M46,5 A23,23 0 1,0 46,51" fill="none" stroke="#162040" stroke-width="10" stroke-linecap="round"/>
+  <!-- Blue inner C arc (rotated, smaller) -->
+  <path d="M34,16 A14,14 0 1,1 21,40" fill="none" stroke="#2B7FFF" stroke-width="8" stroke-linecap="round"/>
+  <!-- "Buy From" text -->
+  <text x="72" y="38" font-family="'Segoe UI',Arial,sans-serif" font-size="23" font-weight="700" fill="#162040">Buy From</text>
+  <!-- "Iran" text in blue -->
+  <text x="163" y="38" font-family="'Segoe UI',Arial,sans-serif" font-size="23" font-weight="700" fill="#2B7FFF"> Iran</text>
+</svg>
