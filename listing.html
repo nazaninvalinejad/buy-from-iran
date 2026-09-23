@@ -1,786 +1,113 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Product Listing — Buy From Iran</title>
-<meta name="description" content="Browse verified Iranian product categories. From Food & Agriculture to Beverages, Personal Care, Home Care and Packaging — source directly from Iranian manufacturers.">
+<meta name="description" content="Browse Agriculture & Food, Beverage, Personal Care, Home Care, and Textile & Apparel products sourced from Iran.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rasa:wght@400;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rasa:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
 <style>
-/* ─── Reset ─── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Source Sans 3',sans-serif;color:#4B5563;background:#F7F9FB;overflow-x:hidden}
-a{text-decoration:none}
-img,svg{display:block}
-input,select,button{font-family:inherit}
-
-/* ─── Tokens ─── */
-:root{
-  --petroleum:#123C56;--petroleum-d:#0F3146;--petroleum-dd:#0A2535;
-  --emerald:#2E8B57;--gold: #2B7FFF;--gold-d: #1A5FD4;--gold-pale: #2B7FFF;
-  --ink:#1F2937;--body:#4B5563;--muted:#6B7280;
-  --border:#D9E2EC;--divider:#E5E7EB;--bg-subtle:#F7F9FB;--bg-section:#EEF3F7;
-  --font-display:'Playfair Display',serif;--radius-card:16px;
-}
-
-/* ─── Layout ─── */
-.container{max-width:1280px;margin:0 auto;padding:0 32px}
-
-/* ─── Util bar ─── */
-.util-bar{background:var(--petroleum-dd)}
-.util-bar__inner{max-width:1280px;margin:0 auto;padding:0 32px;height:40px;display:flex;align-items:center;justify-content:space-between}
-.util-bar__left{display:flex;align-items:center;gap:18px}
-.util-bar__socials{display:flex;align-items:center;gap:12px}
-.util-bar__socials a{color:rgba(255,255,255,.82);display:flex;transition:color .15s}
-.util-bar__socials a:hover{color:#fff}
-.util-bar__sep{width:1px;height:16px;background:rgba(255,255,255,.18);flex-shrink:0}
-.util-bar__link{color:rgba(255,255,255,.82);display:inline-flex;align-items:center;gap:7px;font-size:13px;transition:color .15s}
-.util-bar__link:hover{color:#fff}
-.util-bar__right{display:flex;align-items:center;gap:16px}
-.lang-bar{display:flex;gap:2px}
-.lang-btn{background:transparent;color:rgba(255,255,255,.8);border:none;font-size:12px;font-weight:600;letter-spacing:.04em;padding:5px 9px;border-radius:7px;cursor:pointer;transition:background .15s,color .15s}
-.lang-btn.active{background:rgba(255,255,255,.18);color:#fff}
-
-/* ─── Main nav ─── */
-.main-nav{background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--divider)}
-.main-nav__inner{max-width:1280px;margin:0 auto;padding:0 32px;height:74px;display:flex;align-items:center;gap:28px}
-.logo{display:flex;align-items:center;gap:12px;flex-shrink:0}
-.logo__icon{width:46px;height:46px;border-radius:13px;background:var(--petroleum);display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,60,86,.18)}
-.logo__name{font-family:var(--font-display);font-size:21px;font-weight:700;color:var(--petroleum);letter-spacing:-.01em}
-.logo__sub{font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-d);margin-top:3px}
-.nav-links{display:flex;align-items:center;gap:2px;margin:0 auto}
-.nav-links a{padding:9px 13px;font-size:14.5px;color:var(--body);border-radius:8px;transition:background .15s,color .15s;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
-.nav-links a:hover{background:var(--bg-section);color:var(--petroleum)}
-.nav-links a.active{color:var(--petroleum);font-weight:700;background:var(--bg-section)}
-.nav-dropdown{position:relative}
-.nav-dropdown>a::after{content:'';display:inline-block;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:4.5px solid currentColor;opacity:.55;margin-top:1px;flex-shrink:0}
-.nav-dropdown__menu{display:none;position:absolute;top:calc(100% + 10px);left:0;background:#fff;border:1px solid var(--divider);border-radius:12px;box-shadow:0 10px 28px rgba(18,60,86,.13);padding:8px;min-width:210px;z-index:200}
-.nav-dropdown:hover .nav-dropdown__menu{display:block}
-.nav-dropdown__menu a{display:block;padding:9px 14px;font-size:14px;color:var(--body);border-radius:8px;white-space:nowrap;transition:background .12s,color .12s}
-.nav-dropdown__menu a:hover{background:var(--bg-section);color:var(--petroleum)}
-/* Mega menu */
-.mega-menu{display:none;position:absolute;top:calc(100% + 8px);left:-80px;background:#fff;border:1px solid var(--divider);border-radius:16px;box-shadow:0 16px 56px rgba(18,60,86,.16);padding:28px 20px;width:900px;z-index:500}
-.nav-dropdown:hover .mega-menu{display:flex;gap:0}
-.mega-col{flex:1;padding:0 14px}
-.mega-col+.mega-col{border-left:1px solid var(--divider)}
-.mega-col__title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--petroleum);margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--gold);white-space:nowrap}
-.mega-col a{display:block;font-size:13px;color:var(--body);padding:4px 2px;transition:color .12s,padding-left .12s;line-height:1.5}
-.mega-col a:hover{color:var(--petroleum);padding-left:6px}
-.nav-search{display:flex;align-items:center;gap:8px;background:var(--bg-subtle);border:1px solid var(--border);border-radius:9px;padding:7px 12px;flex-shrink:0}
-.nav-search input{border:none;outline:none;background:transparent;font-size:13.5px;color:var(--ink);width:155px}
-.nav-search input::placeholder{color:var(--muted)}
-.nav-signin{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--petroleum);white-space:nowrap;flex-shrink:0}
-.btn-add-listing{flex-shrink:0;background:var(--gold);color:var(--petroleum-dd);font-weight:700;font-size:13px;padding:10px 18px;border-radius:10px;border:none;cursor:pointer;transition:background .15s;white-space:nowrap;letter-spacing:.06em;text-transform:uppercase}
-.btn-add-listing:hover{background:var(--gold-pale)}
-.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:6px;flex-shrink:0}
-.hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px}
-.mobile-nav{display:none;flex-direction:column;background:#fff;border-top:1px solid var(--divider);padding:16px 24px 20px}
-.mobile-nav.open{display:flex}
-.mobile-nav a{padding:11px 0;font-size:15px;color:var(--body);border-bottom:1px solid var(--divider)}
-.mobile-nav__actions{display:flex;flex-direction:column;gap:10px;margin-top:14px}
-.mobile-nav__search{display:flex;align-items:center;gap:8px;background:var(--bg-subtle);border:1px solid var(--border);border-radius:9px;padding:8px 12px}
-.mobile-nav__search input{border:none;outline:none;background:transparent;font-size:14px;color:var(--ink);width:100%}
-
-/* Auth modal */
-.auth-overlay{display:none;position:fixed;inset:0;background:rgba(10,37,53,.55);z-index:2000;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:16px}
-.auth-overlay.open{display:flex}
-.auth-modal{background:#fff;border-radius:18px;width:100%;max-width:440px;box-shadow:0 24px 64px rgba(10,37,53,.22);overflow:hidden;position:relative;animation:authIn .2s ease}
-@keyframes authIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
-.auth-modal__close{position:absolute;top:14px;right:16px;background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:24px;line-height:1;padding:2px 8px;border-radius:6px;transition:background .12s}
-.auth-modal__close:hover{background:#F3F4F6;color:#374151}
-.auth-tabs{display:flex;border-bottom:1px solid #E5E7EB}
-.auth-tab{flex:1;background:none;border:none;border-bottom:2.5px solid transparent;margin-bottom:-1px;padding:18px;font-size:15px;font-weight:600;color:#6B7280;cursor:pointer;transition:color .15s,border-color .15s;font-family:inherit}
-.auth-tab.active{color:var(--petroleum);border-bottom-color:var(--petroleum)}
-.auth-pane{display:none;padding:28px 32px 32px}
-.auth-pane.active{display:block}
-.auth-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
-.auth-field label{font-size:13.5px;font-weight:600;color:#374151}
-.auth-field input{border:1.5px solid #D1D5DB;border-radius:9px;padding:11px 14px;font-size:14.5px;color:#111827;outline:none;transition:border-color .15s;font-family:inherit}
-.auth-field input:focus{border-color:var(--petroleum)}
-.auth-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;font-size:13.5px}
-.auth-remember{display:flex;align-items:center;gap:7px;color:#374151;cursor:pointer;user-select:none}
-.auth-remember input[type=checkbox]{width:15px;height:15px;accent-color:var(--petroleum);cursor:pointer}
-.auth-forgot{color:var(--petroleum);font-weight:600;text-decoration:none;font-size:13.5px}
-.auth-forgot:hover{text-decoration:underline}
-.auth-btn{width:100%;background:var(--petroleum);color:#fff;font-size:15px;font-weight:700;padding:13px;border-radius:10px;border:none;cursor:pointer;transition:background .15s;font-family:inherit}
-.auth-btn:hover{background:var(--petroleum-d)}
-.auth-privacy{font-size:12.5px;color:#6B7280;margin-top:14px;line-height:1.55}
-.auth-privacy a{color:var(--petroleum)}
-
-/* ─── Page Hero ─── */
-.page-hero{background:linear-gradient(135deg,var(--petroleum-dd) 0%,var(--petroleum) 100%);padding:40px 0;position:relative;overflow:hidden}
-.page-hero__dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:22px 22px;pointer-events:none}
-.page-hero__inner{position:relative;z-index:1}
-.page-hero__pill{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:99px;padding:5px 14px;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.85);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
-.page-hero h1{font-family:var(--font-display);font-size:36px;color:#fff;letter-spacing:-.02em;font-style: normal;margin-bottom:8px}
-.page-hero p{font-size:15px;color:rgba(255,255,255,.72);max-width:520px}
-
-/* ─── Breadcrumb ─── */
-.breadcrumb{background:#fff;border-bottom:1px solid var(--divider);padding:12px 0}
-.breadcrumb__inner{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
-.breadcrumb__inner a{color:var(--muted);transition:color .12s}
-.breadcrumb__inner a:hover{color:var(--petroleum)}
-.breadcrumb__sep{opacity:.4}
-
-/* ─── Listing Layout ─── */
-.listing-body{padding:40px 0 72px}
-.listing-layout{display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start}
-
-/* Sidebar */
-.cat-sidebar{background:#fff;border-radius:var(--radius-card);border:1px solid var(--divider);overflow:hidden;position:sticky;top:100px}
-.cat-sidebar__header{background:var(--petroleum);padding:16px 20px}
-.cat-sidebar__title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7)}
-.cat-sidebar__list{padding:8px 0}
-.cat-btn{width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:13px 20px;font-size:14.5px;font-weight:600;color:var(--body);cursor:pointer;transition:background .12s,color .12s;text-align:left;gap:10px;font-family:inherit}
-.cat-btn:hover{background:var(--bg-subtle);color:var(--petroleum)}
-.cat-btn.active{background:var(--bg-section);color:var(--petroleum)}
-.cat-btn__icon{flex-shrink:0;font-size:20px;line-height:1}
-.cat-btn__count{font-size:11.5px;font-weight:600;color:var(--muted);background:var(--bg-subtle);border-radius:20px;padding:2px 8px;flex-shrink:0}
-.cat-btn.active .cat-btn__count{background:var(--petroleum);color:#fff}
-
-/* Product panel */
-.products-panel{}
-.panel{display:none}
-.panel.active{display:block}
-.panel__header{margin-bottom:24px}
-.panel__eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-d);margin-bottom:6px}
-.panel__title{font-family:var(--font-display);font-size:28px;color:var(--petroleum);font-style: normal;margin-bottom:8px}
-.panel__desc{font-size:15px;color:var(--muted);line-height:1.6}
-.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.product-card{background:#fff;border:1px solid var(--divider);border-radius:14px;padding:20px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative}
-.product-card:hover{border-color:var(--petroleum);box-shadow:0 6px 24px rgba(18,60,86,.1);transform:translateY(-2px)}
-.product-card__icon{width:44px;height:44px;border-radius:12px;background:var(--bg-section);display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:22px}
-.product-card__img{width:100%;height:140px;object-fit:contain;border-radius:10px;background:var(--bg-section);margin-bottom:12px;padding:8px}
-.product-card__name{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:4px}
-.product-card__sub{font-size:12px;color:var(--muted);margin-bottom:6px}
-.product-card__tag{font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
-.product-card__arrow{position:absolute;top:16px;right:16px;color:var(--border);transition:color .15s}
-.product-card:hover .product-card__arrow{color:var(--petroleum)}
-.product-card__img-wrap{margin-bottom:12px}
-.product-card__body{}
-.product-card__meta{font-size:12px;color:var(--muted);margin-top:4px}
-.quote-cta{margin-top:32px;background:linear-gradient(135deg,var(--petroleum) 0%,var(--petroleum-d) 100%);border-radius:16px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.quote-cta__text h3{font-family:var(--font-display);font-size:20px;color:#fff;font-style: normal;margin-bottom:4px}
-.quote-cta__text p{font-size:14px;color:rgba(255,255,255,.7)}
-.quote-cta__btn{background:var(--gold);color:var(--petroleum-dd);font-weight:700;font-size:14px;padding:12px 24px;border-radius:10px;border:none;cursor:pointer;white-space:nowrap;transition:background .15s;font-family:inherit;text-decoration:none;display:inline-block}
-.quote-cta__btn:hover{background:var(--gold-pale)}
-
-/* ─── Footer ─── */
-.footer{background:var(--petroleum-dd);color:rgba(255,255,255,.7);padding:48px 0 28px}
-.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
-.footer-brand p{font-size:13.5px;line-height:1.65;margin-top:12px;max-width:260px}
-.footer-col h4{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px}
-.footer-col a{display:block;font-size:13.5px;color:rgba(255,255,255,.65);margin-bottom:8px;transition:color .15s}
-.footer-col a:hover{color:#fff}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;align-items:center;justify-content:space-between;font-size:13px}
-.footer-links{display:flex;gap:20px}
-.footer-links a{color:rgba(255,255,255,.5);transition:color .15s}
-.footer-links a:hover{color:#fff}
-
-/* ─── Responsive ─── */
-@media(max-width:1024px){
-  .nav-links,.nav-search,.nav-signin,.btn-add-listing{display:none}
-  .hamburger{display:flex}
-  .listing-layout{grid-template-columns:1fr}
-  .cat-sidebar{position:static}
-  .products-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:600px){
-  .products-grid{grid-template-columns:1fr}
-  .quote-cta{flex-direction:column;align-items:flex-start}
-  .page-hero h1{font-size:26px}
-}
+*{box-sizing:border-box}body{margin:0;font-family:'Source Sans 3',sans-serif;background:#f7f9fb;color:#334155}
+:root{--navy:#123c56;--blue:#2b7fff;--line:#dbe4ea;--muted:#6b7280;--white:#fff}
+a{text-decoration:none;color:inherit}.container{max-width:1240px;margin:auto;padding:0 28px}
+.topbar{background:#0a2535;color:#dbe7ee;font-size:13px}.topbar .container{height:38px;display:flex;align-items:center;justify-content:space-between}
+nav{background:#fff;border-bottom:1px solid var(--line)}.navin{min-height:72px;display:flex;align-items:center;gap:28px}
+.logo{font-family:'Rasa',serif;font-size:26px;font-weight:700;color:var(--navy)}.navlinks{display:flex;gap:22px;margin-left:auto;font-weight:600}.navlinks a:hover{color:var(--blue)}
+.hero{background:linear-gradient(135deg,#eef4f7,#fff);border-bottom:1px solid var(--line);padding:46px 0}
+.hero h1{font-family:'Rasa',serif;color:var(--navy);font-size:42px;margin:0 0 8px}.hero p{margin:0;color:var(--muted);max-width:760px}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:24px;padding:30px 0 60px}
+.sidebar,.panel,.card,.empty,.product{background:#fff;border:1px solid var(--line);border-radius:16px}
+.sidebar{padding:14px;height:max-content;position:sticky;top:18px}.sidebar h3{margin:8px 10px 12px;color:var(--navy)}
+.catbtn{width:100%;border:0;background:transparent;text-align:left;padding:11px 12px;border-radius:10px;cursor:pointer;font:inherit;font-weight:600;color:#475569;margin:2px 0}
+.catbtn.active{background:#eaf2ff;color:#1a5fd4}.catbtn span{margin-right:8px}
+.panel{padding:24px}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1a5fd4}
+.panel h2{font-family:'Rasa',serif;color:var(--navy);font-size:30px;margin:5px 0 4px}.panel .intro{color:var(--muted);margin:0 0 22px}
+.subgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.subcard{border:1px solid var(--line);background:#fff;border-radius:13px;padding:15px;text-align:left;cursor:pointer;transition:.15s}
+.subcard:hover,.subcard.active{border-color:#7aaeff;box-shadow:0 5px 18px rgba(43,127,255,.08)}.subname{font-weight:700;color:#1f2937}.code{display:inline-block;margin-top:7px;background:#eef4ff;color:#1a5fd4;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:800}
+.products-head{display:flex;align-items:center;justify-content:space-between;margin:30px 0 12px}.products-head h3{margin:0;color:var(--navy);font-size:20px}.quote-chip{background:#eaf2ff;color:#1a5fd4;padding:7px 10px;border-radius:999px;font-weight:800;font-size:12px}
+.productgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.product{padding:17px}.product h4{margin:0 0 6px;color:#1f2937;font-size:17px}.muted{color:var(--muted)}.range{font-size:11px;font-weight:800;color:#1a5fd4;background:#eef4ff;border-radius:999px;padding:3px 8px;display:inline-block}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.btn{border:0;border-radius:8px;padding:9px 11px;font-weight:700;cursor:pointer}.primary{background:#2b7fff;color:#fff}.secondary{background:#eef3f7;color:#123c56}.wa{background:#eaf8ef;color:#18794e}
+.empty{padding:20px;color:var(--muted);background:#fbfcfd}.notice{margin-bottom:18px;padding:12px 14px;border-radius:11px;background:#fff8e7;border:1px solid #f1dfaf;color:#6b5a2d}
+footer{background:#0a2535;color:#d6e2e8;padding:38px 0}.footergrid{display:grid;grid-template-columns:1.5fr repeat(2,1fr);gap:30px}footer h4{color:#fff;margin:0 0 10px}footer a{display:block;margin:6px 0;color:#d6e2e8}
+.modalbg{display:none;position:fixed;inset:0;background:rgba(10,37,53,.55);z-index:50;align-items:center;justify-content:center;padding:20px}.modalbg.open{display:flex}.modal{background:#fff;border-radius:18px;width:min(650px,100%);padding:24px;box-shadow:0 30px 70px rgba(0,0,0,.2)}.modalhead{display:flex;justify-content:space-between;gap:20px}.close{border:0;background:#eef3f7;border-radius:8px;width:34px;height:34px;cursor:pointer}.details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.detail{padding:11px;background:#f7f9fb;border-radius:10px}.detail b{display:block;font-size:12px;color:#64748b;margin-bottom:3px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{position:static}.subgrid,.productgrid{grid-template-columns:1fr 1fr}.navlinks{display:none}}@media(max-width:600px){.subgrid,.productgrid,.details{grid-template-columns:1fr}.hero h1{font-size:34px}.container{padding:0 18px}}
 </style>
 </head>
 <body>
-
-<!-- ═══ HEADER ═══ -->
-<header style="position:sticky;top:0;z-index:60;">
-  <div class="util-bar">
-    <div class="util-bar__inner">
-      <div class="util-bar__left">
-        <div class="util-bar__socials">
-          <a href="#" aria-label="Facebook"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3l.4-3H14V4.5c0-.9.3-1.5 1.6-1.5H17V.2C16.7.1 15.8 0 14.7 0 12.3 0 10.8 1.4 10.8 4v2H8v3h2.8v8H14V9z"/></svg></a>
-          <a href="#" aria-label="X"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7 8 8 12h-6l-5-6-5 6H2l8-9L2 2h6l4 5 6-5z"/></svg></a>
-          <a href="#" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM2 8h4v13H2V8zm6 0h4v2h.1c.6-1 2-2 3.9-2 4 0 5 2.5 5 6v7h-4v-6c0-1.5 0-3.3-2-3.3s-2.3 1.6-2.3 3.2V21H8V8z"/></svg></a>
-          <a href="#" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.7 0 3 0 4.1.1 1 .05 1.6.2 2 .35.5.2.9.45 1.3.85.4.4.65.8.85 1.3.15.4.3 1 .35 2C20.99 9 21 9.3 21 12s0 3-.06 4.1c-.05 1-.2 1.6-.35 2a3.6 3.6 0 0 1-.85 1.3 3.6 3.6 0 0 1-1.3.85c-.4.15-1 .3-2 .35C15 20.99 14.7 21 12 21s-3 0-4.1-.06c-1-.05-1.6-.2-2-.35a3.6 3.6 0 0 1-1.3-.85 3.6 3.6 0 0 1-.85-1.3c-.15-.4-.3-1-.35-2C3.01 15 3 14.7 3 12s0-3 .06-4.1c.05-1 .2-1.6.35-2 .2-.5.45-.9.85-1.3.4-.4.8-.65 1.3-.85.4-.15 1-.3 2-.35C9 2.01 9.3 2 12 2zm0 2c-2.6 0-2.9 0-4 .1-.8.03-1.2.17-1.5.28-.4.15-.6.32-.9.6-.28.28-.45.5-.6.9-.1.3-.25.7-.28 1.5C4.6 9.1 4.6 9.4 4.6 12s0 2.9.1 4c.03.8.17 1.2.28 1.5.15.4.32.6.6.9.28.28.5.45.9.6.3.1.7.25 1.5.28 1.1.05 1.4.06 4 .06s2.9 0 4-.06c.8-.03 1.2-.17 1.5-.28.4-.15.6-.32.9-.6.28-.28.45-.5.6-.9.1-.3.25-.7.28-1.5.05-1.1.06-1.4.06-4s0-2.9-.06-4c-.03-.8-.17-1.2-.28-1.5a2.4 2.4 0 0 0-.6-.9 2.4 2.4 0 0 0-.9-.6c-.3-.1-.7-.25-1.5-.28C14.9 4.01 14.6 4 12 4zm0 3.4a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2zm0 2a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2zm4.8-3.9a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z"/></svg></a>
-          <a href="mailto:hello@buyfromiran.com" class="util-bar__link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
-        </div>
-      </div>
-      <div class="util-bar__right">
-        <a href="tel:+982140005000" class="util-bar__link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.83 19.05A16 16 0 0 1 4.95 10.17 2 2 0 0 1 6.9 7.5l1.27.13a2 2 0 0 1 1.7 1.45l.34 1.36a2 2 0 0 1-.5 1.9l-.7.7a12 12 0 0 0 4 4l.7-.7a2 2 0 0 1 1.9-.5l1.36.34a2 2 0 0 1 1.45 1.7l.13 1.27a2 2 0 0 1-2.67 1.95Z"/></svg> +98 21 4000 5000</a>
-        <span class="util-bar__sep"></span>
-        <div class="lang-bar">
-          <button class="lang-btn active" onclick="selectLang(this)">AR</button>
-          <button class="lang-btn" onclick="selectLang(this)">EN</button>
-          <button class="lang-btn" onclick="selectLang(this)">FR</button>
-          <button class="lang-btn" onclick="selectLang(this)">RU</button>
-          <button class="lang-btn" onclick="selectLang(this)">ES</button>
-          <button class="lang-btn" onclick="selectLang(this)">TR</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="main-nav">
-    <div class="main-nav__inner">
-      <a href="index.html" class="logo">
-        <img src="img/logo-bfi.png" alt="Buy From Iran" style="height:48px;width:auto;">
-      </a>
-      <nav class="nav-links">
-        <a href="about.html">About</a>
-        <div class="nav-dropdown">
-          <a href="#" class="active">Listing</a>
-          <div class="mega-menu">
-            <div class="mega-col">
-              <div class="mega-col__title">Food &amp; Agriculture</div>
-              <a href="listing.html?cat=food">Commodity Foods</a><a href="listing.html?cat=food">Tomato Paste</a><a href="listing.html?cat=food">Canned Foods</a><a href="listing.html?cat=food">Pasta</a><a href="listing.html?cat=food">Biscuits</a><a href="listing.html?cat=food">Wafers</a><a href="listing.html?cat=food">Cakes</a><a href="listing.html?cat=food">Chocolate</a><a href="listing.html?cat=food">Chips</a><a href="listing.html?cat=food">Snacks</a><a href="listing.html?cat=food">Pistachios</a><a href="listing.html?cat=food">Dates</a><a href="listing.html?cat=food">Raisins</a><a href="listing.html?cat=food">Dried Fruits</a><a href="listing.html?cat=food">Saffron</a><a href="listing.html?cat=food">Honey</a><a href="listing.html?cat=food">Herbal Products</a>
-            </div>
-            <div class="mega-col">
-              <div class="mega-col__title">Beverages</div>
-              <a href="listing.html?cat=beverages">Fruit Juices</a><a href="listing.html?cat=beverages">Malt Beverages</a><a href="listing.html?cat=beverages">Energy Drinks</a><a href="listing.html?cat=beverages">Tea</a><a href="listing.html?cat=beverages">Herbal Tea</a><a href="listing.html?cat=beverages">Coffee</a><a href="listing.html?cat=beverages">Syrups</a>
-            </div>
-            <div class="mega-col">
-              <div class="mega-col__title">Personal Care</div>
-              <a href="listing.html?cat=personal">Shampoo</a><a href="listing.html?cat=personal">Conditioner</a><a href="listing.html?cat=personal">Hair Care</a><a href="listing.html?cat=personal">Soap</a><a href="listing.html?cat=personal">Liquid Hand Soap</a><a href="listing.html?cat=personal">Body Wash</a><a href="listing.html?cat=personal">Toothpaste</a>
-            </div>
-            <div class="mega-col">
-              <div class="mega-col__title">Home Care</div>
-              <a href="listing.html?cat=home">Laundry Detergent</a><a href="listing.html?cat=home">Dishwashing Liquid</a><a href="listing.html?cat=home">Surface Cleaner</a><a href="listing.html?cat=home">Bleach</a><a href="listing.html?cat=home">Disinfectants</a>
-            </div>
-            <div class="mega-col">
-              <div class="mega-col__title">Packaging</div>
-              <a href="listing.html?cat=packaging">Plastic Packaging</a><a href="listing.html?cat=packaging">PET Packaging</a><a href="listing.html?cat=packaging">Flexible Packaging</a><a href="listing.html?cat=packaging">Food Packaging</a></div><div class="mega-col"><div class="mega-col__title">Biscuits &amp; Crackers</div><a href="listing.html?cat=food">Champion Biscuit</a><a href="listing.html?cat=food">Mahfel Biscuit</a><a href="listing.html?cat=food">Digestive Biscuit</a><a href="listing.html?cat=food">Sugar Free Biscuit</a><a href="listing.html?cat=food">Multi Grain</a><a href="listing.html?cat=food">Oats Plus</a><a href="listing.html?cat=food">Crackers</a><a href="listing.html?cat=food">Traditional Biscuit</a><a href="listing.html?cat=food">Barley Biscuit</a></div>
-          </div>
-        </div>
-        <div class="nav-dropdown">
-          <a href="#">Blog</a>
-          <div class="nav-dropdown__menu">
-            <a href="#">Latest Articles</a><a href="#">Industry News</a><a href="#">Guides &amp; Reports</a>
-          </div>
-        </div>
-        <a href="quote.html">Get a Quote</a>
-        <a href="membership.html">Membership</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-      <div class="nav-search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" placeholder="Type your search…" aria-label="Search"></div>
-      <button onclick="openAuthModal('signin')" class="nav-signin" style="background:none;border:none;cursor:pointer;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg> Sign in or Register</button>
-      <button class="btn-add-listing">ADD LISTING</button>
-      <button class="hamburger" onclick="toggleMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
-    </div>
-    <nav class="mobile-nav" id="mobileNav">
-      <a href="about.html">About</a><a href="listing.html" style="color:var(--petroleum);font-weight:700;">Listing</a><a href="#">Blog</a>
-      <a href="quote.html">Get a Quote</a><a href="membership.html">Membership</a><a href="contact.html">Contact</a>
-      <div class="mobile-nav__actions">
-        <div class="mobile-nav__search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" placeholder="Type your search…" aria-label="Search"></div>
-        <button onclick="openAuthModal('signin')" class="nav-signin" style="display:inline-flex;background:none;border:none;cursor:pointer;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg> Sign in or Register</button>
-        <button class="btn-add-listing" style="display:block;">ADD LISTING</button>
-      </div>
-    </nav>
-  </div>
-</header>
-
-<!-- ═══ HERO ═══ -->
-<section class="page-hero">
-  <div class="page-hero__dots"></div>
-  <div class="container page-hero__inner">
-    <div class="page-hero__pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Product Listing</div>
-    <h1>Browse by Category</h1>
-    <p>Explore verified Iranian products across all major export categories. Select a category to view available products.</p>
-  </div>
+<div class="topbar"><div class="container"><span>Buy From Iran — B2B Sourcing Platform</span><span>Verified catalog structure</span></div></div>
+<nav><div class="container navin"><a class="logo" href="index.html">Buy From Iran</a><div class="navlinks"><a href="index.html">Home</a><a href="listing.html">Products</a><a href="quote.html">Get a Quote</a><a href="contact.html">Contact</a></div></div></nav>
+<section class="hero"><div class="container"><div class="eyebrow">Product Catalog</div><h1>Source by category</h1><p>Choose one of our five core sectors, then browse its subcategories and published product ranges. Supplier identity remains internal.</p></div></section>
+<main class="container">
+<div class="layout">
+<aside class="sidebar"><h3>Categories</h3><div id="categoryButtons"></div></aside>
+<section class="panel">
+<div id="categoryHeader"></div>
+<div id="subcategories" class="subgrid"></div>
+<div class="products-head"><h3 id="productsTitle">Published Products</h3><span class="quote-chip" id="quoteCount">Quote List (0)</span></div>
+<div id="catalogStatus" class="notice">Loading published products…</div>
+<div id="products" class="productgrid"></div>
 </section>
-
-<!-- ─── Breadcrumb ─── -->
-<div class="breadcrumb">
-  <div class="container breadcrumb__inner">
-    <a href="index.html">Home</a>
-    <span class="breadcrumb__sep">›</span>
-    <span style="color:var(--petroleum);font-weight:600;">Product Listing</span>
-  </div>
 </div>
-
-<!-- ═══ LISTING BODY ═══ -->
-<section class="listing-body">
-  <div class="container">
-    <div class="listing-layout">
-
-      <!-- Sidebar -->
-      <aside class="cat-sidebar">
-        <div class="cat-sidebar__header">
-          <div class="cat-sidebar__title">Product Categories</div>
-        </div>
-        <div class="cat-sidebar__list">
-          <button class="cat-btn active" onclick="switchCat('food',this)">
-            <span class="cat-btn__icon">🌾</span>
-            <span style="flex:1;text-align:left;">Food &amp; Agriculture</span>
-            <span class="cat-btn__count">59</span>
-          </button>
-          <button class="cat-btn" onclick="switchCat('beverages',this)">
-            <span class="cat-btn__icon">🥤</span>
-            <span style="flex:1;text-align:left;">Beverages</span>
-            <span class="cat-btn__count">7</span>
-          </button>
-          <button class="cat-btn" onclick="switchCat('personal',this)">
-            <span class="cat-btn__icon">🧴</span>
-            <span style="flex:1;text-align:left;">Personal Care</span>
-            <span class="cat-btn__count">7</span>
-          </button>
-          <button class="cat-btn" onclick="switchCat('home',this)">
-            <span class="cat-btn__icon">🏠</span>
-            <span style="flex:1;text-align:left;">Home Care</span>
-            <span class="cat-btn__count">5</span>
-          </button>
-          <button class="cat-btn" onclick="switchCat('packaging',this)">
-            <span class="cat-btn__icon">📦</span>
-            <span style="flex:1;text-align:left;">Packaging</span>
-            <span class="cat-btn__count">4</span>
-          </button>
-        </div>
-      </aside>
-
-      <!-- Products Panel -->
-      <div class="products-panel">
-
-        <!-- Food & Agriculture -->
-        <div class="panel active" id="panel-food">
-          <div id="food-main-content">
-          <div class="panel__header">
-            <div class="panel__eyebrow">🌾 Food &amp; Agriculture</div>
-            <h2 class="panel__title">Iranian Food &amp; Agricultural Products</h2>
-            <p class="panel__desc">Iran is one of the world's leading exporters of premium food products. From saffron and pistachios to processed foods, source directly from verified manufacturers.</p>
-          </div>
-          <div class="products-grid">
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Commodity Foods','🌾')"><div class="product-card__icon">🌾</div><div class="product-card__name">Commodity Foods</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Tomato Paste','🍅')"><div class="product-card__icon">🍅</div><div class="product-card__name">Tomato Paste</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Canned Foods','🥫')"><div class="product-card__icon">🥫</div><div class="product-card__name">Canned Foods</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Pasta','🍝')"><div class="product-card__icon">🍝</div><div class="product-card__name">Pasta</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('biscuits')"><div class="product-card__icon">🍪</div><div class="product-card__name">Biscuits</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Wafers','🧇')"><div class="product-card__icon">🧇</div><div class="product-card__name">Wafers</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Cakes','🎂')"><div class="product-card__icon">🎂</div><div class="product-card__name">Cakes</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Chocolate','🍫')"><div class="product-card__icon">🍫</div><div class="product-card__name">Chocolate</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Chips','🍟')"><div class="product-card__icon">🍟</div><div class="product-card__name">Chips</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Snacks','🍿')"><div class="product-card__icon">🍿</div><div class="product-card__name">Snacks</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Pistachios','🫘')"><div class="product-card__icon">🫘</div><div class="product-card__name">Pistachios</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Dates','🌴')"><div class="product-card__icon">🌴</div><div class="product-card__name">Dates</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Raisins','🍇')"><div class="product-card__icon">🍇</div><div class="product-card__name">Raisins</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Dried Fruits','🍑')"><div class="product-card__icon">🍑</div><div class="product-card__name">Dried Fruits</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Saffron','🌺')"><div class="product-card__icon">🌺</div><div class="product-card__name">Saffron</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Honey','🍯')"><div class="product-card__icon">🍯</div><div class="product-card__name">Honey</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card" style="cursor:pointer;" onclick="openFoodSub('generic','Herbal Products','🌿')"><div class="product-card__icon">🌿</div><div class="product-card__name">Herbal Products</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-          </div>
-          <div style="margin:32px 0 12px;padding-bottom:10px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="openFoodSub('mahram')">
-            <span style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--petroleum);">🫙 Featured Supplier — Mahram Co.</span>
-            <span style="font-size:12px;color:var(--muted);">ISO 9001 · HACCP Certified · Est. 1970</span>
-            <span style="margin-left:auto;font-size:12px;color:var(--gold);font-weight:600;">View all 60+ products →</span>
-          </div>
-          <div class="products-grid">
-            <div class="product-card"><img class="product-card__img" src="img/mahram/mayonnaise-reduced-fat.png" alt="Mayonnaise" loading="lazy"><div class="product-card__name">Mayonnaise</div><div class="product-card__sub">Reduced Fat · 630g</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Mahram</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/mahram/pasta-sauce.png" alt="Pasta Sauce" loading="lazy"><div class="product-card__name">Pasta Sauce</div><div class="product-card__sub">Tomato-based</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Mahram</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/mahram/dijon-mustard.png" alt="Dijon Mustard" loading="lazy"><div class="product-card__name">Dijon Mustard</div><div class="product-card__sub">French-style</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Mahram</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/mahram/thai-sauce.png" alt="Thai Sauce" loading="lazy"><div class="product-card__name">Thai Sauce</div><div class="product-card__sub">Sweet Chili</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Mahram</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/mahram/sriracha-sauce.png" alt="Sriracha" loading="lazy"><div class="product-card__name">Sriracha Chili Sauce</div><div class="product-card__sub">Hot &amp; Spicy · Felifia</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Mahram</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/mahram/nacho-cheese-dip.png" alt="Cheese Dip" loading="lazy"><div class="product-card__name">Nacho Cheese Dip</div><div class="product-card__sub">Creamy Dip</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Mahram</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/mahram/andalusian-pickle.png" alt="Andalusian Pickle" loading="lazy"><div class="product-card__name">Andalusian Pickle</div><div class="product-card__sub">Canned · 650g</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Mahram</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/mahram/loghmeh-pickle.png" alt="Loghmeh Pickle" loading="lazy"><div class="product-card__name">Loghmeh Pickle</div><div class="product-card__sub">Mixed Pickles</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Mahram</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/mahram/indian-olive.png" alt="Indian Olives" loading="lazy"><div class="product-card__name">Indian Olives</div><div class="product-card__sub">Pitted · 500g</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Mahram</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/mahram/chopped-tomato.png" alt="Chopped Tomato" loading="lazy"><div class="product-card__name">Chopped Tomato</div><div class="product-card__sub">Tomato Puree</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Mahram</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/mahram/eggplant-puree.png" alt="Eggplant Puree" loading="lazy"><div class="product-card__name">Eggplant Puree</div><div class="product-card__sub">Canned</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Mahram</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/mahram/chickpeas.png" alt="Chickpeas" loading="lazy"><div class="product-card__name">Canned Chickpeas</div><div class="product-card__sub">Ready-to-eat</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Mahram</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-          </div>
-          <div class="quote-cta"><div class="quote-cta__text"><h3>Need a quote for Food &amp; Agriculture?</h3><p>Get competitive offers from verified Iranian suppliers within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
-          </div><!-- /food-main-content -->
-
-          <!-- Generic sub-panel for categories without product images yet -->
-          <div id="food-sub-generic" style="display:none;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px;font-size:13px;">
-              <button onclick="closeFoodSub()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;font-weight:600;color:var(--petroleum);display:flex;align-items:center;gap:6px;">← Food &amp; Agriculture</button>
-              <span style="color:var(--muted);">/</span>
-              <span id="food-sub-generic-name" style="font-weight:700;color:var(--petroleum);"></span>
-            </div>
-            <div style="text-align:center;padding:60px 20px;border:2px dashed var(--border);border-radius:16px;">
-              <div style="font-size:48px;margin-bottom:16px;" id="food-sub-generic-icon">📦</div>
-              <h3 style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px;color:var(--petroleum);" id="food-sub-generic-title">Products Coming Soon</h3>
-              <p style="color:var(--muted);margin-bottom:24px;">We are adding verified Iranian suppliers for this category. Contact us for an immediate quote.</p>
-              <a href="quote.html" class="quote-cta__btn" style="display:inline-block;">Get a Free Quote</a>
-            </div>
-          </div>
-
-          <!-- Biscuits & Crackers sub-panel -->
-          <div id="food-sub-biscuits" style="display:none;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px;font-size:13px;">
-              <button onclick="closeFoodSub()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;font-weight:600;color:var(--petroleum);display:flex;align-items:center;gap:6px;">← Food &amp; Agriculture</button>
-              <span style="color:var(--muted);">/</span>
-              <span style="font-weight:700;color:var(--petroleum);">Biscuits &amp; Crackers</span>
-            </div>
-            <div class="panel__header" style="margin-bottom:24px;">
-              <div class="panel__eyebrow">🍪 Biscuits &amp; Crackers</div>
-              <h2 class="panel__title">Iranian Biscuits, Crackers &amp; Snack Baked Goods</h2>
-              <p class="panel__desc">Iran's leading biscuit manufacturers produce a wide range of products — from classic round biscuits and crackers to digestive, oat, multi-grain, and sugar-free varieties. Featured brands: <strong>Champion (قهرمان)</strong>, <strong>Mahfel</strong>, <strong>Janeh (جانه)</strong>.</p>
-            </div>
-          <div class="products-grid">
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_4.jpg" alt="Champion Biscuit" loading="lazy"><div class="product-card__name">Champion Biscuit</div><div class="product-card__sub">Round Biscuit · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_7.jpg" alt="Champion Biscuit Box" loading="lazy"><div class="product-card__name">Champion Biscuit</div><div class="product-card__sub">Box Pack · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_5.jpg" alt="Champion Biscuit Classic" loading="lazy"><div class="product-card__name">Champion Biscuit</div><div class="product-card__sub">Classic Round · 150g</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_3.jpg" alt="Thin Crackers" loading="lazy"><div class="product-card__name">Thin Crackers</div><div class="product-card__sub">Herb &amp; Sesame · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_11.jpg" alt="Traditional Biscuit" loading="lazy"><div class="product-card__name">Traditional Biscuit</div><div class="product-card__sub">Natural Flavor · جانه</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_10.jpg" alt="Champion Sesame Herb" loading="lazy"><div class="product-card__name">Champion Biscuit</div><div class="product-card__sub">Sesame &amp; Herb Style</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_15.jpg" alt="Champion Family Pack" loading="lazy"><div class="product-card__name">Champion Biscuit</div><div class="product-card__sub">Family Pack · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_17.jpg" alt="Mahfel Breakfast Biscuit" loading="lazy"><div class="product-card__name">Mahfel Breakfast</div><div class="product-card__sub">Original · Red Pack</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_19.jpg" alt="Mahfel Breakfast Cream" loading="lazy"><div class="product-card__name">Mahfel Breakfast</div><div class="product-card__sub">Cream Pack · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_63.jpg" alt="Mahfel Coconut Biscuit" loading="lazy"><div class="product-card__name">Mahfel Coconut</div><div class="product-card__sub">Coconut Biscuit · Mahfel</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_66.jpg" alt="Mahfel Sesame Biscuit" loading="lazy"><div class="product-card__name">Mahfel Sesame</div><div class="product-card__sub">Sesame Biscuit · Mahfel</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_67.jpg" alt="Mahfel Vanilla Biscuit" loading="lazy"><div class="product-card__name">Mahfel Vanilla</div><div class="product-card__sub">Vanilla Biscuit · Mahfel</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_76.jpg" alt="Mahfel Apple Cinnamon" loading="lazy"><div class="product-card__name">Mahfel Apple &amp; Cinnamon</div><div class="product-card__sub">Apple Cinnamon · Mahfel</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_65.jpg" alt="Mahfel Biscuit" loading="lazy"><div class="product-card__name">Mahfel Biscuit</div><div class="product-card__sub">Sesame Style · Mahfel</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_22.jpg" alt="Digestive Biscuit" loading="lazy"><div class="product-card__name">Digestive Biscuit</div><div class="product-card__sub">Box Pack · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_21.jpg" alt="Digestive Biscuit Premium" loading="lazy"><div class="product-card__name">Digestive Biscuit</div><div class="product-card__sub">Premium · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_25.jpg" alt="Digestive Display" loading="lazy"><div class="product-card__name">Digestive Biscuit</div><div class="product-card__sub">Display Case · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_33.jpg" alt="Sugar Free Biscuit" loading="lazy"><div class="product-card__name">Sugar Free Biscuit</div><div class="product-card__sub">12-Pack · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_36.jpg" alt="Sugar Free Display" loading="lazy"><div class="product-card__name">Sugar Free Biscuit</div><div class="product-card__sub">Display Box · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_38.jpg" alt="Multi Grain Mixed Berries" loading="lazy"><div class="product-card__name">Multi Grain Biscuit</div><div class="product-card__sub">Mixed Berries · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_41.jpg" alt="Multi Grain Display" loading="lazy"><div class="product-card__name">Multi Grain Biscuit</div><div class="product-card__sub">Display Case · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_31.jpg" alt="Happy Box" loading="lazy"><div class="product-card__name">Happy Box</div><div class="product-card__sub">Mixed Biscuits Bag · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_32.jpg" alt="Mahfel Tea Biscuit" loading="lazy"><div class="product-card__name">Mahfel Biscuit</div><div class="product-card__sub">Tea Companion · Mahfel</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_50.jpg" alt="Time Biscuit" loading="lazy"><div class="product-card__name">Time Biscuit</div><div class="product-card__sub">Classic · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_54.jpg" alt="Oats Plus" loading="lazy"><div class="product-card__name">Oats Plus Biscuit</div><div class="product-card__sub">Oat &amp; Chia · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_55.jpg" alt="Oats Plus Lifestyle" loading="lazy"><div class="product-card__name">Oats Plus Biscuit</div><div class="product-card__sub">Oat &amp; Seeds · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_60.jpg" alt="Oats Club" loading="lazy"><div class="product-card__name">Oats Club</div><div class="product-card__sub">Display Box · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_69.jpg" alt="Biscuit Do" loading="lazy"><div class="product-card__name">Biscuit Do</div><div class="product-card__sub">Flat Biscuit · بیسکویت دو</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_70.jpg" alt="Biscuit Do Display" loading="lazy"><div class="product-card__name">Biscuit Do</div><div class="product-card__sub">Display Tray · بیسکویت دو</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_72.jpg" alt="Barley Biscuit" loading="lazy"><div class="product-card__name">Barley Biscuit</div><div class="product-card__sub">بیسکویت جو · جانه</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-          </div>
-          <div class="quote-cta"><div class="quote-cta__text"><h3>Need a quote for Food &amp; Agriculture?</h3><p>Get competitive offers from verified Iranian suppliers within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
-        </div>
-
-        <!-- Beverages -->
-        <div class="panel" id="panel-beverages">
-          <div class="panel__header">
-            <div class="panel__eyebrow">🥤 Beverages</div>
-            <h2 class="panel__title">Iranian Beverage Products</h2>
-            <p class="panel__desc">From refreshing fruit juices to premium teas and energy drinks — source high-quality beverages from Iranian manufacturers with global export experience.</p>
-          </div>
-          <div class="products-grid">
-            <div class="product-card"><div class="product-card__icon">🍊</div><div class="product-card__name">Fruit Juices</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🍺</div><div class="product-card__name">Malt Beverages</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">⚡</div><div class="product-card__name">Energy Drinks</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🍵</div><div class="product-card__name">Tea</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🌿</div><div class="product-card__name">Herbal Tea</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">☕</div><div class="product-card__name">Coffee</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🍬</div><div class="product-card__name">Syrups</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-          </div>
-          <div class="quote-cta"><div class="quote-cta__text"><h3>Looking for Beverage suppliers?</h3><p>Get competitive offers from verified Iranian suppliers within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
-        </div>
-
-        <!-- Personal Care -->
-        <div class="panel" id="panel-personal">
-          <div class="panel__header">
-            <div class="panel__eyebrow">🧴 Personal Care</div>
-            <h2 class="panel__title">Personal Care Products</h2>
-            <p class="panel__desc">Quality personal care and hygiene products from ISO-certified Iranian manufacturers, exported to markets across the Middle East, Africa and Europe.</p>
-          </div>
-          <div class="products-grid">
-            <div class="product-card"><div class="product-card__icon">🧴</div><div class="product-card__name">Shampoo</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">💆</div><div class="product-card__name">Conditioner</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">💇</div><div class="product-card__name">Hair Care</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🧼</div><div class="product-card__name">Soap</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🫧</div><div class="product-card__name">Liquid Hand Soap</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🚿</div><div class="product-card__name">Body Wash</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🦷</div><div class="product-card__name">Toothpaste</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-          </div>
-          <div class="quote-cta"><div class="quote-cta__text"><h3>Need Personal Care products?</h3><p>Get competitive offers from verified Iranian suppliers within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
-        </div>
-
-        <!-- Home Care -->
-        <div class="panel" id="panel-home">
-          <div class="panel__header">
-            <div class="panel__eyebrow">🏠 Home Care</div>
-            <h2 class="panel__title">Home Care &amp; Cleaning Products</h2>
-            <p class="panel__desc">High-performance household cleaning and care products manufactured in Iran, meeting international safety and quality standards.</p>
-          </div>
-          <div class="products-grid">
-            <div class="product-card"><div class="product-card__icon">🫧</div><div class="product-card__name">Laundry Detergent</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🍽️</div><div class="product-card__name">Dishwashing Liquid</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🧹</div><div class="product-card__name">Surface Cleaner</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🧪</div><div class="product-card__name">Bleach</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🦠</div><div class="product-card__name">Disinfectants</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-          </div>
-          <div class="quote-cta"><div class="quote-cta__text"><h3>Need Home Care products?</h3><p>Get competitive offers from verified Iranian suppliers within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
-        </div>
-
-        <!-- Packaging -->
-        <div class="panel" id="panel-packaging">
-          <div class="panel__header">
-            <div class="panel__eyebrow">📦 Packaging</div>
-            <h2 class="panel__title">Packaging Solutions</h2>
-            <p class="panel__desc">Versatile and cost-effective packaging materials from Iranian manufacturers — suitable for food, beverage, pharmaceutical and industrial applications.</p>
-          </div>
-          <div class="products-grid">
-            <div class="product-card"><div class="product-card__icon">♻️</div><div class="product-card__name">Plastic Packaging</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🍶</div><div class="product-card__name">PET Packaging</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">🎁</div><div class="product-card__name">Flexible Packaging</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><div class="product-card__icon">📦</div><div class="product-card__name">Food Packaging</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified suppliers</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-          </div>
-          <div class="quote-cta"><div class="quote-cta__text"><h3>Need Packaging solutions?</h3><p>Get competitive offers from verified Iranian suppliers within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
-        </div>
-
-        <!-- panel-biscuit removed: biscuits are now a sub-section inside panel-food -->
-        <div class="panel" id="panel-biscuit" style="display:none;">
-          <div class="products-grid">
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_4.jpg" alt="Champion Biscuit" loading="lazy"><div class="product-card__name">Champion Biscuit</div><div class="product-card__sub">Round Biscuit · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_7.jpg" alt="Champion Biscuit Box" loading="lazy"><div class="product-card__name">Champion Biscuit</div><div class="product-card__sub">Box Pack · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_5.jpg" alt="Champion Biscuit Classic" loading="lazy"><div class="product-card__name">Champion Biscuit</div><div class="product-card__sub">Classic Round · 150g</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_3.jpg" alt="Thin Crackers" loading="lazy"><div class="product-card__name">Thin Crackers</div><div class="product-card__sub">Herb &amp; Sesame · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_11.jpg" alt="Traditional Biscuit" loading="lazy"><div class="product-card__name">Traditional Biscuit</div><div class="product-card__sub">Natural Flavor · جانه</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_10.jpg" alt="Champion Sesame Herb" loading="lazy"><div class="product-card__name">Champion Biscuit</div><div class="product-card__sub">Sesame &amp; Herb Style</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_15.jpg" alt="Champion Family Pack" loading="lazy"><div class="product-card__name">Champion Biscuit</div><div class="product-card__sub">Family Pack · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_17.jpg" alt="Mahfel Breakfast Biscuit" loading="lazy"><div class="product-card__name">Mahfel Breakfast</div><div class="product-card__sub">Original · Red Pack</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_19.jpg" alt="Mahfel Breakfast Cream" loading="lazy"><div class="product-card__name">Mahfel Breakfast</div><div class="product-card__sub">Cream Pack · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_63.jpg" alt="Mahfel Coconut Biscuit" loading="lazy"><div class="product-card__name">Mahfel Coconut</div><div class="product-card__sub">Coconut Biscuit · Mahfel</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_66.jpg" alt="Mahfel Sesame Biscuit" loading="lazy"><div class="product-card__name">Mahfel Sesame</div><div class="product-card__sub">Sesame Biscuit · Mahfel</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_67.jpg" alt="Mahfel Vanilla Biscuit" loading="lazy"><div class="product-card__name">Mahfel Vanilla</div><div class="product-card__sub">Vanilla Biscuit · Mahfel</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_76.jpg" alt="Mahfel Apple Cinnamon" loading="lazy"><div class="product-card__name">Mahfel Apple &amp; Cinnamon</div><div class="product-card__sub">Apple Cinnamon · Mahfel</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_65.jpg" alt="Mahfel Biscuit" loading="lazy"><div class="product-card__name">Mahfel Biscuit</div><div class="product-card__sub">Sesame Style · Mahfel</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_22.jpg" alt="Digestive Biscuit" loading="lazy"><div class="product-card__name">Digestive Biscuit</div><div class="product-card__sub">Box Pack · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_21.jpg" alt="Digestive Biscuit Premium" loading="lazy"><div class="product-card__name">Digestive Biscuit</div><div class="product-card__sub">Premium · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_25.jpg" alt="Digestive Display" loading="lazy"><div class="product-card__name">Digestive Biscuit</div><div class="product-card__sub">Display Case · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_33.jpg" alt="Sugar Free Biscuit" loading="lazy"><div class="product-card__name">Sugar Free Biscuit</div><div class="product-card__sub">12-Pack · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_36.jpg" alt="Sugar Free Display" loading="lazy"><div class="product-card__name">Sugar Free Biscuit</div><div class="product-card__sub">Display Box · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_38.jpg" alt="Multi Grain Mixed Berries" loading="lazy"><div class="product-card__name">Multi Grain Biscuit</div><div class="product-card__sub">Mixed Berries · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_41.jpg" alt="Multi Grain Display" loading="lazy"><div class="product-card__name">Multi Grain Biscuit</div><div class="product-card__sub">Display Case · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_31.jpg" alt="Happy Box" loading="lazy"><div class="product-card__name">Happy Box</div><div class="product-card__sub">Mixed Biscuits Bag · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_32.jpg" alt="Mahfel Tea Biscuit" loading="lazy"><div class="product-card__name">Mahfel Biscuit</div><div class="product-card__sub">Tea Companion · Mahfel</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_50.jpg" alt="Time Biscuit" loading="lazy"><div class="product-card__name">Time Biscuit</div><div class="product-card__sub">Classic · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_54.jpg" alt="Oats Plus" loading="lazy"><div class="product-card__name">Oats Plus Biscuit</div><div class="product-card__sub">Oat &amp; Chia · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_55.jpg" alt="Oats Plus Lifestyle" loading="lazy"><div class="product-card__name">Oats Plus Biscuit</div><div class="product-card__sub">Oat &amp; Seeds · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_60.jpg" alt="Oats Club" loading="lazy"><div class="product-card__name">Oats Club</div><div class="product-card__sub">Display Box · قهرمان</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_69.jpg" alt="Biscuit Do" loading="lazy"><div class="product-card__name">Biscuit Do</div><div class="product-card__sub">Flat Biscuit · بیسکویت دو</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_70.jpg" alt="Biscuit Do Display" loading="lazy"><div class="product-card__name">Biscuit Do</div><div class="product-card__sub">Display Tray · بیسکویت دو</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-            <div class="product-card"><img class="product-card__img" src="img/biscuit/biscuit_72.jpg" alt="Barley Biscuit" loading="lazy"><div class="product-card__name">Barley Biscuit</div><div class="product-card__sub">بیسکویت جو · جانه</div><div class="product-card__tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.3 0C14.6 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg> Verified supplier</div><div class="product-card__arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>
-          </div>
-          <div class="quote-cta"><div class="quote-cta__text"><h3>Source Biscuits &amp; Crackers from Iran?</h3><p>Get competitive offers from verified Iranian biscuit manufacturers — including Champion, Mahfel and Janeh — within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
-          </div><!-- /food-sub-biscuits -->
-
-          <!-- Mahram sub-panel -->
-          <div id="food-sub-mahram" style="display:none;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px;font-size:13px;">
-              <button onclick="closeFoodSub()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;font-weight:600;color:var(--petroleum);display:flex;align-items:center;gap:6px;">← Food &amp; Agriculture</button>
-              <span style="color:var(--muted);">/</span>
-              <span style="font-weight:700;color:var(--petroleum);">🫙 Mahram Co.</span>
-            </div>
-            <div class="panel__header" style="margin-bottom:28px;">
-              <div class="panel__eyebrow">🫙 Featured Supplier — Mahram Co.</div>
-              <h2 class="panel__title">Mahram — Full Product Catalog</h2>
-              <p class="panel__desc">Mahram Co. (Est. 1970) is one of Iran's most recognized food brands, producing 60+ products across dressings, sauces, ketchup, mayonnaise, canned foods, pickles, olives, jams, juices, and more. ISO 9001 &amp; HACCP Certified.</p>
-            </div>
-
-            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🥗 Dressings &amp; Vinaigrettes</span></div>
-            <div class="products-grid" style="margin-bottom:32px;">
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Ranch Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Ranch Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Caesar Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Caesar Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="French Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">French Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Italian Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Italian Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Thousand Island" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Thousand Island</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Honey Mustard Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Honey Mustard Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Balsamic Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Balsamic Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dressing.png" alt="Garlic Dressing" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Garlic Dressing</div><div class="product-card__meta">Mahram Co. · 470g</div></div></div>
-            </div>
-
-            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🥚 Mayonnaise</span></div>
-            <div class="products-grid" style="margin-bottom:32px;">
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-mayonnaise.png" alt="Classic Mayonnaise" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Classic Mayonnaise</div><div class="product-card__meta">Mahram Co. · 430g / 900g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/mayonnaise-reduced-fat.png" alt="Reduced Fat Mayonnaise" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Reduced Fat Mayonnaise</div><div class="product-card__meta">Mahram Co. · 430g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-mayonnaise.png" alt="Spicy Mayonnaise" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Spicy Mayonnaise</div><div class="product-card__meta">Mahram Co. · 430g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-mayonnaise.png" alt="Garlic Mayonnaise" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Garlic Mayonnaise</div><div class="product-card__meta">Mahram Co. · 430g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-mayonnaise.png" alt="Olive Oil Mayonnaise" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Olive Oil Mayonnaise</div><div class="product-card__meta">Mahram Co. · 430g</div></div></div>
-            </div>
-
-            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🌶️ Sauces &amp; Ketchup</span></div>
-            <div class="products-grid" style="margin-bottom:32px;">
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/pasta-sauce.png" alt="Pasta Sauce" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Pasta Sauce</div><div class="product-card__meta">Mahram Co. · 650g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/thai-sauce.png" alt="Thai Sweet Chili Sauce" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Thai Sweet Chili Sauce</div><div class="product-card__meta">Mahram Co. · 380g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/sriracha-sauce.png" alt="Sriracha Sauce" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Sriracha Hot Chili Sauce</div><div class="product-card__meta">Mahram Co. · 480g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/dijon-mustard.png" alt="Dijon Mustard" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Dijon Mustard</div><div class="product-card__meta">Mahram Co. · 200g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-ketchup.png" alt="Classic Ketchup" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Classic Ketchup</div><div class="product-card__meta">Mahram Co. · 570g / 1kg</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-ketchup.png" alt="Spicy Ketchup" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Spicy Ketchup</div><div class="product-card__meta">Mahram Co. · 570g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-ketchup.png" alt="Mushroom Ketchup" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Mushroom Ketchup</div><div class="product-card__meta">Mahram Co. · 570g</div></div></div>
-            </div>
-
-            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🧀 Dips &amp; Spreads</span></div>
-            <div class="products-grid" style="margin-bottom:32px;">
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/nacho-cheese-dip.png" alt="Nacho Cheese Dip" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Nacho Cheese Dip</div><div class="product-card__meta">Mahram Co. · 310g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dip.png" alt="Salsa Dip" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Salsa Dip</div><div class="product-card__meta">Mahram Co. · 310g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-dip.png" alt="Guacamole Dip" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Guacamole Dip</div><div class="product-card__meta">Mahram Co. · 280g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-paste.png" alt="Tomato Paste" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Tomato Paste</div><div class="product-card__meta">Mahram Co. · 800g</div></div></div>
-            </div>
-
-            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🥫 Canned Foods</span></div>
-            <div class="products-grid" style="margin-bottom:32px;">
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/chickpeas.png" alt="Canned Chickpeas" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Canned Chickpeas</div><div class="product-card__meta">Mahram Co. · 400g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/chopped-tomato.png" alt="Chopped Tomatoes" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Chopped Tomatoes</div><div class="product-card__meta">Mahram Co. · 400g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/eggplant-puree.png" alt="Eggplant Puree" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Eggplant Puree</div><div class="product-card__meta">Mahram Co. · 380g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-cans.png" alt="Mixed Vegetables" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Mixed Vegetables</div><div class="product-card__meta">Mahram Co. · 400g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-cans.png" alt="Canned Corn" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Canned Corn</div><div class="product-card__meta">Mahram Co. · 340g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-cans.png" alt="Canned Green Peas" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Canned Green Peas</div><div class="product-card__meta">Mahram Co. · 400g</div></div></div>
-            </div>
-
-            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🫙 Pickles</span></div>
-            <div class="products-grid" style="margin-bottom:32px;">
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/andalusian-pickle.png" alt="Andalusian Pickle" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Andalusian Pickle</div><div class="product-card__meta">Mahram Co. · 670g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/loghmeh-pickle.png" alt="Loghmeh Pickle" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Loghmeh Pickle</div><div class="product-card__meta">Mahram Co. · 680g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-pickled.png" alt="Mixed Pickle" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Mixed Pickle</div><div class="product-card__meta">Mahram Co. · 670g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-pickled.png" alt="Cucumber Pickle" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Cucumber Pickle</div><div class="product-card__meta">Mahram Co. · 670g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-pickled.png" alt="Hot Pepper Pickle" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Hot Pepper Pickle</div><div class="product-card__meta">Mahram Co. · 670g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-vinegar.png" alt="White Wine Vinegar" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">White Wine Vinegar</div><div class="product-card__meta">Mahram Co. · 500ml</div></div></div>
-            </div>
-
-            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🫒 Olives</span></div>
-            <div class="products-grid" style="margin-bottom:32px;">
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/indian-olive.png" alt="Indian Style Olive" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Indian Style Olive</div><div class="product-card__meta">Mahram Co. · 350g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-olive.png" alt="Green Olives" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Green Olives</div><div class="product-card__meta">Mahram Co. · 350g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-olive.png" alt="Black Olives" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Black Olives</div><div class="product-card__meta">Mahram Co. · 350g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-olive.png" alt="Stuffed Olives" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Stuffed Olives</div><div class="product-card__meta">Mahram Co. · 300g</div></div></div>
-            </div>
-
-            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🍓 Jams &amp; Honey</span></div>
-            <div class="products-grid" style="margin-bottom:32px;">
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-jam.png" alt="Strawberry Jam" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Strawberry Jam</div><div class="product-card__meta">Mahram Co. · 360g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-jam.png" alt="Cherry Jam" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Cherry Jam</div><div class="product-card__meta">Mahram Co. · 360g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-jam.png" alt="Apricot Jam" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Apricot Jam</div><div class="product-card__meta">Mahram Co. · 360g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-jam.png" alt="Fig Jam" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Fig Jam</div><div class="product-card__meta">Mahram Co. · 360g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-jam.png" alt="Mixed Fruit Jam" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Mixed Fruit Jam</div><div class="product-card__meta">Mahram Co. · 360g</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-felifia.png" alt="Felifia Fruit Spread" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Felifia Fruit Spread</div><div class="product-card__meta">Mahram Co. · 360g</div></div></div>
-            </div>
-
-            <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:8px;"><span style="font-size:15px;font-weight:700;color:var(--petroleum);">🧃 Juices &amp; Drinks</span></div>
-            <div class="products-grid" style="margin-bottom:32px;">
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-juice.png" alt="Orange Juice" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Orange Juice</div><div class="product-card__meta">Mahram Co. · 1L</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-juice.png" alt="Apple Juice" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Apple Juice</div><div class="product-card__meta">Mahram Co. · 1L</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-juice.png" alt="Grape Juice" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Grape Juice</div><div class="product-card__meta">Mahram Co. · 1L</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-juice.png" alt="Peach Juice" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Peach Juice</div><div class="product-card__meta">Mahram Co. · 1L</div></div></div>
-              <div class="product-card"><div class="product-card__img-wrap"><img src="img/mahram/cat-juice.png" alt="Mixed Fruit Juice" class="product-card__img" loading="lazy"></div><div class="product-card__body"><div class="product-card__name">Mixed Fruit Juice</div><div class="product-card__meta">Mahram Co. · 1L</div></div></div>
-            </div>
-
-            <div class="quote-cta"><div class="quote-cta__text"><h3>Source Mahram Products from Iran?</h3><p>Get competitive wholesale offers from Mahram Co.'s authorized export partners within 48 hours.</p></div><a href="quote.html" class="quote-cta__btn">Get a Free Quote</a></div>
-          </div><!-- /food-sub-mahram -->
-
-        </div>
-
-      </div><!-- /products-panel -->
-    </div><!-- /listing-layout -->
-  </div><!-- /container -->
-</section>
-
-<!-- ═══ FOOTER ═══ -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <img src="img/logo-bfi.png" alt="Buy From Iran" style="height:44px;width:auto;filter:brightness(0) invert(1);">
-        </div>
-        <p>The global B2B marketplace connecting international buyers with verified Iranian manufacturers across all major product categories.</p>
-      </div>
-      <div class="footer-col"><h4>Products</h4><a href="listing.html?cat=food">Food &amp; Agriculture</a><a href="listing.html?cat=beverages">Beverages</a><a href="listing.html?cat=personal">Personal Care</a><a href="listing.html?cat=home">Home Care</a><a href="listing.html?cat=packaging">Packaging</a></div>
-      <div class="footer-col"><h4>Company</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="membership.html">Membership</a><a href="#">Blog</a></div>
-      <div class="footer-col"><h4>Services</h4><a href="quote.html">Get a Quote</a><a href="#">Supplier Verification</a><a href="#">Export Consulting</a><a href="#">Logistics Support</a></div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2025 Buy From Iran. All rights reserved.</span>
-      <div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Sitemap</a></div>
-    </div>
-  </div>
-</footer>
-
-<!-- ═══ AUTH MODAL ═══ -->
-<div class="auth-overlay" id="authOverlay" onclick="handleOverlayClick(event)">
-  <div class="auth-modal">
-    <button class="auth-modal__close" onclick="closeAuthModal()" aria-label="Close">&times;</button>
-    <div class="auth-tabs">
-      <button class="auth-tab active" data-tab="signin" onclick="switchAuthTab('signin')">Sign In</button>
-      <button class="auth-tab" data-tab="register" onclick="switchAuthTab('register')">Register</button>
-    </div>
-    <div class="auth-pane active" data-pane="signin">
-      <div class="auth-field"><label for="si-username">Username</label><input type="text" id="si-username" placeholder="Enter your username" autocomplete="username"></div>
-      <div class="auth-field"><label for="si-password">Password</label><input type="password" id="si-password" placeholder="Enter your password" autocomplete="current-password"></div>
-      <div class="auth-row"><label class="auth-remember"><input type="checkbox"> Remember me</label><a href="#" class="auth-forgot">Forgot password?</a></div>
-      <button class="auth-btn">Sign In</button>
-    </div>
-    <div class="auth-pane" data-pane="register">
-      <div class="auth-field"><label for="reg-email">Email</label><input type="email" id="reg-email" placeholder="Enter your email" autocomplete="email"></div>
-      <div class="auth-field"><label for="reg-username">Username</label><input type="text" id="reg-username" placeholder="Choose a username" autocomplete="username"></div>
-      <div class="auth-field"><label for="reg-password">Password</label><input type="password" id="reg-password" placeholder="Create a password" autocomplete="new-password"></div>
-      <button class="auth-btn">Sign Up</button>
-      <p class="auth-privacy">Your personal data will be used to support your experience on this website, to manage access to your account and for other purposes described in our <a href="#">privacy policy</a>.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ElevenLabs -->
-<style>.elevenlabs-widget-wrapper{position:fixed;bottom:24px;right:24px;z-index:9999}</style>
-<div class="elevenlabs-widget-wrapper"><elevenlabs-convai agent-id="agent_4001kw4zymzwev8ae8g8ca87mxs3"></elevenlabs-convai></div>
-<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
-
+</main>
+<footer><div class="container footergrid"><div><div class="logo" style="color:white">Buy From Iran</div><p>Connecting international buyers with Iranian manufacturers through a structured B2B catalog.</p></div><div><h4>Categories</h4><a href="?cat=agriculture-food">Agriculture &amp; Food</a><a href="?cat=beverage">Beverage</a><a href="?cat=personal-care">Personal Care</a></div><div><h4>More</h4><a href="?cat=home-care">Home Care</a><a href="?cat=textile-apparel">Textile &amp; Apparel</a><a href="contact.html">Contact</a></div></div></footer>
+<div class="modalbg" id="modalbg" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modalhead"><div><span class="range" id="mRange"></span><h2 id="mName" style="color:#123c56;margin:8px 0"></h2></div><button class="close" onclick="closeModal()">×</button></div><p class="muted" id="mDesc"></p><div class="details" id="mDetails"></div></div></div>
 <script>
-// Food sub-panel navigation
-function openFoodSub(type, name, icon) {
-  document.getElementById('food-main-content').style.display = 'none';
-  document.getElementById('food-sub-generic').style.display = 'none';
-  document.getElementById('food-sub-biscuits').style.display = 'none';
-  document.getElementById('food-sub-mahram').style.display = 'none';
-  if (type === 'biscuits') {
-    document.getElementById('food-sub-biscuits').style.display = 'block';
-  } else if (type === 'mahram') {
-    document.getElementById('food-sub-mahram').style.display = 'block';
-  } else {
-    document.getElementById('food-sub-generic-icon').textContent = icon || '📦';
-    document.getElementById('food-sub-generic-name').textContent = name || type;
-    document.getElementById('food-sub-generic-title').textContent = name + ' — Products';
-    document.getElementById('food-sub-generic').style.display = 'block';
-  }
-  document.querySelector('.products-panel').scrollTop = 0;
-  window.scrollTo({top: document.getElementById('panel-food').getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth'});
+var TAXONOMY=[{"slug":"agriculture-food","label":"Agriculture & Food","icon":"🌾","subs":[["Biscuits & Crackers","B"],["Wafers","W"],["Cakes & Cookies","CK"],["Chocolate & Confectionery","CH"],["Candy, Toffee & Gummies","CG"],["Snacks & Chips","SN"],["Tomato Paste","TP"],["Sauces & Condiments","SC"],["Canned Foods","CF"],["Pickles & Olives","PK"],["Pasta & Noodles","PA"],["Jams, Honey & Spreads","JM"],["Nuts & Dried Fruits","ND"],["Saffron & Spices","SP"],["Rice, Grains & Pulses","RG"]]},{"slug":"beverage","label":"Beverage","icon":"🥤","subs":[["Fruit Juices & Nectars","JU"],["Malt & Non-Alcoholic Beverages","NB"],["Soft Drinks & Energy Drinks","SD"],["Tea & Herbal Infusions","TE"],["Coffee","CO"],["Syrups & Concentrates","SY"],["Water & Functional Beverages","WB"]]},{"slug":"personal-care","label":"Personal Care","icon":"🧴","subs":[["Hair Care","HC"],["Skin Care","SK"],["Bath & Body","BB"],["Hand & Personal Hygiene","HY"],["Oral Care","OC"],["Baby Care","BC"],["Feminine Care","FC"]]},{"slug":"home-care","label":"Home Care","icon":"🏠","subs":[["Laundry Care","LC"],["Dishwashing","DW"],["Surface & Floor Cleaners","CL"],["Bleach & Disinfectants","BD"],["Bathroom & Toilet Cleaners","BT"],["Air Fresheners","AF"]]},{"slug":"textile-apparel","label":"Textile & Apparel","icon":"👕","subs":[["Apparel & Garments","AP"],["Fabrics & Yarns","FY"],["Home Textiles","HT"],["Towels & Bath Textiles","TW"],["Socks & Hosiery","SH"],["Workwear & Uniforms","WU"],["Carpets & Rugs","CR"]]}];
+var aliases={food:"agriculture-food",beverages:"beverage",personal:"personal-care",home:"home-care",packaging:"agriculture-food"};
+var rows=[],contact={},selectedCat="",selectedSub="";
+var quote=JSON.parse(localStorage.getItem("bfiQuote")||"[]");
+function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(s){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]})}
+function slugify(v){return String(v||"").toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+function currentTop(){return TAXONOMY.find(function(x){return x.slug===selectedCat})||TAXONOMY[0]}
+function renderNav(){
+ document.getElementById("categoryButtons").innerHTML=TAXONOMY.map(function(t){return '<button class="catbtn '+(t.slug===selectedCat?'active':'')+'" onclick="selectCat(\''+t.slug+'\')"><span>'+t.icon+'</span>'+esc(t.label)+'</button>'}).join("");
 }
-function closeFoodSub() {
-  document.getElementById('food-sub-generic').style.display = 'none';
-  document.getElementById('food-sub-biscuits').style.display = 'none';
-  document.getElementById('food-sub-mahram').style.display = 'none';
-  document.getElementById('food-main-content').style.display = 'block';
+function selectCat(slug,keepSub){
+ selectedCat=aliases[slug]||slug;
+ var t=currentTop(); if(!keepSub) selectedSub=slugify(t.subs[0][0]);
+ history.replaceState(null,"","?cat="+encodeURIComponent(selectedCat)+"&sub="+encodeURIComponent(selectedSub));
+ renderNav();renderCategory();renderProducts();
 }
-
-// Category switcher
-function switchCat(id, btn) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-' + id).classList.add('active');
-  btn.classList.add('active');
+function selectSub(slug){
+ selectedSub=slug;history.replaceState(null,"","?cat="+encodeURIComponent(selectedCat)+"&sub="+encodeURIComponent(selectedSub));renderCategory();renderProducts();
 }
-
-// Read URL param on load
-(function(){
-  const cat = new URLSearchParams(location.search).get('cat');
-  if(cat){
-    const btn = document.querySelector('.cat-btn[onclick*="' + cat + '"]');
-    if(btn) { btn.click(); }
-  }
-})();
-
-// Nav & auth helpers
-function toggleMobileNav(){const n=document.getElementById('mobileNav');n.classList.toggle('open')}
-function selectLang(btn){document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
-function openAuthModal(tab){document.getElementById('authOverlay').classList.add('open');if(tab)switchAuthTab(tab)}
-function closeAuthModal(){document.getElementById('authOverlay').classList.remove('open')}
-function handleOverlayClick(e){if(e.target===document.getElementById('authOverlay'))closeAuthModal()}
-function switchAuthTab(name){
-  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
-  document.querySelectorAll('.auth-pane').forEach(p=>p.classList.toggle('active',p.dataset.pane===name));
+function renderCategory(){
+ var t=currentTop();
+ document.getElementById("categoryHeader").innerHTML='<div class="eyebrow">'+esc(t.icon+" "+t.label)+'</div><h2>'+esc(t.label)+'</h2><p class="intro">Select a subcategory to view its published product ranges.</p>';
+ document.getElementById("subcategories").innerHTML=t.subs.map(function(s){var sl=slugify(s[0]);return '<button class="subcard '+(sl===selectedSub?'active':'')+'" onclick="selectSub(\''+sl+'\')"><div class="subname">'+esc(s[0])+'</div><span class="code">'+esc(s[1])+'</span></button>'}).join("");
+ var chosen=t.subs.find(function(s){return slugify(s[0])===selectedSub})||t.subs[0];
+ document.getElementById("productsTitle").textContent=chosen[0]+" — Published Products";
+ document.getElementById("quoteCount").textContent="Quote List ("+quote.length+")";
 }
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAuthModal()});
+function matches(r){
+ var t=currentTop(); var chosen=t.subs.find(function(s){return slugify(s[0])===selectedSub});
+ var parent=slugify(r.parent_category_name||""); var cat=slugify(r.category_name||"");
+ return parent===slugify(t.label)&&chosen&&cat===slugify(chosen[0]);
+}
+function renderProducts(){
+ var box=document.getElementById("products"),status=document.getElementById("catalogStatus");
+ if(!rows.length){box.innerHTML="";status.style.display="block";status.textContent="No published products yet in the live catalog. Categories are ready for real product data.";return}
+ var filtered=rows.filter(matches);
+ if(!filtered.length){box.innerHTML="";status.style.display="block";status.textContent="No published products in this subcategory yet.";return}
+ status.style.display="none";
+ box.innerHTML=filtered.map(function(p,i){return '<article class="product"><span class="range">'+esc(p.range_code||"Range")+'</span><h4>'+esc(p.product_name)+'</h4><p class="muted">'+esc(p.description||"Product details available on request.")+'</p><div class="actions"><button class="btn secondary" onclick="openDetails('+rows.indexOf(p)+')">View Details</button><button class="btn primary" onclick="addQuote('+rows.indexOf(p)+')">Add to Quote</button><button class="btn wa" onclick="wa('+rows.indexOf(p)+')">WhatsApp</button></div></article>'}).join("");
+}
+function addQuote(i){var p=rows[i];if(!p)return;var key=(p.product_id||p.product_name)+"|"+(p.range_code||"");if(!quote.some(function(x){return x.key===key}))quote.push({key:key,name:p.product_name,range:p.range_code||""});localStorage.setItem("bfiQuote",JSON.stringify(quote));document.getElementById("quoteCount").textContent="Quote List ("+quote.length+")"}
+function wa(i){var p=rows[i];if(!p)return;if(!contact.whatsapp){alert("WhatsApp number is not configured yet in Admin → Contact Settings.");return}var msg=(contact.whatsapp_message_template||"Hello, I am interested in {product_name} — Product Range {range_code}.").replace("{product_name}",p.product_name).replace("{range_code}",p.range_code||"");window.open("https://wa.me/"+String(contact.whatsapp).replace(/\D/g,"")+"?text="+encodeURIComponent(msg),"_blank")}
+function openDetails(i){var p=rows[i];if(!p)return;document.getElementById("mRange").textContent=p.range_code||"Product Range";document.getElementById("mName").textContent=p.product_name||"";document.getElementById("mDesc").textContent=p.description||"Product details available on request.";var details=[["Country of Origin",p.country_of_origin||"Iran"],["Private Label",p.private_label===true?"Available":"On Request"],["Pack Weight",p.pack_weight||"On Request"],["Packs / Carton",p.packs_per_carton||"On Request"],["Shelf Life",p.shelf_life||"On Request"],["MOQ",p.moq||"On Request"],["Packaging Type",p.packaging_type||"On Request"],["Lead Time",p.lead_time||"On Request"]];document.getElementById("mDetails").innerHTML=details.map(function(d){return '<div class="detail"><b>'+esc(d[0])+'</b>'+esc(d[1])+'</div>'}).join("");document.getElementById("modalbg").classList.add("open")}
+function closeModal(){document.getElementById("modalbg").classList.remove("open")}
+async function loadLive(){
+ if(!window.supabase||!window.BFI_SUPABASE){document.getElementById("catalogStatus").textContent="Live catalog configuration is not available.";return}
+ var sb=supabase.createClient(window.BFI_SUPABASE.url,window.BFI_SUPABASE.publishableKey);
+ var result=await Promise.all([sb.from("public_product_catalog").select("*").order("parent_category_name").order("category_name").order("range_code"),sb.from("contact_settings").select("*").eq("setting_key","default").single()]);
+ if(result[0].error){document.getElementById("catalogStatus").textContent="Could not load live catalog: "+result[0].error.message;return}
+ rows=result[0].data||[];contact=result[1].data||{};renderProducts();
+}
+(function init(){var q=new URLSearchParams(location.search);selectedCat=aliases[q.get("cat")]||q.get("cat")||TAXONOMY[0].slug;if(!TAXONOMY.some(function(x){return x.slug===selectedCat}))selectedCat=TAXONOMY[0].slug;var t=currentTop();selectedSub=q.get("sub")||slugify(t.subs[0][0]);renderNav();renderCategory();loadLive()})();
 </script>
 </body>
 </html>
-
-
-
