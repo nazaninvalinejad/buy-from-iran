@@ -95,7 +95,10 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
       <div class="field"><label>Public Range Code *</label><input id="rCode" placeholder="B01"></div>
       <div class="field"><label>Sort Order</label><input id="rSort" type="number" value="0"></div>
     </div>
-    <button id="saveRangeBtn" type="button" class="btn primary" onclick="createRange()">Save Range</button><span id="rangeMsg" class="msg"></span>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <button id="saveRangeBtn" type="button" class="btn primary">Save Range</button>
+    <span id="rangeMsg" class="msg"></span>
+  </div>
   </div>
   <div class="card"><table><thead><tr><th>Code</th><th>Subcategory</th><th>Internal Supplier</th><th>Status</th></tr></thead><tbody id="rangesBody"></tbody></table></div>
 </section>
@@ -321,12 +324,15 @@ async function createRange(){
     if(error) throw error;
 
     setMsg('rangeMsg','Product Range '+data.public_code+' saved successfully.');
+    alert('Product Range '+data.public_code+' saved successfully.');
     $('rCode').value='';
     $('rSort').value='0';
     await loadAll();
   }catch(err){
     console.error('createRange failed',err);
-    setMsg('rangeMsg','Could not save range: '+(err?.message||String(err)),false);
+    const msg='Could not save range: '+(err?.message||String(err));
+    setMsg('rangeMsg',msg,false);
+    alert(msg);
   }finally{
     btn.disabled=false;
     btn.textContent='Save Range';
@@ -368,6 +374,16 @@ async function saveContact(){
   const payload={contact_person:val('cPerson')||null,contact_title:val('cTitle')||null,whatsapp:val('cWhatsapp')||null,email:val('cEmail')||null,phone:val('cPhone')||null,whatsapp_message_template:val('cTemplate')};
   const {error}=await sb.from('contact_settings').update(payload).eq('setting_key','default');if(error){setMsg('contactMsg',error.message,false);return}setMsg('contactMsg','Settings saved.');await loadAll();
 }
+$('saveRangeBtn').addEventListener('click', async function(e){
+  e.preventDefault();
+  try{
+    await createRange();
+  }catch(err){
+    console.error('Range save click failed',err);
+    setMsg('rangeMsg','Unexpected error: '+(err?.message||String(err)),false);
+    alert('Could not save Product Range: '+(err?.message||String(err)));
+  }
+});
 checkSession();
 </script>
 </body>
