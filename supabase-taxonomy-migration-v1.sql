@@ -68,13 +68,12 @@ subs(parent_slug,name,slug,code_prefix,sort_order) as (
   ('home-care','Bathroom & Toilet Cleaners','bathroom-toilet-cleaners','BT',50),
   ('home-care','Air Fresheners','air-fresheners','AF',60),
 
-  ('textile-apparel','Apparel & Garments','apparel-garments','AP',10),
-  ('textile-apparel','Fabrics & Yarns','fabrics-yarns','FY',20),
-  ('textile-apparel','Home Textiles','home-textiles','HT',30),
-  ('textile-apparel','Towels & Bath Textiles','towels-bath-textiles','TW',40),
-  ('textile-apparel','Socks & Hosiery','socks-hosiery','SH',50),
-  ('textile-apparel','Workwear & Uniforms','workwear-uniforms','WU',60),
-  ('textile-apparel','Carpets & Rugs','carpets-rugs','CR',70)
+  ('textile-apparel','T-Shirts','t-shirts','TS',10),
+  ('textile-apparel','Trousers & Pants','trousers-pants','TR',20),
+  ('textile-apparel','Socks','socks','SO',30),
+  ('textile-apparel','Caps & Hats','caps-hats','CP',40),
+  ('textile-apparel','Towels','towels','TW',50),
+  ('textile-apparel','Bed Sheets','bed-sheets','BS',60)
 )
 insert into public.categories(parent_id,name,slug,code_prefix,sort_order)
 select c.id,s.name,s.slug,s.code_prefix,s.sort_order
