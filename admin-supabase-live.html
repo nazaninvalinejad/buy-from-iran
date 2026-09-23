@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Buy From Iran — Admin</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="./supabase-config.js"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#1f2937}
@@ -43,6 +44,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
   <div class="brand">Buy From Iran<br><span style="font-size:11px;color:#9fb4c1">ADMIN CONSOLE</span></div>
   <div class="nav">
     <button class="active" onclick="showPanel('dashboard',this)">Dashboard</button>
+    <button onclick="showPanel('bulk',this)">Bulk Import</button>
     <button onclick="showPanel('products',this)">Products</button>
     <button onclick="showPanel('skus',this)">SKUs / Pack Sizes</button>
     <button onclick="showPanel('images',this)">Product Images</button>
@@ -63,6 +65,33 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
     <div class="card"><b class="stat" id="countRanges">—</b><div class="small">Product Ranges</div></div>
     <div class="card"><b class="stat" id="countQuotes">—</b><div class="small">Quote Requests</div></div>
     <div class="card"><b class="stat" id="countSuppliers">—</b><div class="small">Internal Suppliers</div></div>
+  </div>
+</section>
+
+<section id="bulk" class="panel">
+  <div class="top"><h1>Bulk Import</h1></div>
+  <div class="tabs-note">Upload the Buy From Iran Excel template. One row = one SKU / pack size. Repeated suppliers, ranges and products are automatically de-duplicated.</div>
+  <div class="card">
+    <div class="formgrid two">
+      <div class="field">
+        <label>Excel File (.xlsx) *</label>
+        <input id="bulkFile" type="file" accept=".xlsx,.xls" onchange="readBulkFile()">
+      </div>
+      <div class="field">
+        <label>Import Mode</label>
+        <select id="bulkMode">
+          <option value="safe">Safe import — create missing records, update matching records</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button id="bulkImportBtn" type="button" class="btn primary" onclick="runBulkImport()" disabled>Import Rows</button>
+      <span id="bulkMsg" class="msg"></span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="top" style="margin-bottom:8px"><h3 style="margin:0;color:#123c56">Preview</h3><span id="bulkCount" class="small">No file loaded</span></div>
+    <div style="overflow:auto;max-height:420px"><table><thead id="bulkHead"></thead><tbody id="bulkBody"></tbody></table></div>
   </div>
 </section>
 
@@ -154,6 +183,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
 
 <section id="images" class="panel">
   <div class="top"><h1>Product Images</h1><button class="btn primary" onclick="toggle('imageForm')">+ Upload Image</button></div>
+  <div class="tabs-note">Bulk Excel imports product data and SKUs. Images remain a separate upload step for now; the Excel Image Filename column is reserved for the next bulk-image matching step.</div>
   <div id="imageForm" class="card hidden">
     <div class="formgrid">
       <div class="field"><label>Product *</label><select id="iProduct" onchange="filterImageSkus()"></select></div>
@@ -197,6 +227,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
 <script>
 const sb=supabase.createClient(window.BFI_SUPABASE.url,window.BFI_SUPABASE.publishableKey);
 let cats=[],ranges=[],products=[],suppliers=[],skus=[],images=[],quotes=[],contact=null;
+let bulkRows=[];
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
 function val(id){return $(id).value.trim()}
@@ -285,6 +316,193 @@ function filterRangesForProduct(){
 function filterImageSkus(){
   const pid=$('iProduct').value;
   $('iSku').innerHTML='<option value="">Product-level image</option>'+skus.filter(x=>x.product_id===pid).map(x=>'<option value="'+x.id+'">'+esc(x.label||x.sku_code||'SKU')+'</option>').join('');
+}
+
+
+const BULK_REQUIRED_HEADERS=[
+  'Supplier Code','Supplier Name','Main Category','Subcategory','Range Code',
+  'Product Name','Product Slug','Product Status'
+];
+
+function cleanCell(v){
+  if(v===undefined||v===null)return '';
+  return String(v).trim();
+}
+function boolCell(v){
+  const x=cleanCell(v).toLowerCase();
+  return ['true','yes','1','y'].includes(x);
+}
+function nullableNum(v){
+  if(v===undefined||v===null||String(v).trim()==='')return null;
+  const n=Number(v); return Number.isFinite(n)?n:null;
+}
+function csvArray(v){
+  const x=cleanCell(v);
+  return x?x.split(',').map(a=>a.trim()).filter(Boolean):null;
+}
+function normalizeBulkRow(row){
+  const o={};
+  Object.keys(row||{}).forEach(k=>o[String(k).trim()]=row[k]);
+  return o;
+}
+function readBulkFile(){
+  const file=$('bulkFile').files[0];
+  bulkRows=[];$('bulkImportBtn').disabled=true;
+  $('bulkHead').innerHTML='';$('bulkBody').innerHTML='';
+  if(!file){setMsg('bulkMsg','Choose an Excel file.',false);return}
+  setMsg('bulkMsg','Reading file…');
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const data=new Uint8Array(e.target.result);
+      const wb=XLSX.read(data,{type:'array'});
+      const sheet=wb.Sheets['Bulk Import']||wb.Sheets[wb.SheetNames[0]];
+      const rows=XLSX.utils.sheet_to_json(sheet,{defval:''}).map(normalizeBulkRow);
+      if(!rows.length) throw new Error('No data rows found.');
+      const headers=Object.keys(rows[0]);
+      const missing=BULK_REQUIRED_HEADERS.filter(h=>!headers.includes(h));
+      if(missing.length) throw new Error('Missing required columns: '+missing.join(', '));
+      bulkRows=rows.filter(r=>cleanCell(r['Supplier Code'])||cleanCell(r['Product Name'])||cleanCell(r['SKU Code']));
+      renderBulkPreview(headers,bulkRows);
+      $('bulkImportBtn').disabled=!bulkRows.length;
+      setMsg('bulkMsg','File ready: '+bulkRows.length+' row(s).');
+    }catch(err){
+      console.error(err);setMsg('bulkMsg','Could not read file: '+(err?.message||String(err)),false);
+    }
+  };
+  reader.onerror=()=>setMsg('bulkMsg','Could not read the selected file.',false);
+  reader.readAsArrayBuffer(file);
+}
+function renderBulkPreview(headers,rows){
+  const shown=headers.slice(0,12);
+  $('bulkHead').innerHTML='<tr>'+shown.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr>';
+  $('bulkBody').innerHTML=rows.slice(0,25).map(r=>'<tr>'+shown.map(h=>'<td>'+esc(r[h]??'')+'</td>').join('')+'</tr>').join('');
+  $('bulkCount').textContent=rows.length+' row(s) loaded'+(rows.length>25?' — first 25 shown':'');
+}
+async function ensureSupplier(row){
+  const code=cleanCell(row['Supplier Code']).toUpperCase();
+  if(!code) throw new Error('Supplier Code is required.');
+  let existing=suppliers.find(x=>String(x.internal_code).toUpperCase()===code);
+  const payload={
+    internal_code:code,
+    legal_name:cleanCell(row['Supplier Name'])||code,
+    contact_name:cleanCell(row['Contact Name'])||null,
+    phone:cleanCell(row['Phone'])||null,
+    whatsapp:cleanCell(row['WhatsApp'])||null,
+    email:cleanCell(row['Email'])||null,
+    website:cleanCell(row['Website'])||null,
+    notes:cleanCell(row['Supplier Notes'])||null,
+    is_active:true
+  };
+  if(existing){
+    const {data,error}=await sb.from('suppliers').update(payload).eq('id',existing.id).select('*').single();
+    if(error) throw error; Object.assign(existing,data); return existing;
+  }
+  const {data,error}=await sb.from('suppliers').insert(payload).select('*').single();
+  if(error) throw error; suppliers.push(data); return data;
+}
+function findLeafCategory(row){
+  const sub=cleanCell(row['Subcategory']).toLowerCase();
+  const main=cleanCell(row['Main Category']).toLowerCase();
+  const rootById=Object.fromEntries(cats.filter(x=>!x.parent_id).map(x=>[x.id,x]));
+  const match=cats.find(x=>x.parent_id && String(x.name).toLowerCase()===sub && (!main || String(rootById[x.parent_id]?.name||'').toLowerCase()===main));
+  if(!match) throw new Error('Subcategory not found: '+cleanCell(row['Main Category'])+' → '+cleanCell(row['Subcategory']));
+  return match;
+}
+async function ensureRange(row,supplier,category){
+  const code=cleanCell(row['Range Code']).toUpperCase();
+  if(!code) throw new Error('Range Code is required.');
+  let existing=ranges.find(x=>String(x.public_code).toUpperCase()===code);
+  const payload={category_id:category.id,supplier_id:supplier.id,public_code:code,is_active:true};
+  if(existing){
+    const {data,error}=await sb.from('product_ranges').update(payload).eq('id',existing.id).select('*').single();
+    if(error) throw error; Object.assign(existing,data); return existing;
+  }
+  const {data,error}=await sb.from('product_ranges').insert(payload).select('*').single();
+  if(error) throw error; ranges.push(data); return data;
+}
+async function ensureProduct(row,category,range){
+  let slug=cleanCell(row['Product Slug'])||slugify(cleanCell(row['Product Name']));
+  if(!slug) throw new Error('Product Name / Slug is required.');
+  let existing=products.find(x=>String(x.slug).toLowerCase()===slug.toLowerCase());
+  const status=['draft','published','archived'].includes(cleanCell(row['Product Status']).toLowerCase())?cleanCell(row['Product Status']).toLowerCase():'draft';
+  const payload={
+    category_id:category.id,range_id:range.id,
+    name:cleanCell(row['Product Name'])||slug,slug,
+    description:cleanCell(row['Product Description'])||null,
+    flavors_types:csvArray(row['Flavors / Types']),
+    packaging_type:cleanCell(row['Packaging Type'])||null,
+    private_label:cleanCell(row['Private Label'])||'On Request',
+    certificates:csvArray(row['Certificates']),
+    country_of_origin:cleanCell(row['Country of Origin'])||'Iran',
+    shelf_life:cleanCell(row['Shelf Life'])||null,
+    moq:cleanCell(row['MOQ'])||null,
+    lead_time:cleanCell(row['Lead Time'])||null,
+    status
+  };
+  if(existing){
+    const {data,error}=await sb.from('products').update(payload).eq('id',existing.id).select('*').single();
+    if(error) throw error; Object.assign(existing,data); return existing;
+  }
+  const {data,error}=await sb.from('products').insert(payload).select('*').single();
+  if(error) throw error; products.push(data); return data;
+}
+async function ensureSku(row,product){
+  const skuCode=cleanCell(row['SKU Code']);
+  const label=cleanCell(row['SKU Label']);
+  if(!skuCode && !label && cleanCell(row['Pack Weight'])==='') return null;
+  let existing=skuCode?skus.find(x=>String(x.sku_code||'').toLowerCase()===skuCode.toLowerCase()):null;
+  const payload={
+    product_id:product.id,
+    sku_code:skuCode||null,
+    label:label||null,
+    pack_weight:nullableNum(row['Pack Weight']),
+    pack_weight_unit:cleanCell(row['Weight Unit'])||'g',
+    packs_per_carton:nullableNum(row['Packs / Carton']),
+    pack_length_cm:nullableNum(row['Pack Length cm']),
+    pack_width_cm:nullableNum(row['Pack Width cm']),
+    pack_height_cm:nullableNum(row['Pack Height cm']),
+    carton_length_cm:nullableNum(row['Carton Length cm']),
+    carton_width_cm:nullableNum(row['Carton Width cm']),
+    carton_height_cm:nullableNum(row['Carton Height cm']),
+    carton_gross_weight_kg:nullableNum(row['Carton Gross Weight kg']),
+    is_default:boolCell(row['Default SKU'])
+  };
+  if(existing){
+    const {data,error}=await sb.from('product_skus').update(payload).eq('id',existing.id).select('*').single();
+    if(error) throw error; Object.assign(existing,data); return existing;
+  }
+  const {data,error}=await sb.from('product_skus').insert(payload).select('*').single();
+  if(error) throw error; skus.push(data); return data;
+}
+async function runBulkImport(){
+  if(!bulkRows.length){setMsg('bulkMsg','Load an Excel file first.',false);return}
+  const btn=$('bulkImportBtn');btn.disabled=true;btn.textContent='Importing…';
+  let ok=0,fail=0;const errors=[];
+  for(let i=0;i<bulkRows.length;i++){
+    const row=bulkRows[i];
+    setMsg('bulkMsg','Importing row '+(i+1)+' of '+bulkRows.length+'…');
+    try{
+      const supplier=await ensureSupplier(row);
+      const category=findLeafCategory(row);
+      const range=await ensureRange(row,supplier,category);
+      const product=await ensureProduct(row,category,range);
+      await ensureSku(row,product);
+      ok++;
+    }catch(err){
+      fail++;errors.push('Row '+(i+2)+': '+(err?.message||String(err)));
+      console.error('Bulk row failed',i,row,err);
+    }
+  }
+  await loadAll();
+  btn.disabled=false;btn.textContent='Import Rows';
+  if(fail){
+    setMsg('bulkMsg','Imported '+ok+' row(s); '+fail+' failed. '+errors.slice(0,3).join(' | '),false);
+    alert('Bulk import finished with errors.\n\n'+errors.slice(0,10).join('\n'));
+  }else{
+    setMsg('bulkMsg','Bulk import complete: '+ok+' row(s) imported successfully.');
+    alert('Bulk import complete: '+ok+' row(s) imported successfully.');
+  }
 }
 
 async function createSupplier(){
