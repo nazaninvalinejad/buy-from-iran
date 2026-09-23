@@ -95,7 +95,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
       <div class="field"><label>Public Range Code *</label><input id="rCode" placeholder="B01"></div>
       <div class="field"><label>Sort Order</label><input id="rSort" type="number" value="0"></div>
     </div>
-    <button class="btn primary" onclick="createRange()">Save Range</button><span id="rangeMsg" class="msg"></span>
+    <button id="saveRangeBtn" type="button" class="btn primary" onclick="createRange()">Save Range</button><span id="rangeMsg" class="msg"></span>
   </div>
   <div class="card"><table><thead><tr><th>Code</th><th>Subcategory</th><th>Internal Supplier</th><th>Status</th></tr></thead><tbody id="rangesBody"></tbody></table></div>
 </section>
@@ -290,9 +290,47 @@ async function createSupplier(){
   if(error){setMsg('supplierMsg',error.message,false);return}setMsg('supplierMsg','Supplier saved.');await loadAll();
 }
 async function createRange(){
-  if(!$('rCategory').value||!$('rSupplier').value||!val('rCode')){setMsg('rangeMsg','Category, supplier and public code are required.',false);return}
-  const {error}=await sb.from('product_ranges').insert({category_id:$('rCategory').value,supplier_id:$('rSupplier').value,public_code:val('rCode').toUpperCase(),sort_order:Number(val('rSort')||0)});
-  if(error){setMsg('rangeMsg',error.message,false);return}setMsg('rangeMsg','Product Range saved.');await loadAll();
+  const btn=$('saveRangeBtn');
+  const categoryId=$('rCategory').value;
+  const supplierId=$('rSupplier').value;
+  const code=val('rCode').toUpperCase();
+  const sortOrder=Number(val('rSort')||0);
+
+  if(!categoryId||!supplierId||!code){
+    setMsg('rangeMsg','Category, supplier and public code are required.',false);
+    return;
+  }
+
+  btn.disabled=true;
+  btn.textContent='Saving…';
+  setMsg('rangeMsg','Saving Product Range…');
+
+  try{
+    const {data,error}=await sb
+      .from('product_ranges')
+      .insert({
+        category_id:categoryId,
+        supplier_id:supplierId,
+        public_code:code,
+        sort_order:sortOrder,
+        is_active:true
+      })
+      .select('id,public_code')
+      .single();
+
+    if(error) throw error;
+
+    setMsg('rangeMsg','Product Range '+data.public_code+' saved successfully.');
+    $('rCode').value='';
+    $('rSort').value='0';
+    await loadAll();
+  }catch(err){
+    console.error('createRange failed',err);
+    setMsg('rangeMsg','Could not save range: '+(err?.message||String(err)),false);
+  }finally{
+    btn.disabled=false;
+    btn.textContent='Save Range';
+  }
 }
 async function createProduct(){
   if(!val('pName')||!val('pSlug')||!$('pCategory').value||!$('pRange').value){setMsg('productMsg','Name, slug, category and range are required.',false);return}
