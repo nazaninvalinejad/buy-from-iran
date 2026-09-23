@@ -7,41 +7,45 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./supabase-config.js"></script>
 <style>
-:root{--navy:#123C56;--blue:#2B7FFF;--bg:#F5F7FA;--line:#E3E8EE;--muted:#6B7280;--green:#18794E;--red:#B42318}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#1F2937}
-.hidden{display:none!important}.center{min-height:100vh;display:grid;place-items:center;padding:24px}
-.login{width:min(420px,100%);background:white;border:1px solid var(--line);border-radius:16px;padding:24px}
-input,select,textarea{width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:9px;font:inherit}
-label{font-size:13px;font-weight:700;color:#45515c}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
-.btn{border:0;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer}.primary{background:var(--blue);color:white}.ghost{background:#EEF2F6}
-.err{color:var(--red);font-size:13px}.ok{color:var(--green);font-size:13px}
-.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}aside{background:#0A2535;color:white;padding:22px 14px}
-.brand{font-weight:800;font-size:20px;margin:0 8px 24px}.nav button{width:100%;text-align:left;border:0;background:transparent;color:#cbd5df;padding:11px;border-radius:9px;cursor:pointer}
-.nav button.active,.nav button:hover{background:#ffffff14;color:white}main{padding:28px}h1,h2,h3{color:var(--navy)}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.card{background:white;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-table{width:100%;border-collapse:collapse;background:white}th,td{padding:11px;border-bottom:1px solid var(--line);font-size:13px;text-align:left}th{background:#F8FAFC;color:var(--muted)}
-.panel{display:none}.panel.active{display:block}.small{font-size:12px;color:var(--muted)}
-@media(max-width:800px){.layout{grid-template-columns:1fr}aside{display:none}.grid{grid-template-columns:1fr}main{padding:16px}}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#1f2937}
+:root{--navy:#123c56;--blue:#2b7fff;--line:#dfe6ec;--muted:#6b7280;--good:#18794e;--bad:#b42318}
+.hidden{display:none!important}.center{min-height:100vh;display:grid;place-items:center;padding:20px}.login{width:min(420px,100%);background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:0 16px 50px rgba(18,60,86,.12)}
+.layout{display:grid;grid-template-columns:230px 1fr;min-height:100vh}aside{background:#0a2535;color:#fff;padding:22px 14px}.brand{font-size:20px;font-weight:800;padding:8px 10px 22px}.small{font-size:12px;color:var(--muted)}
+.nav button{width:100%;text-align:left;border:0;background:transparent;color:#dce7ee;padding:11px 12px;border-radius:9px;cursor:pointer;margin:2px 0;font-weight:700}.nav button.active,.nav button:hover{background:#163e54;color:#fff}
+main{padding:24px;overflow:auto}.panel{display:none}.panel.active{display:block}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.top h1{margin:0;color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}.card b.stat{font-size:28px;color:var(--navy)}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}.field label{font-size:12px;font-weight:800;color:#475569}.field input,.field select,.field textarea{border:1px solid #cfd8df;border-radius:9px;padding:10px 11px;font:inherit;background:#fff}.field textarea{resize:vertical}
+.formgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.formgrid.two{grid-template-columns:repeat(2,1fr)}
+.btn{border:0;border-radius:9px;padding:9px 12px;font-weight:800;cursor:pointer}.primary{background:var(--blue);color:#fff}.secondary{background:#eef3f7;color:var(--navy)}.danger{background:#fff0f0;color:var(--bad)}.success{background:#eaf8ef;color:var(--good)}
+.msg{font-size:13px;margin-left:8px}.ok{color:var(--good)}.err{color:var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;border-bottom:1px solid #edf1f4;text-align:left;vertical-align:top}th{color:#64748b;font-size:11px;text-transform:uppercase;letter-spacing:.05em}.parentrow{background:#eef3f7}.indent{padding-left:30px}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:800;background:#eef4ff;color:#1a5fd4}.badge.green{background:#eaf8ef;color:#18794e}
+.thumb{width:58px;height:58px;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:#f8fafc}
+.tabs-note{padding:11px 13px;background:#fff8e7;border:1px solid #f1dfaf;border-radius:10px;color:#6b5a2d;font-size:13px;margin-bottom:14px}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.layout{grid-template-columns:1fr}aside{display:none}.grid,.formgrid,.formgrid.two{grid-template-columns:1fr}main{padding:14px}}
 </style>
 </head>
 <body>
 <div id="loginView" class="center">
   <div class="login">
-    <h2>Buy From Iran Admin</h2>
-    <p class="small">Sign in with the Supabase Auth user you created.</p>
+    <h2 style="color:#123c56;margin-top:0">Buy From Iran Admin</h2>
+    <p class="small">Sign in with your Supabase admin account.</p>
     <div class="field"><label>Email</label><input id="email" type="email"></div>
     <div class="field"><label>Password</label><input id="password" type="password"></div>
     <button class="btn primary" onclick="signIn()">Sign in</button>
-    <p id="loginMsg"></p>
+    <span id="loginMsg" class="msg"></span>
   </div>
 </div>
 
 <div id="appView" class="layout hidden">
 <aside>
-  <div class="brand">Buy From Iran<br><span class="small" style="color:#93a7b5">ADMIN</span></div>
+  <div class="brand">Buy From Iran<br><span style="font-size:11px;color:#9fb4c1">ADMIN CONSOLE</span></div>
   <div class="nav">
     <button class="active" onclick="showPanel('dashboard',this)">Dashboard</button>
     <button onclick="showPanel('products',this)">Products</button>
+    <button onclick="showPanel('skus',this)">SKUs / Pack Sizes</button>
+    <button onclick="showPanel('images',this)">Product Images</button>
     <button onclick="showPanel('categories',this)">Categories</button>
     <button onclick="showPanel('ranges',this)">Product Ranges</button>
     <button onclick="showPanel('suppliers',this)">Suppliers — Internal</button>
@@ -50,120 +54,283 @@ table{width:100%;border-collapse:collapse;background:white}th,td{padding:11px;bo
     <button onclick="signOut()">Sign out</button>
   </div>
 </aside>
+
 <main>
 <section id="dashboard" class="panel active">
-  <div class="top"><h1>Dashboard</h1><button class="btn primary" onclick="loadAll()">Refresh</button></div>
+  <div class="top"><h1>Dashboard</h1><button class="btn secondary" onclick="loadAll()">Refresh</button></div>
   <div class="grid">
-    <div class="card"><b id="countProducts">—</b><div class="small">Products</div></div>
-    <div class="card"><b id="countRanges">—</b><div class="small">Product Ranges</div></div>
-    <div class="card"><b id="countQuotes">—</b><div class="small">Quote Requests</div></div>
-    <div class="card"><b id="countSuppliers">—</b><div class="small">Internal Suppliers</div></div>
+    <div class="card"><b class="stat" id="countProducts">—</b><div class="small">Products</div></div>
+    <div class="card"><b class="stat" id="countRanges">—</b><div class="small">Product Ranges</div></div>
+    <div class="card"><b class="stat" id="countQuotes">—</b><div class="small">Quote Requests</div></div>
+    <div class="card"><b class="stat" id="countSuppliers">—</b><div class="small">Internal Suppliers</div></div>
   </div>
+</section>
+
+<section id="suppliers" class="panel">
+  <div class="top"><h1>Suppliers — Internal Only</h1><button class="btn primary" onclick="toggle('supplierForm')">+ Add Supplier</button></div>
+  <div class="tabs-note">Supplier names and contact details stay internal and are not exposed through the public catalog view.</div>
+  <div id="supplierForm" class="card hidden">
+    <div class="formgrid">
+      <div class="field"><label>Internal Code *</label><input id="sCode" placeholder="SUP-001"></div>
+      <div class="field"><label>Legal Name *</label><input id="sName"></div>
+      <div class="field"><label>Contact Name</label><input id="sContact"></div>
+      <div class="field"><label>Phone</label><input id="sPhone"></div>
+      <div class="field"><label>WhatsApp</label><input id="sWhatsapp"></div>
+      <div class="field"><label>Email</label><input id="sEmail" type="email"></div>
+      <div class="field"><label>Website</label><input id="sWebsite"></div>
+    </div>
+    <div class="field"><label>Notes</label><textarea id="sNotes" rows="3"></textarea></div>
+    <button class="btn primary" onclick="createSupplier()">Save Supplier</button><span id="supplierMsg" class="msg"></span>
+  </div>
+  <div class="card"><table><thead><tr><th>Code</th><th>Legal Name</th><th>Contact</th><th>Email / WhatsApp</th><th>Status</th></tr></thead><tbody id="suppliersBody"></tbody></table></div>
+</section>
+
+<section id="ranges" class="panel">
+  <div class="top"><h1>Product Ranges</h1><button class="btn primary" onclick="toggle('rangeForm')">+ Add Range</button></div>
+  <div class="tabs-note">A Product Range groups products from one internal supplier under a neutral public code such as B01, CH01 or TP01.</div>
+  <div id="rangeForm" class="card hidden">
+    <div class="formgrid">
+      <div class="field"><label>Subcategory *</label><select id="rCategory"></select></div>
+      <div class="field"><label>Internal Supplier *</label><select id="rSupplier"></select></div>
+      <div class="field"><label>Public Range Code *</label><input id="rCode" placeholder="B01"></div>
+      <div class="field"><label>Sort Order</label><input id="rSort" type="number" value="0"></div>
+    </div>
+    <button class="btn primary" onclick="createRange()">Save Range</button><span id="rangeMsg" class="msg"></span>
+  </div>
+  <div class="card"><table><thead><tr><th>Code</th><th>Subcategory</th><th>Internal Supplier</th><th>Status</th></tr></thead><tbody id="rangesBody"></tbody></table></div>
 </section>
 
 <section id="products" class="panel">
   <div class="top"><h1>Products</h1><button class="btn primary" onclick="toggle('productForm')">+ Add Product</button></div>
   <div id="productForm" class="card hidden">
-    <div class="grid">
-      <div class="field"><label>Name</label><input id="pName"></div>
-      <div class="field"><label>Slug</label><input id="pSlug"></div>
-      <div class="field"><label>Category</label><select id="pCategory"></select></div>
-      <div class="field"><label>Product Range</label><select id="pRange"></select></div>
+    <div class="formgrid">
+      <div class="field"><label>Product Name *</label><input id="pName" oninput="autoSlug()"></div>
+      <div class="field"><label>Slug *</label><input id="pSlug"></div>
+      <div class="field"><label>Subcategory *</label><select id="pCategory" onchange="filterRangesForProduct()"></select></div>
+      <div class="field"><label>Product Range *</label><select id="pRange"></select></div>
       <div class="field"><label>Country of Origin</label><input id="pOrigin" value="Iran"></div>
-      <div class="field"><label>Status</label><select id="pStatus"><option>draft</option><option>published</option><option>archived</option></select></div>
+      <div class="field"><label>Status</label><select id="pStatus"><option value="draft">Draft</option><option value="published">Published</option><option value="archived">Archived</option></select></div>
+      <div class="field"><label>Packaging Type</label><input id="pPackaging" placeholder="On Request"></div>
+      <div class="field"><label>Private Label</label><input id="pPrivate" value="On Request"></div>
+      <div class="field"><label>Shelf Life</label><input id="pShelf" placeholder="On Request"></div>
+      <div class="field"><label>MOQ</label><input id="pMoq" placeholder="On Request"></div>
+      <div class="field"><label>Lead Time</label><input id="pLead" placeholder="On Request"></div>
+      <div class="field"><label>Flavors / Types (comma separated)</label><input id="pFlavors"></div>
+      <div class="field"><label>Certificates (comma separated)</label><input id="pCerts"></div>
     </div>
     <div class="field"><label>Description</label><textarea id="pDescription" rows="3"></textarea></div>
-    <button class="btn primary" onclick="createProduct()">Save Product</button>
-    <span id="productMsg"></span>
+    <button class="btn primary" onclick="createProduct()">Save Product</button><span id="productMsg" class="msg"></span>
   </div>
-  <div class="card"><table><thead><tr><th>Product</th><th>Category</th><th>Range</th><th>Status</th></tr></thead><tbody id="productsBody"></tbody></table></div>
+  <div class="card"><table><thead><tr><th>Product</th><th>Subcategory</th><th>Range</th><th>Status</th><th>Action</th></tr></thead><tbody id="productsBody"></tbody></table></div>
 </section>
 
-<section id="categories" class="panel"><div class="top"><h1>Categories</h1></div><div class="card"><table><thead><tr><th>Name</th><th>Slug</th><th>Prefix</th><th>Parent</th></tr></thead><tbody id="categoriesBody"></tbody></table></div></section>
-<section id="ranges" class="panel"><div class="top"><h1>Product Ranges</h1></div><div class="card"><table><thead><tr><th>Code</th><th>Category</th><th>Active</th></tr></thead><tbody id="rangesBody"></tbody></table></div></section>
-<section id="suppliers" class="panel"><div class="top"><h1>Suppliers — Internal Only</h1></div><div class="card"><table><thead><tr><th>Code</th><th>Legal Name</th><th>Contact</th></tr></thead><tbody id="suppliersBody"></tbody></table></div></section>
-<section id="quotes" class="panel"><div class="top"><h1>Quote Requests</h1></div><div class="card"><table><thead><tr><th>Ref</th><th>Company</th><th>Contact</th><th>Destination</th><th>Status</th></tr></thead><tbody id="quotesBody"></tbody></table></div></section>
+<section id="skus" class="panel">
+  <div class="top"><h1>SKUs / Pack Sizes</h1><button class="btn primary" onclick="toggle('skuForm')">+ Add SKU</button></div>
+  <div class="tabs-note">Use one SKU per pack size. This keeps pack dimensions, carton dimensions and packs/carton accurate for each size.</div>
+  <div id="skuForm" class="card hidden">
+    <div class="formgrid">
+      <div class="field"><label>Product *</label><select id="kProduct"></select></div>
+      <div class="field"><label>SKU Code</label><input id="kCode"></div>
+      <div class="field"><label>Label</label><input id="kLabel" placeholder="65g"></div>
+      <div class="field"><label>Pack Weight</label><input id="kWeight" type="number" step="0.01"></div>
+      <div class="field"><label>Weight Unit</label><select id="kUnit"><option>g</option><option>kg</option><option>ml</option><option>L</option></select></div>
+      <div class="field"><label>Packs / Carton</label><input id="kPacks" type="number"></div>
+      <div class="field"><label>Pack Length cm</label><input id="kPL" type="number" step="0.01"></div>
+      <div class="field"><label>Pack Width cm</label><input id="kPW" type="number" step="0.01"></div>
+      <div class="field"><label>Pack Height cm</label><input id="kPH" type="number" step="0.01"></div>
+      <div class="field"><label>Carton Length cm</label><input id="kCL" type="number" step="0.01"></div>
+      <div class="field"><label>Carton Width cm</label><input id="kCW" type="number" step="0.01"></div>
+      <div class="field"><label>Carton Height cm</label><input id="kCH" type="number" step="0.01"></div>
+      <div class="field"><label>Carton Gross Weight kg</label><input id="kGross" type="number" step="0.01"></div>
+      <div class="field"><label>Default SKU?</label><select id="kDefault"><option value="false">No</option><option value="true">Yes</option></select></div>
+    </div>
+    <button class="btn primary" onclick="createSku()">Save SKU</button><span id="skuMsg" class="msg"></span>
+  </div>
+  <div class="card"><table><thead><tr><th>Product</th><th>SKU</th><th>Pack</th><th>Packs/Carton</th><th>Carton</th><th>Default</th></tr></thead><tbody id="skusBody"></tbody></table></div>
+</section>
+
+<section id="images" class="panel">
+  <div class="top"><h1>Product Images</h1><button class="btn primary" onclick="toggle('imageForm')">+ Upload Image</button></div>
+  <div id="imageForm" class="card hidden">
+    <div class="formgrid">
+      <div class="field"><label>Product *</label><select id="iProduct" onchange="filterImageSkus()"></select></div>
+      <div class="field"><label>SKU (optional)</label><select id="iSku"><option value="">Product-level image</option></select></div>
+      <div class="field"><label>Image File *</label><input id="iFile" type="file" accept="image/*"></div>
+      <div class="field"><label>Alt Text</label><input id="iAlt"></div>
+      <div class="field"><label>Primary Image?</label><select id="iPrimary"><option value="false">No</option><option value="true">Yes</option></select></div>
+    </div>
+    <button class="btn primary" onclick="uploadImage()">Upload Image</button><span id="imageMsg" class="msg"></span>
+  </div>
+  <div class="card"><table><thead><tr><th>Image</th><th>Product</th><th>SKU</th><th>Path</th><th>Primary</th><th>Action</th></tr></thead><tbody id="imagesBody"></tbody></table></div>
+</section>
+
+<section id="categories" class="panel">
+  <div class="top"><h1>Categories</h1></div>
+  <div class="card"><table><thead><tr><th>Name</th><th>Slug</th><th>Prefix</th><th>Parent</th></tr></thead><tbody id="categoriesBody"></tbody></table></div>
+</section>
+
+<section id="quotes" class="panel">
+  <div class="top"><h1>Quote Requests</h1></div>
+  <div class="card"><table><thead><tr><th>Ref</th><th>Company</th><th>Contact</th><th>Destination</th><th>Status</th><th>Action</th></tr></thead><tbody id="quotesBody"></tbody></table></div>
+</section>
 
 <section id="contact" class="panel">
   <div class="top"><h1>Contact Settings</h1></div>
   <div class="card">
-    <div class="grid">
+    <div class="formgrid two">
       <div class="field"><label>Contact Person</label><input id="cPerson"></div>
       <div class="field"><label>Contact Title</label><input id="cTitle"></div>
       <div class="field"><label>WhatsApp</label><input id="cWhatsapp" placeholder="+..."></div>
       <div class="field"><label>Email</label><input id="cEmail"></div>
+      <div class="field"><label>Phone</label><input id="cPhone"></div>
     </div>
     <div class="field"><label>WhatsApp Message Template</label><textarea id="cTemplate" rows="3"></textarea></div>
-    <button class="btn primary" onclick="saveContact()">Save Settings</button>
-    <span id="contactMsg"></span>
+    <button class="btn primary" onclick="saveContact()">Save Settings</button><span id="contactMsg" class="msg"></span>
   </div>
 </section>
-</main></div>
+</main>
+</div>
 
 <script>
-const sb = supabase.createClient(window.BFI_SUPABASE.url, window.BFI_SUPABASE.publishableKey);
+const sb=supabase.createClient(window.BFI_SUPABASE.url,window.BFI_SUPABASE.publishableKey);
+let cats=[],ranges=[],products=[],suppliers=[],skus=[],images=[],quotes=[],contact=null;
+const $=id=>document.getElementById(id);
+function esc(v){return String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
+function val(id){return $(id).value.trim()}
+function num(id){return val(id)===''?null:Number(val(id))}
+function arr(id){return val(id)?val(id).split(',').map(x=>x.trim()).filter(Boolean):null}
+function slugify(v){return String(v||'').toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+function toggle(id){$(id).classList.toggle('hidden')}
+function setMsg(id,msg,ok=true){$(id).textContent=msg;$(id).className='msg '+(ok?'ok':'err')}
+function showPanel(id,b){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(b)b.classList.add('active')}
+function autoSlug(){if(!val('pSlug'))$('pSlug').value=slugify(val('pName'))}
 
-async function checkSession(){
-  const {data} = await sb.auth.getSession();
-  if(data.session) await enterApp(); else document.getElementById('loginView').classList.remove('hidden');
-}
+async function checkSession(){const {data}=await sb.auth.getSession();if(data.session)await enterApp()}
 async function signIn(){
-  const email=document.getElementById('email').value.trim(), password=document.getElementById('password').value;
-  const {error}=await sb.auth.signInWithPassword({email,password});
-  const m=document.getElementById('loginMsg');
-  if(error){m.className='err';m.textContent=error.message;return}
+  setMsg('loginMsg','Signing in…');
+  const {error}=await sb.auth.signInWithPassword({email:val('email'),password:val('password')});
+  if(error){setMsg('loginMsg',error.message,false);return}
   await enterApp();
 }
 async function enterApp(){
-  const {data,error}=await sb.from('admin_users').select('role').single();
-  if(error||!data){await sb.auth.signOut();document.getElementById('loginMsg').className='err';document.getElementById('loginMsg').textContent='This account is not authorized as admin.';return}
-  document.getElementById('loginView').classList.add('hidden');document.getElementById('appView').classList.remove('hidden');await loadAll();
+  const {data:{user}}=await sb.auth.getUser();
+  const {data,error}=await sb.from('admin_users').select('role').eq('user_id',user.id).single();
+  if(error||!data){setMsg('loginMsg','This account is not authorized as admin.',false);return}
+  $('loginView').classList.add('hidden');$('appView').classList.remove('hidden');await loadAll();
 }
 async function signOut(){await sb.auth.signOut();location.reload()}
-function showPanel(id,b){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(b)b.classList.add('active')}
-function toggle(id){document.getElementById(id).classList.toggle('hidden')}
-function esc(v){return String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
+
 async function loadAll(){
-  const [cats,ranges,products,suppliers,quotes,contact]=await Promise.all([
-    sb.from('categories').select('id,name,slug,code_prefix,parent_id').order('sort_order'),
-    sb.from('product_ranges').select('id,public_code,category_id,is_active').order('sort_order'),
-    sb.from('products').select('id,name,status,category_id,range_id').order('sort_order'),
-    sb.from('suppliers').select('id,internal_code,legal_name,contact_name').order('legal_name'),
-    sb.from('quote_requests').select('reference_no,company_name,contact_person,destination_country,status').order('created_at',{ascending:false}),
+  const [c,r,p,s,k,i,q,ct]=await Promise.all([
+    sb.from('categories').select('*').order('sort_order'),
+    sb.from('product_ranges').select('*').order('sort_order'),
+    sb.from('products').select('*').order('sort_order'),
+    sb.from('suppliers').select('*').order('legal_name'),
+    sb.from('product_skus').select('*').order('sort_order'),
+    sb.from('product_images').select('*').order('sort_order'),
+    sb.from('quote_requests').select('*').order('created_at',{ascending:false}),
     sb.from('contact_settings').select('*').eq('setting_key','default').single()
   ]);
-  window._cats=cats.data||[];window._ranges=ranges.data||[];
-  const catMap=Object.fromEntries(window._cats.map(x=>[x.id,x.name]));
-  const rangeMap=Object.fromEntries(window._ranges.map(x=>[x.id,x.public_code]));
-  document.getElementById('countProducts').textContent=(products.data||[]).length;
-  document.getElementById('countRanges').textContent=window._ranges.length;
-  document.getElementById('countQuotes').textContent=(quotes.data||[]).length;
-  document.getElementById('countSuppliers').textContent=(suppliers.data||[]).length;
-  const roots=window._cats.filter(x=>!x.parent_id);
-  document.getElementById('categoriesBody').innerHTML=roots.map(root=>{
-    const children=window._cats.filter(x=>x.parent_id===root.id);
-    return `<tr style="background:#eef3f7"><td><strong>${esc(root.name)}</strong></td><td>${esc(root.slug)}</td><td>—</td><td><strong>Main category</strong></td></tr>`+
-      children.map(x=>`<tr><td style="padding-left:32px">↳ ${esc(x.name)}</td><td>${esc(x.slug)}</td><td><strong>${esc(x.code_prefix||'')}</strong></td><td>${esc(root.name)}</td></tr>`).join('');
+  const errs=[c,r,p,s,k,i,q].filter(x=>x.error);if(errs.length){console.error(errs)}
+  cats=c.data||[];ranges=r.data||[];products=p.data||[];suppliers=s.data||[];skus=k.data||[];images=i.data||[];quotes=q.data||[];contact=ct.data||null;
+  renderAll();
+}
+
+function renderAll(){
+  const catMap=Object.fromEntries(cats.map(x=>[x.id,x.name]));
+  const rangeMap=Object.fromEntries(ranges.map(x=>[x.id,x.public_code]));
+  const supplierMap=Object.fromEntries(suppliers.map(x=>[x.id,x.legal_name]));
+  const productMap=Object.fromEntries(products.map(x=>[x.id,x.name]));
+  const skuMap=Object.fromEntries(skus.map(x=>[x.id,x.label||x.sku_code||'SKU']));
+  $('countProducts').textContent=products.length;$('countRanges').textContent=ranges.length;$('countQuotes').textContent=quotes.length;$('countSuppliers').textContent=suppliers.length;
+
+  const roots=cats.filter(x=>!x.parent_id);
+  $('categoriesBody').innerHTML=roots.map(root=>{
+    const children=cats.filter(x=>x.parent_id===root.id);
+    return '<tr class="parentrow"><td><strong>'+esc(root.name)+'</strong></td><td>'+esc(root.slug)+'</td><td>—</td><td><strong>Main category</strong></td></tr>'+
+      children.map(x=>'<tr><td class="indent">↳ '+esc(x.name)+'</td><td>'+esc(x.slug)+'</td><td><strong>'+esc(x.code_prefix||'')+'</strong></td><td>'+esc(root.name)+'</td></tr>').join('');
   }).join('');
-  document.getElementById('rangesBody').innerHTML=window._ranges.map(x=>`<tr><td>${esc(x.public_code)}</td><td>${esc(catMap[x.category_id]||'')}</td><td>${x.is_active?'Yes':'No'}</td></tr>`).join('');
-  document.getElementById('productsBody').innerHTML=(products.data||[]).map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(catMap[x.category_id]||'')}</td><td>${esc(rangeMap[x.range_id]||'')}</td><td>${esc(x.status)}</td></tr>`).join('');
-  document.getElementById('suppliersBody').innerHTML=(suppliers.data||[]).map(x=>`<tr><td>${esc(x.internal_code)}</td><td>${esc(x.legal_name)}</td><td>${esc(x.contact_name||'')}</td></tr>`).join('');
-  document.getElementById('quotesBody').innerHTML=(quotes.data||[]).map(x=>`<tr><td>${x.reference_no}</td><td>${esc(x.company_name||'')}</td><td>${esc(x.contact_person||'')}</td><td>${esc(x.destination_country||'')}</td><td>${esc(x.status)}</td></tr>`).join('');
-  const leaves=window._cats.filter(x=>x.parent_id);
-  document.getElementById('pCategory').innerHTML=leaves.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
-  document.getElementById('pRange').innerHTML=window._ranges.map(x=>`<option value="${x.id}">${esc(x.public_code)}</option>`).join('');
-  if(contact.data){document.getElementById('cPerson').value=contact.data.contact_person||'';document.getElementById('cTitle').value=contact.data.contact_title||'';document.getElementById('cWhatsapp').value=contact.data.whatsapp||'';document.getElementById('cEmail').value=contact.data.email||'';document.getElementById('cTemplate').value=contact.data.whatsapp_message_template||''}
+
+  $('suppliersBody').innerHTML=suppliers.map(x=>'<tr><td><span class="badge">'+esc(x.internal_code)+'</span></td><td>'+esc(x.legal_name)+'</td><td>'+esc(x.contact_name||'—')+'</td><td>'+esc(x.email||'—')+'<br>'+esc(x.whatsapp||'')+'</td><td>'+(x.is_active?'<span class="badge green">Active</span>':'Inactive')+'</td></tr>').join('');
+  $('rangesBody').innerHTML=ranges.map(x=>'<tr><td><span class="badge">'+esc(x.public_code)+'</span></td><td>'+esc(catMap[x.category_id]||'')+'</td><td>'+esc(supplierMap[x.supplier_id]||'')+'</td><td>'+(x.is_active?'Active':'Inactive')+'</td></tr>').join('');
+  $('productsBody').innerHTML=products.map(x=>'<tr><td><strong>'+esc(x.name)+'</strong><br><span class="small">'+esc(x.slug)+'</span></td><td>'+esc(catMap[x.category_id]||'')+'</td><td>'+esc(rangeMap[x.range_id]||'')+'</td><td><span class="badge">'+esc(x.status)+'</span></td><td><select onchange="updateProductStatus(\''+x.id+'\',this.value)"><option value="draft" '+(x.status==='draft'?'selected':'')+'>Draft</option><option value="published" '+(x.status==='published'?'selected':'')+'>Published</option><option value="archived" '+(x.status==='archived'?'selected':'')+'>Archived</option></select></td></tr>').join('');
+  $('skusBody').innerHTML=skus.map(x=>'<tr><td>'+esc(productMap[x.product_id]||'')+'</td><td>'+esc(x.sku_code||'—')+'<br><span class="small">'+esc(x.label||'')+'</span></td><td>'+esc(x.pack_weight??'—')+' '+esc(x.pack_weight_unit||'')+'</td><td>'+esc(x.packs_per_carton??'—')+'</td><td>'+[x.carton_length_cm,x.carton_width_cm,x.carton_height_cm].map(v=>v??'—').join(' × ')+' cm<br><span class="small">'+esc(x.carton_gross_weight_kg??'—')+' kg gross</span></td><td>'+(x.is_default?'Yes':'No')+'</td></tr>').join('');
+
+  $('imagesBody').innerHTML=images.map(x=>{
+    const pub=sb.storage.from('product-images').getPublicUrl(x.storage_path).data.publicUrl;
+    return '<tr><td><img class="thumb" src="'+esc(pub)+'" alt=""></td><td>'+esc(productMap[x.product_id]||'')+'</td><td>'+esc(skuMap[x.sku_id]||'—')+'</td><td class="small">'+esc(x.storage_path)+'</td><td>'+(x.is_primary?'Yes':'No')+'</td><td><button class="btn danger" onclick="deleteImage(\''+x.id+'\',\''+String(x.storage_path).replace(/'/g,"\\'")+'\')">Delete</button></td></tr>';
+  }).join('');
+
+  $('quotesBody').innerHTML=quotes.map(x=>'<tr><td>#'+x.reference_no+'</td><td>'+esc(x.company_name||'—')+'</td><td>'+esc(x.contact_person||'')+'<br><span class="small">'+esc(x.email||x.whatsapp||'')+'</span></td><td>'+esc(x.destination_country||'—')+' '+esc(x.destination_port||'')+'</td><td><span class="badge">'+esc(x.status)+'</span></td><td><select onchange="updateQuoteStatus(\''+x.id+'\',this.value)">'+['new','contacted','quoted','negotiation','won','lost'].map(st=>'<option '+(st===x.status?'selected':'')+' value="'+st+'">'+st+'</option>').join('')+'</select></td></tr>').join('');
+
+  const leaves=cats.filter(x=>x.parent_id);
+  const catOpts=leaves.map(x=>'<option value="'+x.id+'">'+esc(catMap[x.parent_id]+' → '+x.name)+'</option>').join('');
+  $('rCategory').innerHTML=catOpts;$('pCategory').innerHTML=catOpts;
+  $('rSupplier').innerHTML=suppliers.map(x=>'<option value="'+x.id+'">'+esc(x.internal_code+' — '+x.legal_name)+'</option>').join('');
+  const pOpts=products.map(x=>'<option value="'+x.id+'">'+esc(x.name)+'</option>').join('');
+  $('kProduct').innerHTML=pOpts;$('iProduct').innerHTML=pOpts;
+  filterRangesForProduct();filterImageSkus();
+
+  if(contact){$('cPerson').value=contact.contact_person||'';$('cTitle').value=contact.contact_title||'';$('cWhatsapp').value=contact.whatsapp||'';$('cEmail').value=contact.email||'';$('cPhone').value=contact.phone||'';$('cTemplate').value=contact.whatsapp_message_template||''}
+}
+
+function filterRangesForProduct(){
+  const cid=$('pCategory').value;
+  const opts=ranges.filter(x=>x.category_id===cid).map(x=>'<option value="'+x.id+'">'+esc(x.public_code)+'</option>').join('');
+  $('pRange').innerHTML=opts||'<option value="">Create a Product Range first</option>';
+}
+function filterImageSkus(){
+  const pid=$('iProduct').value;
+  $('iSku').innerHTML='<option value="">Product-level image</option>'+skus.filter(x=>x.product_id===pid).map(x=>'<option value="'+x.id+'">'+esc(x.label||x.sku_code||'SKU')+'</option>').join('');
+}
+
+async function createSupplier(){
+  if(!val('sCode')||!val('sName')){setMsg('supplierMsg','Internal code and legal name are required.',false);return}
+  const {error}=await sb.from('suppliers').insert({internal_code:val('sCode'),legal_name:val('sName'),contact_name:val('sContact')||null,phone:val('sPhone')||null,whatsapp:val('sWhatsapp')||null,email:val('sEmail')||null,website:val('sWebsite')||null,notes:val('sNotes')||null});
+  if(error){setMsg('supplierMsg',error.message,false);return}setMsg('supplierMsg','Supplier saved.');await loadAll();
+}
+async function createRange(){
+  if(!$('rCategory').value||!$('rSupplier').value||!val('rCode')){setMsg('rangeMsg','Category, supplier and public code are required.',false);return}
+  const {error}=await sb.from('product_ranges').insert({category_id:$('rCategory').value,supplier_id:$('rSupplier').value,public_code:val('rCode').toUpperCase(),sort_order:Number(val('rSort')||0)});
+  if(error){setMsg('rangeMsg',error.message,false);return}setMsg('rangeMsg','Product Range saved.');await loadAll();
 }
 async function createProduct(){
-  const payload={name:pName.value.trim(),slug:pSlug.value.trim(),category_id:pCategory.value,range_id:pRange.value,country_of_origin:pOrigin.value.trim()||'Iran',status:pStatus.value,description:pDescription.value.trim()||null};
-  const {error}=await sb.from('products').insert(payload);
-  productMsg.className=error?'err':'ok';productMsg.textContent=error?error.message:'Saved';if(!error){await loadAll();}
+  if(!val('pName')||!val('pSlug')||!$('pCategory').value||!$('pRange').value){setMsg('productMsg','Name, slug, category and range are required.',false);return}
+  const payload={name:val('pName'),slug:val('pSlug'),category_id:$('pCategory').value,range_id:$('pRange').value,country_of_origin:val('pOrigin')||'Iran',status:$('pStatus').value,description:val('pDescription')||null,packaging_type:val('pPackaging')||null,private_label:val('pPrivate')||'On Request',shelf_life:val('pShelf')||null,moq:val('pMoq')||null,lead_time:val('pLead')||null,flavors_types:arr('pFlavors'),certificates:arr('pCerts')};
+  const {error}=await sb.from('products').insert(payload);if(error){setMsg('productMsg',error.message,false);return}setMsg('productMsg','Product saved.');await loadAll();
 }
+async function updateProductStatus(id,status){const {error}=await sb.from('products').update({status}).eq('id',id);if(error)alert(error.message);else await loadAll()}
+
+async function createSku(){
+  if(!$('kProduct').value){setMsg('skuMsg','Choose a product.',false);return}
+  const payload={product_id:$('kProduct').value,sku_code:val('kCode')||null,label:val('kLabel')||null,pack_weight:num('kWeight'),pack_weight_unit:$('kUnit').value,packs_per_carton:num('kPacks'),pack_length_cm:num('kPL'),pack_width_cm:num('kPW'),pack_height_cm:num('kPH'),carton_length_cm:num('kCL'),carton_width_cm:num('kCW'),carton_height_cm:num('kCH'),carton_gross_weight_kg:num('kGross'),is_default:$('kDefault').value==='true'};
+  const {error}=await sb.from('product_skus').insert(payload);if(error){setMsg('skuMsg',error.message,false);return}setMsg('skuMsg','SKU saved.');await loadAll();
+}
+
+async function uploadImage(){
+  const pid=$('iProduct').value,file=$('iFile').files[0];if(!pid||!file){setMsg('imageMsg','Choose a product and image file.',false);return}
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase();const path=pid+'/'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
+  setMsg('imageMsg','Uploading…');
+  const up=await sb.storage.from('product-images').upload(path,file,{upsert:false,contentType:file.type||undefined});
+  if(up.error){setMsg('imageMsg',up.error.message,false);return}
+  const primary=$('iPrimary').value==='true';
+  if(primary)await sb.from('product_images').update({is_primary:false}).eq('product_id',pid);
+  const {error}=await sb.from('product_images').insert({product_id:pid,sku_id:$('iSku').value||null,storage_path:path,alt_text:val('iAlt')||null,is_primary:primary});
+  if(error){await sb.storage.from('product-images').remove([path]);setMsg('imageMsg',error.message,false);return}
+  setMsg('imageMsg','Image uploaded.');$('iFile').value='';await loadAll();
+}
+async function deleteImage(id,path){
+  if(!confirm('Delete this image?'))return;
+  const rm=await sb.storage.from('product-images').remove([path]);if(rm.error){alert(rm.error.message);return}
+  const {error}=await sb.from('product_images').delete().eq('id',id);if(error)alert(error.message);else await loadAll();
+}
+
+async function updateQuoteStatus(id,status){const {error}=await sb.from('quote_requests').update({status}).eq('id',id);if(error)alert(error.message);else await loadAll()}
 async function saveContact(){
-  const payload={contact_person:cPerson.value.trim(),contact_title:cTitle.value.trim(),whatsapp:cWhatsapp.value.trim(),email:cEmail.value.trim(),whatsapp_message_template:cTemplate.value};
-  const {error}=await sb.from('contact_settings').update(payload).eq('setting_key','default');
-  contactMsg.className=error?'err':'ok';contactMsg.textContent=error?error.message:'Saved';
+  const payload={contact_person:val('cPerson')||null,contact_title:val('cTitle')||null,whatsapp:val('cWhatsapp')||null,email:val('cEmail')||null,phone:val('cPhone')||null,whatsapp_message_template:val('cTemplate')};
+  const {error}=await sb.from('contact_settings').update(payload).eq('setting_key','default');if(error){setMsg('contactMsg',error.message,false);return}setMsg('contactMsg','Settings saved.');await loadAll();
 }
 checkSession();
 </script>
-</body></html>
+</body>
+</html>
