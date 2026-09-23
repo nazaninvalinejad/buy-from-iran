@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Buy From Iran — Live Catalog</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#F5F7FA;color:#1F2937}header{background:white;padding:18px 24px;border-bottom:1px solid #E3E8EE}header b{color:#123C56;font-size:22px}
+main{max-width:1200px;margin:auto;padding:28px}.group{margin:24px 0}.range{display:inline-block;background:#EAF2FF;color:#1A5FD4;padding:5px 10px;border-radius:999px;font-weight:800;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:white;border:1px solid #E3E8EE;border-radius:14px;padding:16px}.muted{color:#6B7280}button{border:0;border-radius:8px;padding:9px 11px;font-weight:700;cursor:pointer}.primary{background:#2B7FFF;color:white}.wa{background:#EAF8EF;color:#18794E}.msg{padding:12px;background:#FFF8E7;border:1px solid #F1DFAF;border-radius:10px}
+@media(max-width:800px){.grid{grid-template-columns:1fr 1fr}}@media(max-width:550px){.grid{grid-template-columns:1fr}}
+</style></head>
+<body><header><b>Buy From Iran</b> — Live Catalog Test</header><main>
+<div class="msg">This page reads only published products from the public Supabase catalog view. Supplier identity is not included.</div>
+<div id="app"><p class="muted">Loading…</p></div>
+</main>
+<script>
+const sb=supabase.createClient(window.BFI_SUPABASE.url,window.BFI_SUPABASE.publishableKey);
+let contact={};
+function esc(v){return String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
+async function load(){
+ const [catalogRes,contactRes]=await Promise.all([
+   sb.from('public_product_catalog').select('*').order('parent_category_name').order('category_name').order('range_code'),
+   sb.from('contact_settings').select('*').eq('setting_key','default').single()
+ ]);
+ if(catalogRes.error){app.innerHTML=`<p style="color:#b42318">${esc(catalogRes.error.message)}</p>`;return}
+ contact=contactRes.data||{};
+ const rows=catalogRes.data||[];
+ if(!rows.length){app.innerHTML='<p class="muted">No published products yet. Add a real product from Admin and publish it.</p>';return}
+ const grouped={};
+ rows.forEach(x=>{const k=[x.parent_category_name||'',x.category_name,x.range_code].join('||');(grouped[k]??=[]).push(x)});
+ app.innerHTML=Object.entries(grouped).map(([k,items])=>{const [parent,cat,range]=k.split('||');return `<section class="group"><div class="muted">${esc(parent)} → ${esc(cat)}</div><h2>${esc(cat)} <span class="range">${esc(range)}</span></h2><div class="grid">${items.map(p=>`<article class="card"><h3>${esc(p.product_name)}</h3><p class="muted">${esc(p.description||'Product details available on request.')}</p><button class="primary">Add to Quote</button> <button class="wa" onclick="wa('${String(p.product_name).replace(/'/g,"\\'")}','${String(p.range_code).replace(/'/g,"\\'")}')">WhatsApp</button></article>`).join('')}</div></section>`}).join('')
+}
+function wa(name,range){
+ if(!contact.whatsapp){alert('WhatsApp number is not configured yet in Admin → Contact Settings.');return}
+ let msg=(contact.whatsapp_message_template||'Hello, I am interested in {product_name} — Product Range {range_code}.').replace('{product_name}',name).replace('{range_code}',range);
+ window.open(`https://wa.me/${contact.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`,'_blank')
+}
+load();
+</script></body></html>
