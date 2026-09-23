@@ -139,7 +139,12 @@ async function loadAll(){
   document.getElementById('countRanges').textContent=window._ranges.length;
   document.getElementById('countQuotes').textContent=(quotes.data||[]).length;
   document.getElementById('countSuppliers').textContent=(suppliers.data||[]).length;
-  document.getElementById('categoriesBody').innerHTML=window._cats.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.slug)}</td><td>${esc(x.code_prefix||'')}</td><td>${esc(catMap[x.parent_id]||'—')}</td></tr>`).join('');
+  const roots=window._cats.filter(x=>!x.parent_id);
+  document.getElementById('categoriesBody').innerHTML=roots.map(root=>{
+    const children=window._cats.filter(x=>x.parent_id===root.id);
+    return `<tr style="background:#eef3f7"><td><strong>${esc(root.name)}</strong></td><td>${esc(root.slug)}</td><td>—</td><td><strong>Main category</strong></td></tr>`+
+      children.map(x=>`<tr><td style="padding-left:32px">↳ ${esc(x.name)}</td><td>${esc(x.slug)}</td><td><strong>${esc(x.code_prefix||'')}</strong></td><td>${esc(root.name)}</td></tr>`).join('');
+  }).join('');
   document.getElementById('rangesBody').innerHTML=window._ranges.map(x=>`<tr><td>${esc(x.public_code)}</td><td>${esc(catMap[x.category_id]||'')}</td><td>${x.is_active?'Yes':'No'}</td></tr>`).join('');
   document.getElementById('productsBody').innerHTML=(products.data||[]).map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(catMap[x.category_id]||'')}</td><td>${esc(rangeMap[x.range_id]||'')}</td><td>${esc(x.status)}</td></tr>`).join('');
   document.getElementById('suppliersBody').innerHTML=(suppliers.data||[]).map(x=>`<tr><td>${esc(x.internal_code)}</td><td>${esc(x.legal_name)}</td><td>${esc(x.contact_name||'')}</td></tr>`).join('');
