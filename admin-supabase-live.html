@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Buy From Iran — Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<style>
+:root{--navy:#123C56;--blue:#2B7FFF;--bg:#F5F7FA;--line:#E3E8EE;--muted:#6B7280;--green:#18794E;--red:#B42318}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#1F2937}
+.hidden{display:none!important}.center{min-height:100vh;display:grid;place-items:center;padding:24px}
+.login{width:min(420px,100%);background:white;border:1px solid var(--line);border-radius:16px;padding:24px}
+input,select,textarea{width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:9px;font:inherit}
+label{font-size:13px;font-weight:700;color:#45515c}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.btn{border:0;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer}.primary{background:var(--blue);color:white}.ghost{background:#EEF2F6}
+.err{color:var(--red);font-size:13px}.ok{color:var(--green);font-size:13px}
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}aside{background:#0A2535;color:white;padding:22px 14px}
+.brand{font-weight:800;font-size:20px;margin:0 8px 24px}.nav button{width:100%;text-align:left;border:0;background:transparent;color:#cbd5df;padding:11px;border-radius:9px;cursor:pointer}
+.nav button.active,.nav button:hover{background:#ffffff14;color:white}main{padding:28px}h1,h2,h3{color:var(--navy)}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.card{background:white;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+table{width:100%;border-collapse:collapse;background:white}th,td{padding:11px;border-bottom:1px solid var(--line);font-size:13px;text-align:left}th{background:#F8FAFC;color:var(--muted)}
+.panel{display:none}.panel.active{display:block}.small{font-size:12px;color:var(--muted)}
+@media(max-width:800px){.layout{grid-template-columns:1fr}aside{display:none}.grid{grid-template-columns:1fr}main{padding:16px}}
+</style>
+</head>
+<body>
+<div id="loginView" class="center">
+  <div class="login">
+    <h2>Buy From Iran Admin</h2>
+    <p class="small">Sign in with the Supabase Auth user you created.</p>
+    <div class="field"><label>Email</label><input id="email" type="email"></div>
+    <div class="field"><label>Password</label><input id="password" type="password"></div>
+    <button class="btn primary" onclick="signIn()">Sign in</button>
+    <p id="loginMsg"></p>
+  </div>
+</div>
+
+<div id="appView" class="layout hidden">
+<aside>
+  <div class="brand">Buy From Iran<br><span class="small" style="color:#93a7b5">ADMIN</span></div>
+  <div class="nav">
+    <button class="active" onclick="showPanel('dashboard',this)">Dashboard</button>
+    <button onclick="showPanel('products',this)">Products</button>
+    <button onclick="showPanel('categories',this)">Categories</button>
+    <button onclick="showPanel('ranges',this)">Product Ranges</button>
+    <button onclick="showPanel('suppliers',this)">Suppliers — Internal</button>
+    <button onclick="showPanel('quotes',this)">Quote Requests</button>
+    <button onclick="showPanel('contact',this)">Contact Settings</button>
+    <button onclick="signOut()">Sign out</button>
+  </div>
+</aside>
+<main>
+<section id="dashboard" class="panel active">
+  <div class="top"><h1>Dashboard</h1><button class="btn primary" onclick="loadAll()">Refresh</button></div>
+  <div class="grid">
+    <div class="card"><b id="countProducts">—</b><div class="small">Products</div></div>
+    <div class="card"><b id="countRanges">—</b><div class="small">Product Ranges</div></div>
+    <div class="card"><b id="countQuotes">—</b><div class="small">Quote Requests</div></div>
+    <div class="card"><b id="countSuppliers">—</b><div class="small">Internal Suppliers</div></div>
+  </div>
+</section>
+
+<section id="products" class="panel">
+  <div class="top"><h1>Products</h1><button class="btn primary" onclick="toggle('productForm')">+ Add Product</button></div>
+  <div id="productForm" class="card hidden">
+    <div class="grid">
+      <div class="field"><label>Name</label><input id="pName"></div>
+      <div class="field"><label>Slug</label><input id="pSlug"></div>
+      <div class="field"><label>Category</label><select id="pCategory"></select></div>
+      <div class="field"><label>Product Range</label><select id="pRange"></select></div>
+      <div class="field"><label>Country of Origin</label><input id="pOrigin" value="Iran"></div>
+      <div class="field"><label>Status</label><select id="pStatus"><option>draft</option><option>published</option><option>archived</option></select></div>
+    </div>
+    <div class="field"><label>Description</label><textarea id="pDescription" rows="3"></textarea></div>
+    <button class="btn primary" onclick="createProduct()">Save Product</button>
+    <span id="productMsg"></span>
+  </div>
+  <div class="card"><table><thead><tr><th>Product</th><th>Category</th><th>Range</th><th>Status</th></tr></thead><tbody id="productsBody"></tbody></table></div>
+</section>
+
+<section id="categories" class="panel"><div class="top"><h1>Categories</h1></div><div class="card"><table><thead><tr><th>Name</th><th>Slug</th><th>Prefix</th><th>Parent</th></tr></thead><tbody id="categoriesBody"></tbody></table></div></section>
+<section id="ranges" class="panel"><div class="top"><h1>Product Ranges</h1></div><div class="card"><table><thead><tr><th>Code</th><th>Category</th><th>Active</th></tr></thead><tbody id="rangesBody"></tbody></table></div></section>
+<section id="suppliers" class="panel"><div class="top"><h1>Suppliers — Internal Only</h1></div><div class="card"><table><thead><tr><th>Code</th><th>Legal Name</th><th>Contact</th></tr></thead><tbody id="suppliersBody"></tbody></table></div></section>
+<section id="quotes" class="panel"><div class="top"><h1>Quote Requests</h1></div><div class="card"><table><thead><tr><th>Ref</th><th>Company</th><th>Contact</th><th>Destination</th><th>Status</th></tr></thead><tbody id="quotesBody"></tbody></table></div></section>
+
+<section id="contact" class="panel">
+  <div class="top"><h1>Contact Settings</h1></div>
+  <div class="card">
+    <div class="grid">
+      <div class="field"><label>Contact Person</label><input id="cPerson"></div>
+      <div class="field"><label>Contact Title</label><input id="cTitle"></div>
+      <div class="field"><label>WhatsApp</label><input id="cWhatsapp" placeholder="+..."></div>
+      <div class="field"><label>Email</label><input id="cEmail"></div>
+    </div>
+    <div class="field"><label>WhatsApp Message Template</label><textarea id="cTemplate" rows="3"></textarea></div>
+    <button class="btn primary" onclick="saveContact()">Save Settings</button>
+    <span id="contactMsg"></span>
+  </div>
+</section>
+</main></div>
+
+<script>
+const sb = supabase.createClient(window.BFI_SUPABASE.url, window.BFI_SUPABASE.publishableKey);
+
+async function checkSession(){
+  const {data} = await sb.auth.getSession();
+  if(data.session) await enterApp(); else document.getElementById('loginView').classList.remove('hidden');
+}
+async function signIn(){
+  const email=document.getElementById('email').value.trim(), password=document.getElementById('password').value;
+  const {error}=await sb.auth.signInWithPassword({email,password});
+  const m=document.getElementById('loginMsg');
+  if(error){m.className='err';m.textContent=error.message;return}
+  await enterApp();
+}
+async function enterApp(){
+  const {data,error}=await sb.from('admin_users').select('role').single();
+  if(error||!data){await sb.auth.signOut();document.getElementById('loginMsg').className='err';document.getElementById('loginMsg').textContent='This account is not authorized as admin.';return}
+  document.getElementById('loginView').classList.add('hidden');document.getElementById('appView').classList.remove('hidden');await loadAll();
+}
+async function signOut(){await sb.auth.signOut();location.reload()}
+function showPanel(id,b){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(b)b.classList.add('active')}
+function toggle(id){document.getElementById(id).classList.toggle('hidden')}
+function esc(v){return String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
+async function loadAll(){
+  const [cats,ranges,products,suppliers,quotes,contact]=await Promise.all([
+    sb.from('categories').select('id,name,slug,code_prefix,parent_id').order('sort_order'),
+    sb.from('product_ranges').select('id,public_code,category_id,is_active').order('sort_order'),
+    sb.from('products').select('id,name,status,category_id,range_id').order('sort_order'),
+    sb.from('suppliers').select('id,internal_code,legal_name,contact_name').order('legal_name'),
+    sb.from('quote_requests').select('reference_no,company_name,contact_person,destination_country,status').order('created_at',{ascending:false}),
+    sb.from('contact_settings').select('*').eq('setting_key','default').single()
+  ]);
+  window._cats=cats.data||[];window._ranges=ranges.data||[];
+  const catMap=Object.fromEntries(window._cats.map(x=>[x.id,x.name]));
+  const rangeMap=Object.fromEntries(window._ranges.map(x=>[x.id,x.public_code]));
+  document.getElementById('countProducts').textContent=(products.data||[]).length;
+  document.getElementById('countRanges').textContent=window._ranges.length;
+  document.getElementById('countQuotes').textContent=(quotes.data||[]).length;
+  document.getElementById('countSuppliers').textContent=(suppliers.data||[]).length;
+  document.getElementById('categoriesBody').innerHTML=window._cats.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.slug)}</td><td>${esc(x.code_prefix||'')}</td><td>${esc(catMap[x.parent_id]||'—')}</td></tr>`).join('');
+  document.getElementById('rangesBody').innerHTML=window._ranges.map(x=>`<tr><td>${esc(x.public_code)}</td><td>${esc(catMap[x.category_id]||'')}</td><td>${x.is_active?'Yes':'No'}</td></tr>`).join('');
+  document.getElementById('productsBody').innerHTML=(products.data||[]).map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(catMap[x.category_id]||'')}</td><td>${esc(rangeMap[x.range_id]||'')}</td><td>${esc(x.status)}</td></tr>`).join('');
+  document.getElementById('suppliersBody').innerHTML=(suppliers.data||[]).map(x=>`<tr><td>${esc(x.internal_code)}</td><td>${esc(x.legal_name)}</td><td>${esc(x.contact_name||'')}</td></tr>`).join('');
+  document.getElementById('quotesBody').innerHTML=(quotes.data||[]).map(x=>`<tr><td>${x.reference_no}</td><td>${esc(x.company_name||'')}</td><td>${esc(x.contact_person||'')}</td><td>${esc(x.destination_country||'')}</td><td>${esc(x.status)}</td></tr>`).join('');
+  const leaves=window._cats.filter(x=>x.parent_id);
+  document.getElementById('pCategory').innerHTML=leaves.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
+  document.getElementById('pRange').innerHTML=window._ranges.map(x=>`<option value="${x.id}">${esc(x.public_code)}</option>`).join('');
+  if(contact.data){document.getElementById('cPerson').value=contact.data.contact_person||'';document.getElementById('cTitle').value=contact.data.contact_title||'';document.getElementById('cWhatsapp').value=contact.data.whatsapp||'';document.getElementById('cEmail').value=contact.data.email||'';document.getElementById('cTemplate').value=contact.data.whatsapp_message_template||''}
+}
+async function createProduct(){
+  const payload={name:pName.value.trim(),slug:pSlug.value.trim(),category_id:pCategory.value,range_id:pRange.value,country_of_origin:pOrigin.value.trim()||'Iran',status:pStatus.value,description:pDescription.value.trim()||null};
+  const {error}=await sb.from('products').insert(payload);
+  productMsg.className=error?'err':'ok';productMsg.textContent=error?error.message:'Saved';if(!error){await loadAll();}
+}
+async function saveContact(){
+  const payload={contact_person:cPerson.value.trim(),contact_title:cTitle.value.trim(),whatsapp:cWhatsapp.value.trim(),email:cEmail.value.trim(),whatsapp_message_template:cTemplate.value};
+  const {error}=await sb.from('contact_settings').update(payload).eq('setting_key','default');
+  contactMsg.className=error?'err':'ok';contactMsg.textContent=error?error.message:'Saved';
+}
+checkSession();
+</script>
+</body></html>
