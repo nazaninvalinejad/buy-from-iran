@@ -232,6 +232,10 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
   </div>
   <div class="formgrid two">
     <div class="card">
+      <h3 style="margin-top:0;color:#123c56">Countries</h3>
+      <table><thead><tr><th>Country</th><th>Views</th></tr></thead><tbody id="countriesBody"></tbody></table>
+    </div>
+    <div class="card">
       <h3 style="margin-top:0;color:#123c56">Browsers</h3>
       <table><thead><tr><th>Browser</th><th>Views</th></tr></thead><tbody id="browsersBody"></tbody></table>
     </div>
@@ -584,6 +588,7 @@ function renderAnalytics(){
   const rows=(pairs)=>pairs.slice(0,10).map(([k,v])=>'<tr><td>'+esc(k)+'</td><td><strong>'+v+'</strong></td></tr>').join('')||'<tr><td colspan="2" class="small">No data yet</td></tr>';
   if($('topPagesBody'))$('topPagesBody').innerHTML=rows(countBy(analyticsEvents.filter(x=>x.event_type==='page_view'),'page_path','/'));
   if($('devicesBody'))$('devicesBody').innerHTML=rows(countBy(analyticsEvents,'device_type','Unknown'));
+  if($('countriesBody'))$('countriesBody').innerHTML=rows(countBy(analyticsEvents,'country','Unknown'));
   if($('browsersBody'))$('browsersBody').innerHTML=rows(countBy(analyticsEvents,'browser','Unknown'));
   if($('referrersBody'))$('referrersBody').innerHTML=rows(countBy(analyticsEvents,'referrer','Direct / Unknown'));
 }
