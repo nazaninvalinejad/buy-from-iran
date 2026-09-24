@@ -44,14 +44,29 @@
     ? document.referrer.slice(0,500)
     : null;
 
-  client.from('analytics_events').insert({
-    event_type:'page_view',
-    visitor_id:visitorId,
-    session_id:sessionId,
-    page_path:location.pathname+(location.search||''),
-    page_title:document.title||null,
-    referrer:cleanReferrer,
-    device_type:deviceType(),
-    browser:browserName()
-  }).then(({error})=>{ if(error) console.debug('Analytics event not recorded'); });
+  async function recordPageView(){
+    let country=null;
+    try{
+      const response=await fetch('/api/geo',{cache:'no-store'});
+      if(response.ok){
+        const geo=await response.json();
+        country=geo && geo.country ? String(geo.country).slice(0,10) : null;
+      }
+    }catch(_){}
+
+    const {error}=await client.from('analytics_events').insert({
+      event_type:'page_view',
+      visitor_id:visitorId,
+      session_id:sessionId,
+      page_path:location.pathname+(location.search||''),
+      page_title:document.title||null,
+      referrer:cleanReferrer,
+      device_type:deviceType(),
+      browser:browserName(),
+      country
+    });
+    if(error) console.debug('Analytics event not recorded');
+  }
+
+  recordPageView();
 })();
