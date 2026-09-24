@@ -50,6 +50,7 @@ function addToQuote(btn){
 function wa(name,range){
  if(!contact.whatsapp){alert('WhatsApp number is not configured yet in Admin → Contact Settings.');return}
  let msg=(contact.whatsapp_message_template||'Hello, I am interested in {product_name} — Product Range {range_code}.').replace('{product_name}',name).replace('{range_code}',range);
+ if(window.BFITrackLead)window.BFITrackLead('whatsapp',{p_subject:'Catalog WhatsApp click',p_product_name:name||null,p_range_code:range||null});
  window.open(`https://wa.me/${contact.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`,'_blank')
 }
 load();
