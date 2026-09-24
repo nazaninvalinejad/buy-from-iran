@@ -52,6 +52,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
     <button onclick="showPanel('ranges',this)">Product Ranges</button>
     <button onclick="showPanel('suppliers',this)">Suppliers — Internal</button>
     <button onclick="showPanel('quotes',this)">Quote Requests</button>
+    <button onclick="showPanel('analytics',this)">Analytics</button>
     <button onclick="showPanel('contact',this)">Contact Settings</button>
     <button onclick="signOut()">Sign out</button>
   </div>
@@ -65,6 +66,9 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
     <div class="card"><b class="stat" id="countRanges">—</b><div class="small">Product Ranges</div></div>
     <div class="card"><b class="stat" id="countQuotes">—</b><div class="small">Quote Requests</div></div>
     <div class="card"><b class="stat" id="countSuppliers">—</b><div class="small">Internal Suppliers</div></div>
+    <div class="card"><b class="stat" id="countVisitors">—</b><div class="small">Visitors (30d)</div></div>
+    <div class="card"><b class="stat" id="countPageViews">—</b><div class="small">Page Views (30d)</div></div>
+    <div class="card"><b class="stat" id="quoteConversion">—</b><div class="small">Visitor → Quote (30d)</div></div>
   </div>
 </section>
 
@@ -207,6 +211,37 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
   <div class="card"><table><thead><tr><th>Ref</th><th>Company</th><th>Contact</th><th>Phone / WhatsApp</th><th>Product / Qty</th><th>Destination</th><th>Incoterm</th><th>Status</th><th>Action</th></tr></thead><tbody id="quotesBody"></tbody></table></div>
 </section>
 
+<section id="analytics" class="panel">
+  <div class="top"><h1>Analytics</h1><button class="btn secondary" onclick="loadAnalytics()">Refresh</button></div>
+  <div class="tabs-note">First-party anonymous analytics from Supabase. Vercel Analytics remains enabled as the external traffic source of truth.</div>
+  <div class="grid">
+    <div class="card"><b class="stat" id="aVisitors">—</b><div class="small">Unique Visitors (30d)</div></div>
+    <div class="card"><b class="stat" id="aViews">—</b><div class="small">Page Views (30d)</div></div>
+    <div class="card"><b class="stat" id="aSessions">—</b><div class="small">Sessions (30d)</div></div>
+    <div class="card"><b class="stat" id="aConversion">—</b><div class="small">Visitor → Quote (30d)</div></div>
+  </div>
+  <div class="formgrid two">
+    <div class="card">
+      <h3 style="margin-top:0;color:#123c56">Top Pages</h3>
+      <table><thead><tr><th>Page</th><th>Views</th></tr></thead><tbody id="topPagesBody"></tbody></table>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0;color:#123c56">Devices</h3>
+      <table><thead><tr><th>Device</th><th>Views</th></tr></thead><tbody id="devicesBody"></tbody></table>
+    </div>
+  </div>
+  <div class="formgrid two">
+    <div class="card">
+      <h3 style="margin-top:0;color:#123c56">Browsers</h3>
+      <table><thead><tr><th>Browser</th><th>Views</th></tr></thead><tbody id="browsersBody"></tbody></table>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0;color:#123c56">Referrers</h3>
+      <table><thead><tr><th>Source</th><th>Views</th></tr></thead><tbody id="referrersBody"></tbody></table>
+    </div>
+  </div>
+</section>
+
 <section id="contact" class="panel">
   <div class="top"><h1>Contact Settings</h1></div>
   <div class="card">
@@ -226,7 +261,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
 
 <script>
 const sb=supabase.createClient(window.BFI_SUPABASE.url,window.BFI_SUPABASE.publishableKey);
-let cats=[],ranges=[],products=[],suppliers=[],skus=[],images=[],quotes=[],quoteItems=[],contact=null;
+let cats=[],ranges=[],products=[],suppliers=[],skus=[],images=[],quotes=[],quoteItems=[],analyticsEvents=[],contact=null;
 let bulkRows=[];
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
@@ -255,7 +290,8 @@ async function enterApp(){
 async function signOut(){await sb.auth.signOut();location.reload()}
 
 async function loadAll(){
-  const [c,r,p,s,k,i,q,qi,ct]=await Promise.all([
+  const since30=new Date(Date.now()-30*24*60*60*1000).toISOString();
+  const [c,r,p,s,k,i,q,qi,ae,ct]=await Promise.all([
     sb.from('categories').select('*').order('sort_order'),
     sb.from('product_ranges').select('*').order('sort_order'),
     sb.from('products').select('*').order('sort_order'),
@@ -264,10 +300,11 @@ async function loadAll(){
     sb.from('product_images').select('*').order('sort_order'),
     sb.from('quote_requests').select('*').order('created_at',{ascending:false}),
     sb.from('quote_request_items').select('*').order('created_at'),
+    sb.from('analytics_events').select('*').gte('created_at',since30).order('created_at',{ascending:false}),
     sb.from('contact_settings').select('*').eq('setting_key','default').single()
   ]);
-  const errs=[c,r,p,s,k,i,q,qi].filter(x=>x.error);if(errs.length){console.error(errs)}
-  cats=c.data||[];ranges=r.data||[];products=p.data||[];suppliers=s.data||[];skus=k.data||[];images=i.data||[];quotes=q.data||[];quoteItems=qi.data||[];contact=ct.data||null;
+  const errs=[c,r,p,s,k,i,q,qi,ae].filter(x=>x.error);if(errs.length){console.error(errs)}
+  cats=c.data||[];ranges=r.data||[];products=p.data||[];suppliers=s.data||[];skus=k.data||[];images=i.data||[];quotes=q.data||[];quoteItems=qi.data||[];analyticsEvents=ae.data||[];contact=ct.data||null;
   renderAll();
 }
 
@@ -278,6 +315,7 @@ function renderAll(){
   const productMap=Object.fromEntries(products.map(x=>[x.id,x.name]));
   const skuMap=Object.fromEntries(skus.map(x=>[x.id,x.label||x.sku_code||'SKU']));
   $('countProducts').textContent=products.length;$('countRanges').textContent=ranges.length;$('countQuotes').textContent=quotes.length;$('countSuppliers').textContent=suppliers.length;
+  renderAnalytics();
 
   const roots=cats.filter(x=>!x.parent_id);
   $('categoriesBody').innerHTML=roots.map(root=>{
@@ -521,6 +559,39 @@ async function runBulkImport(){
     setMsg('bulkMsg','Bulk import complete: '+ok+' row(s) imported successfully.');
     alert('Bulk import complete: '+ok+' row(s) imported successfully.');
   }
+}
+
+
+function countBy(arr,key,emptyLabel='Direct / Unknown'){
+  const m={};arr.forEach(x=>{const v=(x[key]||emptyLabel);m[v]=(m[v]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1]);
+}
+function renderAnalytics(){
+  const visitors=new Set(analyticsEvents.map(x=>x.visitor_id)).size;
+  const sessions=new Set(analyticsEvents.map(x=>x.session_id)).size;
+  const views=analyticsEvents.filter(x=>x.event_type==='page_view').length;
+  const since30=Date.now()-30*24*60*60*1000;
+  const recentQuotes=quotes.filter(x=>new Date(x.created_at).getTime()>=since30).length;
+  const conv=visitors?((recentQuotes/visitors)*100).toFixed(1)+'%':'—';
+
+  if($('countVisitors'))$('countVisitors').textContent=visitors;
+  if($('countPageViews'))$('countPageViews').textContent=views;
+  if($('quoteConversion'))$('quoteConversion').textContent=conv;
+  if($('aVisitors'))$('aVisitors').textContent=visitors;
+  if($('aViews'))$('aViews').textContent=views;
+  if($('aSessions'))$('aSessions').textContent=sessions;
+  if($('aConversion'))$('aConversion').textContent=conv;
+
+  const rows=(pairs)=>pairs.slice(0,10).map(([k,v])=>'<tr><td>'+esc(k)+'</td><td><strong>'+v+'</strong></td></tr>').join('')||'<tr><td colspan="2" class="small">No data yet</td></tr>';
+  if($('topPagesBody'))$('topPagesBody').innerHTML=rows(countBy(analyticsEvents.filter(x=>x.event_type==='page_view'),'page_path','/'));
+  if($('devicesBody'))$('devicesBody').innerHTML=rows(countBy(analyticsEvents,'device_type','Unknown'));
+  if($('browsersBody'))$('browsersBody').innerHTML=rows(countBy(analyticsEvents,'browser','Unknown'));
+  if($('referrersBody'))$('referrersBody').innerHTML=rows(countBy(analyticsEvents,'referrer','Direct / Unknown'));
+}
+async function loadAnalytics(){
+  const since30=new Date(Date.now()-30*24*60*60*1000).toISOString();
+  const {data,error}=await sb.from('analytics_events').select('*').gte('created_at',since30).order('created_at',{ascending:false});
+  if(error){alert(error.message);return}
+  analyticsEvents=data||[];renderAnalytics();
 }
 
 async function createSupplier(){
