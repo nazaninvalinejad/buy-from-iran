@@ -52,6 +52,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
     <button onclick="showPanel('ranges',this)">Product Ranges</button>
     <button onclick="showPanel('suppliers',this)">Suppliers — Internal</button>
     <button onclick="showPanel('quotes',this)">Quote Requests</button>
+    <button onclick="showPanel('leads',this)">Leads / CRM</button>
     <button onclick="showPanel('analytics',this)">Analytics</button>
     <button onclick="showPanel('contact',this)">Contact Settings</button>
     <button onclick="signOut()">Sign out</button>
@@ -65,6 +66,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
     <div class="card"><b class="stat" id="countProducts">—</b><div class="small">Products</div></div>
     <div class="card"><b class="stat" id="countRanges">—</b><div class="small">Product Ranges</div></div>
     <div class="card"><b class="stat" id="countQuotes">—</b><div class="small">Quote Requests</div></div>
+    <div class="card"><b class="stat" id="countLeads">—</b><div class="small">Leads</div></div>
     <div class="card"><b class="stat" id="countSuppliers">—</b><div class="small">Internal Suppliers</div></div>
     <div class="card"><b class="stat" id="countVisitors">—</b><div class="small">Visitors (30d)</div></div>
     <div class="card"><b class="stat" id="countPageViews">—</b><div class="small">Page Views (30d)</div></div>
@@ -211,6 +213,17 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
   <div class="card"><table><thead><tr><th>Ref</th><th>Company</th><th>Contact</th><th>Phone / WhatsApp</th><th>Product / Qty</th><th>Destination</th><th>Incoterm</th><th>Status</th><th>Action</th></tr></thead><tbody id="quotesBody"></tbody></table></div>
 </section>
 
+<section id="leads" class="panel">
+  <div class="top"><h1>Leads / CRM</h1><button class="btn secondary" onclick="loadAll()">Refresh</button></div>
+  <div class="tabs-note">Leads from Contact forms, Quote Requests, WhatsApp clicks and chatbot conversations are collected here. Anonymous clicks remain anonymous until the visitor shares contact details.</div>
+  <div class="card" style="overflow:auto">
+    <table>
+      <thead><tr><th>Ref</th><th>Source</th><th>Contact</th><th>Phone</th><th>Interest</th><th>Page</th><th>Created</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="leadsBody"></tbody>
+    </table>
+  </div>
+</section>
+
 <section id="analytics" class="panel">
   <div class="top"><h1>Analytics</h1><button class="btn secondary" onclick="loadAnalytics()">Refresh</button></div>
   <div class="tabs-note">First-party anonymous analytics from Supabase. Vercel Analytics remains enabled as the external traffic source of truth.</div>
@@ -265,7 +278,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
 
 <script>
 const sb=supabase.createClient(window.BFI_SUPABASE.url,window.BFI_SUPABASE.publishableKey);
-let cats=[],ranges=[],products=[],suppliers=[],skus=[],images=[],quotes=[],quoteItems=[],analyticsEvents=[],contact=null;
+let cats=[],ranges=[],products=[],suppliers=[],skus=[],images=[],quotes=[],quoteItems=[],leads=[],analyticsEvents=[],contact=null;
 let bulkRows=[];
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
@@ -295,7 +308,7 @@ async function signOut(){await sb.auth.signOut();location.reload()}
 
 async function loadAll(){
   const since30=new Date(Date.now()-30*24*60*60*1000).toISOString();
-  const [c,r,p,s,k,i,q,qi,ae,ct]=await Promise.all([
+  const [c,r,p,s,k,i,q,qi,l,ae,ct]=await Promise.all([
     sb.from('categories').select('*').order('sort_order'),
     sb.from('product_ranges').select('*').order('sort_order'),
     sb.from('products').select('*').order('sort_order'),
@@ -304,11 +317,12 @@ async function loadAll(){
     sb.from('product_images').select('*').order('sort_order'),
     sb.from('quote_requests').select('*').order('created_at',{ascending:false}),
     sb.from('quote_request_items').select('*').order('created_at'),
+    sb.from('leads').select('*').order('created_at',{ascending:false}),
     sb.from('analytics_events').select('*').gte('created_at',since30).order('created_at',{ascending:false}),
     sb.from('contact_settings').select('*').eq('setting_key','default').single()
   ]);
-  const errs=[c,r,p,s,k,i,q,qi,ae].filter(x=>x.error);if(errs.length){console.error(errs)}
-  cats=c.data||[];ranges=r.data||[];products=p.data||[];suppliers=s.data||[];skus=k.data||[];images=i.data||[];quotes=q.data||[];quoteItems=qi.data||[];analyticsEvents=ae.data||[];contact=ct.data||null;
+  const errs=[c,r,p,s,k,i,q,qi,l,ae].filter(x=>x.error);if(errs.length){console.error(errs)}
+  cats=c.data||[];ranges=r.data||[];products=p.data||[];suppliers=s.data||[];skus=k.data||[];images=i.data||[];quotes=q.data||[];quoteItems=qi.data||[];leads=l.data||[];analyticsEvents=ae.data||[];contact=ct.data||null;
   renderAll();
 }
 
@@ -318,7 +332,7 @@ function renderAll(){
   const supplierMap=Object.fromEntries(suppliers.map(x=>[x.id,x.legal_name]));
   const productMap=Object.fromEntries(products.map(x=>[x.id,x.name]));
   const skuMap=Object.fromEntries(skus.map(x=>[x.id,x.label||x.sku_code||'SKU']));
-  $('countProducts').textContent=products.length;$('countRanges').textContent=ranges.length;$('countQuotes').textContent=quotes.length;$('countSuppliers').textContent=suppliers.length;
+  $('countProducts').textContent=products.length;$('countRanges').textContent=ranges.length;$('countQuotes').textContent=quotes.length;$('countLeads').textContent=leads.length;$('countSuppliers').textContent=suppliers.length;
   renderAnalytics();
 
   const roots=cats.filter(x=>!x.parent_id);
@@ -356,6 +370,25 @@ function renderAll(){
       +'<td><select onchange="updateQuoteStatus(\''+x.id+'\',this.value)">'+['new','contacted','quoted','negotiation','won','lost'].map(st=>'<option '+(st===x.status?'selected':'')+' value="'+st+'">'+st+'</option>').join('')+'</select></td>'
       +'</tr>';
   }).join('');
+
+  $('leadsBody').innerHTML=leads.map(x=>{
+    const who=[x.full_name,x.company_name].filter(Boolean).map(esc).join('<br>')||'<span class="small">Anonymous visitor</span>';
+    const contactInfo=[x.email,x.phone].filter(Boolean).map(esc).join('<br>')||'—';
+    const interest=[x.product_name,x.range_code,x.subject].filter(Boolean).map(esc).join('<br>')||esc(x.message||'—');
+    const sourceLabel=String(x.source||'other').charAt(0).toUpperCase()+String(x.source||'other').slice(1);
+    const date=x.created_at?new Date(x.created_at).toLocaleString():'—';
+    return '<tr>'
+      +'<td><strong>#'+x.reference_no+'</strong></td>'
+      +'<td><span class="badge">'+esc(sourceLabel)+'</span></td>'
+      +'<td>'+who+(x.email?'<br><span class="small">'+esc(x.email)+'</span>':'')+'</td>'
+      +'<td>'+esc(x.phone||'—')+'</td>'
+      +'<td>'+interest+'</td>'
+      +'<td class="small">'+esc(x.page_path||'—')+'</td>'
+      +'<td class="small">'+esc(date)+'</td>'
+      +'<td><span class="badge">'+esc(x.status)+'</span></td>'
+      +'<td><select onchange="updateLeadStatus(\''+x.id+'\',this.value)">'+['new','contacted','qualified','quoted','negotiation','won','lost'].map(st=>'<option '+(st===x.status?'selected':'')+' value="'+st+'">'+st+'</option>').join('')+'</select></td>'
+      +'</tr>';
+  }).join('')||'<tr><td colspan="9" class="small">No leads yet.</td></tr>';
 
   const leaves=cats.filter(x=>x.parent_id);
   const catOpts=leaves.map(x=>'<option value="'+x.id+'">'+esc(catMap[x.parent_id]+' → '+x.name)+'</option>').join('');
@@ -682,6 +715,7 @@ async function deleteImage(id,path){
 }
 
 async function updateQuoteStatus(id,status){const {error}=await sb.from('quote_requests').update({status}).eq('id',id);if(error)alert(error.message);else await loadAll()}
+async function updateLeadStatus(id,status){const {error}=await sb.from('leads').update({status,updated_at:new Date().toISOString()}).eq('id',id);if(error)alert(error.message);else await loadAll()}
 async function saveContact(){
   const payload={contact_person:val('cPerson')||null,contact_title:val('cTitle')||null,whatsapp:val('cWhatsapp')||null,email:val('cEmail')||null,phone:val('cPhone')||null,whatsapp_message_template:val('cTemplate')};
   const {error}=await sb.from('contact_settings').update(payload).eq('setting_key','default');if(error){setMsg('contactMsg',error.message,false);return}setMsg('contactMsg','Settings saved.');await loadAll();
