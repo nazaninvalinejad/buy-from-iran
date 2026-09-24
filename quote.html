@@ -800,6 +800,16 @@ function validateField(id) {
   return ok;
 }
 
+/* Prefill from catalog Add to Quote */
+(function prefillQuoteFromCatalog(){
+  try{
+    const raw=localStorage.getItem('bfi_quote_item');
+    if(!raw) return;
+    const item=JSON.parse(raw);
+    if(item && item.product_name) getEl('f-product').value=item.product_name;
+  }catch(e){ console.warn('Could not prefill quote item',e); }
+})();
+
 /* Live validation on blur/input */
 ['name', 'email', 'phone', 'country'].forEach(id => {
   const el = getEl('f-' + id);
@@ -850,6 +860,9 @@ getEl('quoteForm').addEventListener('submit', async function(e) {
 
   const productName = getEl('f-product').value.trim();
   const category = getEl('f-category').value.trim();
+  let catalogItem={};
+  try{ catalogItem=JSON.parse(localStorage.getItem('bfi_quote_item')||'{}')||{}; }catch(e){}
+
   const qty = getEl('f-qty').value.trim();
   const unit = getEl('f-unit').value.trim();
   const details = getEl('f-details').value.trim();
@@ -871,10 +884,10 @@ getEl('quoteForm').addEventListener('submit', async function(e) {
       p_required_packaging: '',
       p_notes: notes,
       p_items: [{
-        product_id: '',
+        product_id: catalogItem.product_id || '',
         sku_id: '',
         product_name: productName,
-        range_code: '',
+        range_code: catalogItem.range_code || '',
         quantity: [qty, unit].filter(Boolean).join(' ')
       }]
     });
@@ -887,6 +900,7 @@ getEl('quoteForm').addEventListener('submit', async function(e) {
     if (successTitle && result?.reference_no) successTitle.textContent = 'Request #' + result.reference_no + ' sent';
     getEl('quoteForm').style.display = 'none';
     getEl('successScreen').style.display = 'block';
+    localStorage.removeItem('bfi_quote_item');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch (err) {
     console.error('Quote submission failed', err);
