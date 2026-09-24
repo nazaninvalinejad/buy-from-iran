@@ -20,6 +20,8 @@
     try{ await sb.rpc('submit_lead',payload); }catch(_){}
   }
 
+  window.BFITrackLead=submit;
+
   document.addEventListener('click',function(e){
     const a=e.target.closest && e.target.closest('a[href*="wa.me"],a[href*="api.whatsapp.com"]');
     if(a) submit('whatsapp',{p_subject:'WhatsApp click'});
