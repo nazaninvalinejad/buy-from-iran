@@ -113,5 +113,8 @@ async function loadLive(){
 }
 (function init(){var q=new URLSearchParams(location.search);selectedCat=aliases[q.get("cat")]||q.get("cat")||TAXONOMY[0].slug;if(!TAXONOMY.some(function(x){return x.slug===selectedCat}))selectedCat=TAXONOMY[0].slug;var t=currentTop();selectedSub=q.get("sub")||slugify(t.subs[0][0]);renderNav();renderCategory();loadLive()})();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<script src="./analytics.js"></script>
 </body>
 </html>
