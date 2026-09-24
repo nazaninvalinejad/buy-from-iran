@@ -204,7 +204,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
 
 <section id="quotes" class="panel">
   <div class="top"><h1>Quote Requests</h1></div>
-  <div class="card"><table><thead><tr><th>Ref</th><th>Company</th><th>Contact</th><th>Destination</th><th>Status</th><th>Action</th></tr></thead><tbody id="quotesBody"></tbody></table></div>
+  <div class="card"><table><thead><tr><th>Ref</th><th>Company</th><th>Contact</th><th>Phone / WhatsApp</th><th>Product / Qty</th><th>Destination</th><th>Incoterm</th><th>Status</th><th>Action</th></tr></thead><tbody id="quotesBody"></tbody></table></div>
 </section>
 
 <section id="contact" class="panel">
@@ -226,7 +226,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
 
 <script>
 const sb=supabase.createClient(window.BFI_SUPABASE.url,window.BFI_SUPABASE.publishableKey);
-let cats=[],ranges=[],products=[],suppliers=[],skus=[],images=[],quotes=[],contact=null;
+let cats=[],ranges=[],products=[],suppliers=[],skus=[],images=[],quotes=[],quoteItems=[],contact=null;
 let bulkRows=[];
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
@@ -255,7 +255,7 @@ async function enterApp(){
 async function signOut(){await sb.auth.signOut();location.reload()}
 
 async function loadAll(){
-  const [c,r,p,s,k,i,q,ct]=await Promise.all([
+  const [c,r,p,s,k,i,q,qi,ct]=await Promise.all([
     sb.from('categories').select('*').order('sort_order'),
     sb.from('product_ranges').select('*').order('sort_order'),
     sb.from('products').select('*').order('sort_order'),
@@ -263,10 +263,11 @@ async function loadAll(){
     sb.from('product_skus').select('*').order('sort_order'),
     sb.from('product_images').select('*').order('sort_order'),
     sb.from('quote_requests').select('*').order('created_at',{ascending:false}),
+    sb.from('quote_request_items').select('*').order('created_at'),
     sb.from('contact_settings').select('*').eq('setting_key','default').single()
   ]);
-  const errs=[c,r,p,s,k,i,q].filter(x=>x.error);if(errs.length){console.error(errs)}
-  cats=c.data||[];ranges=r.data||[];products=p.data||[];suppliers=s.data||[];skus=k.data||[];images=i.data||[];quotes=q.data||[];contact=ct.data||null;
+  const errs=[c,r,p,s,k,i,q,qi].filter(x=>x.error);if(errs.length){console.error(errs)}
+  cats=c.data||[];ranges=r.data||[];products=p.data||[];suppliers=s.data||[];skus=k.data||[];images=i.data||[];quotes=q.data||[];quoteItems=qi.data||[];contact=ct.data||null;
   renderAll();
 }
 
@@ -295,7 +296,24 @@ function renderAll(){
     return '<tr><td><img class="thumb" src="'+esc(pub)+'" alt=""></td><td>'+esc(productMap[x.product_id]||'')+'</td><td>'+esc(skuMap[x.sku_id]||'—')+'</td><td class="small">'+esc(x.storage_path)+'</td><td>'+(x.is_primary?'Yes':'No')+'</td><td><button class="btn danger" onclick="deleteImage(\''+x.id+'\',\''+String(x.storage_path).replace(/'/g,"\\'")+'\')">Delete</button></td></tr>';
   }).join('');
 
-  $('quotesBody').innerHTML=quotes.map(x=>'<tr><td>#'+x.reference_no+'</td><td>'+esc(x.company_name||'—')+'</td><td>'+esc(x.contact_person||'')+'<br><span class="small">'+esc(x.email||x.whatsapp||'')+'</span></td><td>'+esc(x.destination_country||'—')+' '+esc(x.destination_port||'')+'</td><td><span class="badge">'+esc(x.status)+'</span></td><td><select onchange="updateQuoteStatus(\''+x.id+'\',this.value)">'+['new','contacted','quoted','negotiation','won','lost'].map(st=>'<option '+(st===x.status?'selected':'')+' value="'+st+'">'+st+'</option>').join('')+'</select></td></tr>').join('');
+  $('quotesBody').innerHTML=quotes.map(x=>{
+    const items=quoteItems.filter(i=>i.quote_request_id===x.id);
+    const productText=items.length
+      ? items.map(i=>esc(i.product_name_snapshot||'Product')+(i.quantity?' — '+esc(i.quantity):'')).join('<br>')
+      : '—';
+    const number=esc(x.whatsapp||'—');
+    return '<tr>'
+      +'<td><strong>#'+x.reference_no+'</strong></td>'
+      +'<td>'+esc(x.company_name||'—')+'</td>'
+      +'<td>'+esc(x.contact_person||'—')+'<br><span class="small">'+esc(x.email||'—')+'</span></td>'
+      +'<td>'+number+'</td>'
+      +'<td>'+productText+'</td>'
+      +'<td>'+esc(x.destination_country||'—')+(x.destination_port?' / '+esc(x.destination_port):'')+'</td>'
+      +'<td>'+esc(x.incoterm||'—')+'</td>'
+      +'<td><span class="badge">'+esc(x.status)+'</span></td>'
+      +'<td><select onchange="updateQuoteStatus(\''+x.id+'\',this.value)">'+['new','contacted','quoted','negotiation','won','lost'].map(st=>'<option '+(st===x.status?'selected':'')+' value="'+st+'">'+st+'</option>').join('')+'</select></td>'
+      +'</tr>';
+  }).join('');
 
   const leaves=cats.filter(x=>x.parent_id);
   const catOpts=leaves.map(x=>'<option value="'+x.id+'">'+esc(catMap[x.parent_id]+' → '+x.name)+'</option>').join('');
