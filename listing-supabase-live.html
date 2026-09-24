@@ -31,7 +31,17 @@ async function load(){
  if(!rows.length){app.innerHTML='<p class="muted">No published products yet. Add a real product from Admin and publish it.</p>';return}
  const grouped={};
  rows.forEach(x=>{const k=[x.parent_category_name||'',x.category_name,x.range_code].join('||');(grouped[k]??=[]).push(x)});
- app.innerHTML=Object.entries(grouped).map(([k,items])=>{const [parent,cat,range]=k.split('||');return `<section class="group"><div class="muted">${esc(parent)} → ${esc(cat)}</div><h2>${esc(cat)} <span class="range">${esc(range)}</span></h2><div class="grid">${items.map(p=>`<article class="card"><h3>${esc(p.product_name)}</h3><p class="muted">${esc(p.description||'Product details available on request.')}</p><button class="primary">Add to Quote</button> <button class="wa" onclick="wa('${String(p.product_name).replace(/'/g,"\\'")}','${String(p.range_code).replace(/'/g,"\\'")}')">WhatsApp</button></article>`).join('')}</div></section>`}).join('')
+ app.innerHTML=Object.entries(grouped).map(([k,items])=>{const [parent,cat,range]=k.split('||');return `<section class="group"><div class="muted">${esc(parent)} → ${esc(cat)}</div><h2>${esc(cat)} <span class="range">${esc(range)}</span></h2><div class="grid">${items.map(p=>`<article class="card"><h3>${esc(p.product_name)}</h3><p class="muted">${esc(p.description||'Product details available on request.')}</p><button class="primary" data-name="${esc(p.product_name)}" data-range="${esc(p.range_code)}" data-product-id="${esc(p.product_id||p.id||'')}" onclick="addToQuote(this)">Add to Quote</button> <button class="wa" onclick="wa('${String(p.product_name).replace(/'/g,"\\'")}','${String(p.range_code).replace(/'/g,"\\'")}')">WhatsApp</button></article>`).join('')}</div></section>`}).join('')
+}
+function addToQuote(btn){
+ const item={
+   product_name:btn.dataset.name||'',
+   range_code:btn.dataset.range||'',
+   product_id:btn.dataset.productId||'',
+   quantity:''
+ };
+ localStorage.setItem('bfi_quote_item',JSON.stringify(item));
+ window.location.href='quote.html';
 }
 function wa(name,range){
  if(!contact.whatsapp){alert('WhatsApp number is not configured yet in Admin → Contact Settings.');return}
