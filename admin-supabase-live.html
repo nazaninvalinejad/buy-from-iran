@@ -219,7 +219,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
   <div class="tabs-note">Leads from Contact forms, Quote Requests, WhatsApp clicks and chatbot conversations are collected here. Anonymous clicks remain anonymous until the visitor shares contact details.</div>
   <div class="card" style="overflow:auto">
     <table>
-      <thead><tr><th>Ref</th><th>Source</th><th>Contact</th><th>Phone</th><th>Interest</th><th>First Contact</th><th>Quote Sent</th><th>Follow-up</th><th>Note</th><th>Deal Value</th><th>Lost Reason</th><th>Status</th><th>Action</th></tr></thead>
+      <thead><tr><th>Ref</th><th>Source</th><th>Contact</th><th>Phone</th><th>Interest</th><th>Destination</th><th>Quantity</th><th>Preferred Contact</th><th>First Contact</th><th>Quote Sent</th><th>Follow-up</th><th>Note</th><th>Deal Value</th><th>Lost Reason</th><th>Status</th><th>Action</th></tr></thead>
       <tbody id="leadsBody"></tbody>
     </table>
   </div>
@@ -387,6 +387,9 @@ function renderAll(){
       +'<td>'+who+(x.email?'<br><span class="small">'+esc(x.email)+'</span>':'')+'</td>'
       +'<td>'+esc(x.phone||'—')+'</td>'
       +'<td>'+interest+'</td>'
+      +'<td>'+esc(x.destination_country||'—')+'</td>'
+      +'<td>'+esc(x.quantity_needed||'—')+'</td>'
+      +'<td>'+esc(x.preferred_contact||'—')+'</td>'
       +'<td class="small">'+esc(firstContact)+'</td>'
       +'<td class="small">'+esc(quoteSent)+'</td>'
       +'<td><input type="datetime-local" id="fu-'+x.id+'" value="'+esc(followValue)+'" style="min-width:180px"></td>'
@@ -396,7 +399,7 @@ function renderAll(){
       +'<td><span class="badge">'+esc(x.status)+'</span></td>'
       +'<td style="min-width:180px"><select onchange="updateLeadStatus(\''+x.id+'\',this.value)">'+['new','contacted','qualified','quoted','negotiation','won','lost'].map(st=>'<option '+(st===x.status?'selected':'')+' value="'+st+'">'+st+'</option>').join('')+'</select><br><button class="btn secondary" style="margin-top:8px" onclick="saveLeadDetails(\''+x.id+'\')">Save details</button></td>'
       +'</tr>';
-  }).join('')||'<tr><td colspan="13" class="small">No leads yet.</td></tr>';
+  }).join('')||'<tr><td colspan="16" class="small">No leads yet.</td></tr>';
 
   const leaves=cats.filter(x=>x.parent_id);
   const catOpts=leaves.map(x=>'<option value="'+x.id+'">'+esc(catMap[x.parent_id]+' → '+x.name)+'</option>').join('');
