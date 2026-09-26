@@ -67,6 +67,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
     <div class="card"><b class="stat" id="countRanges">—</b><div class="small">Product Ranges</div></div>
     <div class="card"><b class="stat" id="countQuotes">—</b><div class="small">Quote Requests</div></div>
     <div class="card"><b class="stat" id="countLeads">—</b><div class="small">Leads</div></div>
+    <div class="card"><b class="stat" id="countDueFollowups">—</b><div class="small">Follow-ups Due</div></div>
     <div class="card"><b class="stat" id="countSuppliers">—</b><div class="small">Internal Suppliers</div></div>
     <div class="card"><b class="stat" id="countVisitors">—</b><div class="small">Visitors (30d)</div></div>
     <div class="card"><b class="stat" id="countPageViews">—</b><div class="small">Page Views (30d)</div></div>
@@ -218,7 +219,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;bord
   <div class="tabs-note">Leads from Contact forms, Quote Requests, WhatsApp clicks and chatbot conversations are collected here. Anonymous clicks remain anonymous until the visitor shares contact details.</div>
   <div class="card" style="overflow:auto">
     <table>
-      <thead><tr><th>Ref</th><th>Source</th><th>Contact</th><th>Phone</th><th>Interest</th><th>First Contact</th><th>Follow-up</th><th>Note</th><th>Status</th><th>Action</th></tr></thead>
+      <thead><tr><th>Ref</th><th>Source</th><th>Contact</th><th>Phone</th><th>Interest</th><th>First Contact</th><th>Quote Sent</th><th>Follow-up</th><th>Note</th><th>Deal Value</th><th>Lost Reason</th><th>Status</th><th>Action</th></tr></thead>
       <tbody id="leadsBody"></tbody>
     </table>
   </div>
@@ -332,7 +333,7 @@ function renderAll(){
   const supplierMap=Object.fromEntries(suppliers.map(x=>[x.id,x.legal_name]));
   const productMap=Object.fromEntries(products.map(x=>[x.id,x.name]));
   const skuMap=Object.fromEntries(skus.map(x=>[x.id,x.label||x.sku_code||'SKU']));
-  $('countProducts').textContent=products.length;$('countRanges').textContent=ranges.length;$('countQuotes').textContent=quotes.length;$('countLeads').textContent=leads.length;$('countSuppliers').textContent=suppliers.length;
+  $('countProducts').textContent=products.length;$('countRanges').textContent=ranges.length;$('countQuotes').textContent=quotes.length;$('countLeads').textContent=leads.length;$('countDueFollowups').textContent=leads.filter(x=>x.follow_up_at&&new Date(x.follow_up_at).getTime()<Date.now()&&!['won','lost'].includes(x.status)).length;$('countSuppliers').textContent=suppliers.length;
   renderAnalytics();
 
   const roots=cats.filter(x=>!x.parent_id);
@@ -376,20 +377,26 @@ function renderAll(){
     const interest=[x.product_name,x.range_code,x.subject].filter(Boolean).map(esc).join('<br>')||esc(x.message||'—');
     const sourceLabel=String(x.source||'other').charAt(0).toUpperCase()+String(x.source||'other').slice(1);
     const firstContact=x.first_contact_at?new Date(x.first_contact_at).toLocaleString():'—';
+    const quoteSent=x.quote_sent_at?new Date(x.quote_sent_at).toLocaleString():'—';
     const followValue=x.follow_up_at?new Date(x.follow_up_at).toISOString().slice(0,16):'';
-    return '<tr>'
-      +'<td><strong>#'+x.reference_no+'</strong></td>'
+    const overdue=x.follow_up_at && new Date(x.follow_up_at).getTime()<Date.now() && !['won','lost'].includes(x.status);
+    const value=x.deal_value==null?'':x.deal_value;
+    return '<tr'+(overdue?' style="background:#fff8e7"':'')+'>'
+      +'<td><strong>#'+x.reference_no+'</strong>'+(overdue?'<br><span class="badge" style="background:#fff0d5;color:#9a6700">Follow-up due</span>':'')+'</td>'
       +'<td><span class="badge">'+esc(sourceLabel)+'</span></td>'
       +'<td>'+who+(x.email?'<br><span class="small">'+esc(x.email)+'</span>':'')+'</td>'
       +'<td>'+esc(x.phone||'—')+'</td>'
       +'<td>'+interest+'</td>'
       +'<td class="small">'+esc(firstContact)+'</td>'
+      +'<td class="small">'+esc(quoteSent)+'</td>'
       +'<td><input type="datetime-local" id="fu-'+x.id+'" value="'+esc(followValue)+'" style="min-width:180px"></td>'
-      +'<td><textarea id="fn-'+x.id+'" rows="2" style="min-width:220px">'+esc(x.follow_up_note||'')+'</textarea></td>'
+      +'<td><textarea id="fn-'+x.id+'" rows="2" style="min-width:200px">'+esc(x.follow_up_note||'')+'</textarea></td>'
+      +'<td><div style="display:flex;gap:6px"><input id="dv-'+x.id+'" type="number" step="0.01" min="0" value="'+esc(value)+'" placeholder="0" style="width:110px"><select id="dc-'+x.id+'" style="width:80px">'+['USD','EUR','AED','OMR','IRR'].map(c=>'<option '+(c===x.deal_currency?'selected':'')+'>'+c+'</option>').join('')+'</select></div></td>'
+      +'<td><select id="lr-'+x.id+'" style="min-width:150px"><option value="">—</option>'+['Price','No response','Competitor','Payment issue','Shipping issue','MOQ','Timing','Other'].map(r=>'<option '+(r===x.lost_reason?'selected':'')+' value="'+r+'">'+r+'</option>').join('')+'</select></td>'
       +'<td><span class="badge">'+esc(x.status)+'</span></td>'
-      +'<td style="min-width:170px"><select onchange="updateLeadStatus(\''+x.id+'\',this.value)">'+['new','contacted','qualified','quoted','negotiation','won','lost'].map(st=>'<option '+(st===x.status?'selected':'')+' value="'+st+'">'+st+'</option>').join('')+'</select><br><button class="btn secondary" style="margin-top:8px" onclick="saveLeadFollowUp(\''+x.id+'\')">Save follow-up</button></td>'
+      +'<td style="min-width:180px"><select onchange="updateLeadStatus(\''+x.id+'\',this.value)">'+['new','contacted','qualified','quoted','negotiation','won','lost'].map(st=>'<option '+(st===x.status?'selected':'')+' value="'+st+'">'+st+'</option>').join('')+'</select><br><button class="btn secondary" style="margin-top:8px" onclick="saveLeadDetails(\''+x.id+'\')">Save details</button></td>'
       +'</tr>';
-  }).join('')||'<tr><td colspan="10" class="small">No leads yet.</td></tr>';
+  }).join('')||'<tr><td colspan="13" class="small">No leads yet.</td></tr>';
 
   const leaves=cats.filter(x=>x.parent_id);
   const catOpts=leaves.map(x=>'<option value="'+x.id+'">'+esc(catMap[x.parent_id]+' → '+x.name)+'</option>').join('');
@@ -717,13 +724,25 @@ async function deleteImage(id,path){
 
 async function updateQuoteStatus(id,status){const {error}=await sb.from('quote_requests').update({status}).eq('id',id);if(error)alert(error.message);else await loadAll()}
 async function updateLeadStatus(id,status){const {error}=await sb.from('leads').update({status,updated_at:new Date().toISOString()}).eq('id',id);if(error)alert(error.message);else await loadAll()}
-async function saveLeadFollowUp(id){
+async function saveLeadDetails(id){
+  const lead=leads.find(x=>x.id===id);
   const d=$('fu-'+id)?.value||'';
   const note=$('fn-'+id)?.value.trim()||'';
-  const payload={follow_up_at:d?new Date(d).toISOString():null,follow_up_note:note||null,updated_at:new Date().toISOString()};
+  const value=$('dv-'+id)?.value||'';
+  const currency=$('dc-'+id)?.value||'USD';
+  const lostReason=$('lr-'+id)?.value||'';
+  if(lead?.status==='lost' && !lostReason){alert('Choose a Lost Reason first.');return}
+  const payload={
+    follow_up_at:d?new Date(d).toISOString():null,
+    follow_up_note:note||null,
+    deal_value:value===''?null:Number(value),
+    deal_currency:currency,
+    lost_reason:lead?.status==='lost'?(lostReason||null):null,
+    updated_at:new Date().toISOString()
+  };
   const {error}=await sb.from('leads').update(payload).eq('id',id);
   if(error){alert(error.message);return}
-  alert('Follow-up saved.');
+  alert('Lead details saved.');
   await loadAll();
 }
 async function saveContact(){
