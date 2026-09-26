@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Buy From Iran — Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="./supabase-config.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#1f2937}
+:root{--navy:#123c56;--blue:#2b7fff;--line:#dfe6ec;--muted:#6b7280;--good:#18794e;--bad:#b42318}
+.hidden{display:none!important}.center{min-height:100vh;display:grid;place-items:center;padding:20px}.login{width:min(420px,100%);background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:0 16px 50px rgba(18,60,86,.12)}
+.layout{display:grid;grid-template-columns:230px 1fr;min-height:100vh}aside{background:#0a2535;color:#fff;padding:22px 14px}.brand{font-size:20px;font-weight:800;padding:8px 10px 22px}.small{font-size:12px;color:var(--muted)}
+.nav button{width:100%;text-align:left;border:0;background:transparent;color:#dce7ee;padding:11px 12px;border-radius:9px;cursor:pointer;margin:2px 0;font-weight:700}.nav button.active,.nav button:hover{background:#163e54;color:#fff}
+main{padding:24px;overflow:auto}.panel{display:none}.panel.active{display:block}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.top h1{margin:0;color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}.card b.stat{font-size:28px;color:var(--navy)}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}.field label{font-size:12px;font-weight:800;color:#475569}.field input,.field select,.field textarea{border:1px solid #cfd8df;border-radius:9px;padding:10px 11px;font:inherit;background:#fff}.field textarea{resize:vertical}
+.formgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.formgrid.two{grid-template-columns:repeat(2,1fr)}
+.btn{border:0;border-radius:9px;padding:9px 12px;font-weight:800;cursor:pointer}.primary{background:var(--blue);color:#fff}.secondary{background:#eef3f7;color:var(--navy)}.danger{background:#fff0f0;color:var(--bad)}.success{background:#eaf8ef;color:var(--good)}
+.msg{font-size:13px;margin-left:8px}.ok{color:var(--good)}.err{color:var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;border-bottom:1px solid #edf1f4;text-align:left;vertical-align:top}th{color:#64748b;font-size:11px;text-transform:uppercase;letter-spacing:.05em}.parentrow{background:#eef3f7}.indent{padding-left:30px}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:800;background:#eef4ff;color:#1a5fd4}.badge.green{background:#eaf8ef;color:#18794e}
+.thumb{width:58px;height:58px;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:#f8fafc}
+.tabs-note{padding:11px 13px;background:#fff8e7;border:1px solid #f1dfaf;border-radius:10px;color:#6b5a2d;font-size:13px;margin-bottom:14px}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.layout{grid-template-columns:1fr}aside{display:none}.grid,.formgrid,.formgrid.two{grid-template-columns:1fr}main{padding:14px}}
+</style>
+</head>
+<body>
+<div id="loginView" class="center">
+  <div class="login">
+    <h2 style="color:#123c56;margin-top:0">Buy From Iran Admin</h2>
+    <p class="small">Sign in with your Supabase admin account.</p>
+    <div class="field"><label>Email</label><input id="email" type="email"></div>
+    <div class="field"><label>Password</label><input id="password" type="password"></div>
+    <button class="btn primary" onclick="signIn()">Sign in</button>
+    <span id="loginMsg" class="msg"></span>
+  </div>
+</div>
+
+<div id="appView" class="layout hidden">
+<aside>
+  <div class="brand">Buy From Iran<br><span style="font-size:11px;color:#9fb4c1">ADMIN CONSOLE</span></div>
+  <div class="nav">
+    <button class="active" onclick="showPanel('dashboard',this)">Dashboard</button>
+    <button onclick="showPanel('bulk',this)">Bulk Import</button>
+    <button onclick="showPanel('products',this)">Products</button>
+    <button onclick="showPanel('skus',this)">SKUs / Pack Sizes</button>
+    <button onclick="showPanel('images',this)">Product Images</button>
+    <button onclick="showPanel('categories',this)">Categories</button>
+    <button onclick="showPanel('ranges',this)">Product Ranges</button>
+    <button onclick="showPanel('suppliers',this)">Suppliers — Internal</button>
+    <button onclick="showPanel('quotes',this)">Quote Requests</button>
+    <button onclick="showPanel('leads',this)">Leads / CRM</button>
+    <button onclick="showPanel('analytics',this)">Analytics</button>
+    <button onclick="showPanel('contact',this)">Contact Settings</button>
+    <button onclick="signOut()">Sign out</button>
+  </div>
+</aside>
+
+<main>
+<section id="dashboard" class="panel active">
+  <div class="top"><h1>Dashboard</h1><button class="btn secondary" onclick="loadAll()">Refresh</button></div>
+  <div class="grid">
+    <div class="card"><b class="stat" id="countProducts">—</b><div class="small">Products</div></div>
+    <div class="card"><b class="stat" id="countRanges">—</b><div class="small">Product Ranges</div></div>
+    <div class="card"><b class="stat" id="countQuotes">—</b><div class="small">Quote Requests</div></div>
+    <div class="card"><b class="stat" id="countLeads">—</b><div class="small">Leads</div></div>
+    <div class="card"><b class="stat" id="countDueFollowups">—</b><div class="small">Follow-ups Due</div></div>
+    <div class="card"><b class="stat" id="countSuppliers">—</b><div class="small">Internal Suppliers</div></div>
+    <div class="card"><b class="stat" id="countVisitors">—</b><div class="small">Visitors (30d)</div></div>
+    <div class="card"><b class="stat" id="countPageViews">—</b><div class="small">Page Views (30d)</div></div>
+    <div class="card"><b class="stat" id="quoteConversion">—</b><div class="small">Visitor → Quote (30d)</div></div>
+  </div>
+</section>
+
+<section id="bulk" class="panel">
+  <div class="top"><h1>Bulk Import</h1></div>
+  <div class="tabs-note">Upload the Buy From Iran Excel template. One row = one SKU / pack size. Repeated suppliers, ranges and products are automatically de-duplicated.</div>
+  <div class="card">
+    <div class="formgrid two">
+      <div class="field">
+        <label>Excel File (.xlsx) *</label>
+        <input id="bulkFile" type="file" accept=".xlsx,.xls" onchange="readBulkFile()">
+      </div>
+      <div class="field">
+        <label>Import Mode</label>
+        <select id="bulkMode">
+          <option value="safe">Safe import — create missing records, update matching records</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button id="bulkImportBtn" type="button" class="btn primary" onclick="runBulkImport()" disabled>Import Rows</button>
+      <span id="bulkMsg" class="msg"></span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="top" style="margin-bottom:8px"><h3 style="margin:0;color:#123c56">Preview</h3><span id="bulkCount" class="small">No file loaded</span></div>
+    <div style="overflow:auto;max-height:420px"><table><thead id="bulkHead"></thead><tbody id="bulkBody"></tbody></table></div>
+  </div>
+</section>
+
+<section id="suppliers" class="panel">
+  <div class="top"><h1>Suppliers — Internal Only</h1><button class="btn primary" onclick="toggle('supplierForm')">+ Add Supplier</button></div>
+  <div class="tabs-note">Supplier names and contact details stay internal and are not exposed through the public catalog view.</div>
+  <div id="supplierForm" class="card hidden">
+    <div class="formgrid">
+      <div class="field"><label>Internal Code *</label><input id="sCode" placeholder="SUP-001"></div>
+      <div class="field"><label>Legal Name *</label><input id="sName"></div>
+      <div class="field"><label>Contact Name</label><input id="sContact"></div>
+      <div class="field"><label>Phone</label><input id="sPhone"></div>
+      <div class="field"><label>WhatsApp</label><input id="sWhatsapp"></div>
+      <div class="field"><label>Email</label><input id="sEmail" type="email"></div>
+      <div class="field"><label>Website</label><input id="sWebsite"></div>
+    </div>
+    <div class="field"><label>Notes</label><textarea id="sNotes" rows="3"></textarea></div>
+    <button class="btn primary" onclick="createSupplier()">Save Supplier</button><span id="supplierMsg" class="msg"></span>
+  </div>
+  <div class="card"><table><thead><tr><th>Code</th><th>Legal Name</th><th>Contact</th><th>Email / WhatsApp</th><th>Status</th></tr></thead><tbody id="suppliersBody"></tbody></table></div>
+</section>
+
+<section id="ranges" class="panel">
+  <div class="top"><h1>Product Ranges</h1><button class="btn primary" onclick="toggle('rangeForm')">+ Add Range</button></div>
+  <div class="tabs-note">A Product Range groups products from one internal supplier under a neutral public code such as B01, CH01 or TP01.</div>
+  <div id="rangeForm" class="card hidden">
+    <div class="formgrid">
+      <div class="field"><label>Subcategory *</label><select id="rCategory"></select></div>
+      <div class="field"><label>Internal Supplier *</label><select id="rSupplier"></select></div>
+      <div class="field"><label>Public Range Code *</label><input id="rCode" placeholder="B01"></div>
+      <div class="field"><label>Sort Order</label><input id="rSort" type="number" value="0"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <button id="saveRangeBtn" type="button" class="btn primary">Save Range</button>
+    <span id="rangeMsg" class="msg"></span>
+  </div>
+  </div>
+  <div class="card"><table><thead><tr><th>Code</th><th>Subcategory</th><th>Internal Supplier</th><th>Status</th></tr></thead><tbody id="rangesBody"></tbody></table></div>
+</section>
+
+<section id="products" class="panel">
+  <div class="top"><h1>Products</h1><button class="btn primary" onclick="toggle('productForm')">+ Add Product</button></div>
+  <div id="productForm" class="card hidden">
+    <div class="formgrid">
+      <div class="field"><label>Product Name *</label><input id="pName" oninput="autoSlug()"></div>
+      <div class="field"><label>Slug *</label><input id="pSlug"></div>
+      <div class="field"><label>Subcategory *</label><select id="pCategory" onchange="filterRangesForProduct()"></select></div>
+      <div class="field"><label>Product Range *</label><select id="pRange"></select></div>
+      <div class="field"><label>Country of Origin</label><input id="pOrigin" value="Iran"></div>
+      <div class="field"><label>Status</label><select id="pStatus"><option value="draft">Draft</option><option value="published">Published</option><option value="archived">Archived</option></select></div>
+      <div class="field"><label>Packaging Type</label><input id="pPackaging" placeholder="On Request"></div>
+      <div class="field"><label>Private Label</label><input id="pPrivate" value="On Request"></div>
+      <div class="field"><label>Shelf Life</label><input id="pShelf" placeholder="On Request"></div>
+      <div class="field"><label>MOQ</label><input id="pMoq" placeholder="On Request"></div>
+      <div class="field"><label>Lead Time</label><input id="pLead" placeholder="On Request"></div>
+      <div class="field"><label>Flavors / Types (comma separated)</label><input id="pFlavors"></div>
+      <div class="field"><label>Certificates (comma separated)</label><input id="pCerts"></div>
+    </div>
+    <div class="field"><label>Description</label><textarea id="pDescription" rows="3"></textarea></div>
+    <button class="btn primary" onclick="createProduct()">Save Product</button><span id="productMsg" class="msg"></span>
+  </div>
+  <div class="card"><table><thead><tr><th>Product</th><th>Subcategory</th><th>Range</th><th>Status</th><th>Action</th></tr></thead><tbody id="productsBody"></tbody></table></div>
+</section>
+
+<section id="skus" class="panel">
+  <div class="top"><h1>SKUs / Pack Sizes</h1><button class="btn primary" onclick="toggle('skuForm')">+ Add SKU</button></div>
+  <div class="tabs-note">Use one SKU per pack size. This keeps pack dimensions, carton dimensions and packs/carton accurate for each size.</div>
+  <div id="skuForm" class="card hidden">
+    <div class="formgrid">
+      <div class="field"><label>Product *</label><select id="kProduct"></select></div>
+      <div class="field"><label>SKU Code</label><input id="kCode"></div>
+      <div class="field"><label>Label</label><input id="kLabel" placeholder="65g"></div>
+      <div class="field"><label>Pack Weight</label><input id="kWeight" type="number" step="0.01"></div>
+      <div class="field"><label>Weight Unit</label><select id="kUnit"><option>g</option><option>kg</option><option>ml</option><option>L</option></select></div>
+      <div class="field"><label>Packs / Carton</label><input id="kPacks" type="number"></div>
+      <div class="field"><label>Pack Length cm</label><input id="kPL" type="number" step="0.01"></div>
+      <div class="field"><label>Pack Width cm</label><input id="kPW" type="number" step="0.01"></div>
+      <div class="field"><label>Pack Height cm</label><input id="kPH" type="number" step="0.01"></div>
+      <div class="field"><label>Carton Length cm</label><input id="kCL" type="number" step="0.01"></div>
+      <div class="field"><label>Carton Width cm</label><input id="kCW" type="number" step="0.01"></div>
+      <div class="field"><label>Carton Height cm</label><input id="kCH" type="number" step="0.01"></div>
+      <div class="field"><label>Carton Gross Weight kg</label><input id="kGross" type="number" step="0.01"></div>
+      <div class="field"><label>Default SKU?</label><select id="kDefault"><option value="false">No</option><option value="true">Yes</option></select></div>
+    </div>
+    <button class="btn primary" onclick="createSku()">Save SKU</button><span id="skuMsg" class="msg"></span>
+  </div>
+  <div class="card"><table><thead><tr><th>Product</th><th>SKU</th><th>Pack</th><th>Packs/Carton</th><th>Carton</th><th>Default</th></tr></thead><tbody id="skusBody"></tbody></table></div>
+</section>
+
+<section id="images" class="panel">
+  <div class="top"><h1>Product Images</h1><button class="btn primary" onclick="toggle('imageForm')">+ Upload Image</button></div>
+  <div class="tabs-note">Bulk Excel imports product data and SKUs. Images remain a separate upload step for now; the Excel Image Filename column is reserved for the next bulk-image matching step.</div>
+  <div id="imageForm" class="card hidden">
+    <div class="formgrid">
+      <div class="field"><label>Product *</label><select id="iProduct" onchange="filterImageSkus()"></select></div>
+      <div class="field"><label>SKU (optional)</label><select id="iSku"><option value="">Product-level image</option></select></div>
+      <div class="field"><label>Image File *</label><input id="iFile" type="file" accept="image/*"></div>
+      <div class="field"><label>Alt Text</label><input id="iAlt"></div>
+      <div class="field"><label>Primary Image?</label><select id="iPrimary"><option value="false">No</option><option value="true">Yes</option></select></div>
+    </div>
+    <button class="btn primary" onclick="uploadImage()">Upload Image</button><span id="imageMsg" class="msg"></span>
+  </div>
+  <div class="card"><table><thead><tr><th>Image</th><th>Product</th><th>SKU</th><th>Path</th><th>Primary</th><th>Action</th></tr></thead><tbody id="imagesBody"></tbody></table></div>
+</section>
+
+<section id="categories" class="panel">
+  <div class="top"><h1>Categories</h1></div>
+  <div class="card"><table><thead><tr><th>Name</th><th>Slug</th><th>Prefix</th><th>Parent</th></tr></thead><tbody id="categoriesBody"></tbody></table></div>
+</section>
+
+<section id="quotes" class="panel">
+  <div class="top"><h1>Quote Requests</h1></div>
+  <div class="card"><table><thead><tr><th>Ref</th><th>Company</th><th>Contact</th><th>Phone / WhatsApp</th><th>Product / Qty</th><th>Destination</th><th>Incoterm</th><th>Status</th><th>Action</th></tr></thead><tbody id="quotesBody"></tbody></table></div>
+</section>
+
+<section id="leads" class="panel">
+  <div class="top"><h1>Leads / CRM</h1><button class="btn secondary" onclick="loadAll()">Refresh</button></div>
+  <div class="tabs-note">Leads from Contact forms, Quote Requests, WhatsApp clicks and chatbot conversations are collected here. Anonymous clicks remain anonymous until the visitor shares contact details.</div>
+  <div class="card" style="overflow:auto">
+    <table>
+      <thead><tr><th>Ref</th><th>Source</th><th>Contact</th><th>Phone</th><th>Interest</th><th>First Contact</th><th>Quote Sent</th><th>Follow-up</th><th>Note</th><th>Deal Value</th><th>Lost Reason</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="leadsBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="analytics" class="panel">
+  <div class="top"><h1>Analytics</h1><button class="btn secondary" onclick="loadAnalytics()">Refresh</button></div>
+  <div class="tabs-note">First-party anonymous analytics from Supabase. Vercel Analytics remains enabled as the external traffic source of truth.</div>
+  <div class="grid">
+    <div class="card"><b class="stat" id="aVisitors">—</b><div class="small">Unique Visitors (30d)</div></div>
+    <div class="card"><b class="stat" id="aViews">—</b><div class="small">Page Views (30d)</div></div>
+    <div class="card"><b class="stat" id="aSessions">—</b><div class="small">Sessions (30d)</div></div>
+    <div class="card"><b class="stat" id="aConversion">—</b><div class="small">Visitor → Quote (30d)</div></div>
+  </div>
+  <div class="formgrid two">
+    <div class="card">
+      <h3 style="margin-top:0;color:#123c56">Top Pages</h3>
+      <table><thead><tr><th>Page</th><th>Views</th></tr></thead><tbody id="topPagesBody"></tbody></table>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0;color:#123c56">Devices</h3>
+      <table><thead><tr><th>Device</th><th>Views</th></tr></thead><tbody id="devicesBody"></tbody></table>
+    </div>
+  </div>
+  <div class="formgrid two">
+    <div class="card">
+      <h3 style="margin-top:0;color:#123c56">Countries</h3>
+      <table><thead><tr><th>Country</th><th>Views</th></tr></thead><tbody id="countriesBody"></tbody></table>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0;color:#123c56">Browsers</h3>
+      <table><thead><tr><th>Browser</th><th>Views</th></tr></thead><tbody id="browsersBody"></tbody></table>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0;color:#123c56">Referrers</h3>
+      <table><thead><tr><th>Source</th><th>Views</th></tr></thead><tbody id="referrersBody"></tbody></table>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="panel">
+  <div class="top"><h1>Contact Settings</h1></div>
+  <div class="card">
+    <div class="formgrid two">
+      <div class="field"><label>Contact Person</label><input id="cPerson"></div>
+      <div class="field"><label>Contact Title</label><input id="cTitle"></div>
+      <div class="field"><label>WhatsApp</label><input id="cWhatsapp" placeholder="+..."></div>
+      <div class="field"><label>Email</label><input id="cEmail"></div>
+      <div class="field"><label>Phone</label><input id="cPhone"></div>
+    </div>
+    <div class="field"><label>WhatsApp Message Template</label><textarea id="cTemplate" rows="3"></textarea></div>
+    <button class="btn primary" onclick="saveContact()">Save Settings</button><span id="contactMsg" class="msg"></span>
+  </div>
+</section>
+</main>
+</div>
+
+<script>
+const sb=supabase.createClient(window.BFI_SUPABASE.url,window.BFI_SUPABASE.publishableKey);
+let cats=[],ranges=[],products=[],suppliers=[],skus=[],images=[],quotes=[],quoteItems=[],leads=[],analyticsEvents=[],contact=null;
+let bulkRows=[];
+const $=id=>document.getElementById(id);
+function esc(v){return String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
+function val(id){return $(id).value.trim()}
+function num(id){return val(id)===''?null:Number(val(id))}
+function arr(id){return val(id)?val(id).split(',').map(x=>x.trim()).filter(Boolean):null}
+function slugify(v){return String(v||'').toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+function toggle(id){$(id).classList.toggle('hidden')}
+function setMsg(id,msg,ok=true){$(id).textContent=msg;$(id).className='msg '+(ok?'ok':'err')}
+function showPanel(id,b){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(b)b.classList.add('active')}
+function autoSlug(){if(!val('pSlug'))$('pSlug').value=slugify(val('pName'))}
+
+async function checkSession(){const {data}=await sb.auth.getSession();if(data.session)await enterApp()}
+async function signIn(){
+  setMsg('loginMsg','Signing in…');
+  const {error}=await sb.auth.signInWithPassword({email:val('email'),password:val('password')});
+  if(error){setMsg('loginMsg',error.message,false);return}
+  await enterApp();
+}
+async function enterApp(){
+  const {data:{user}}=await sb.auth.getUser();
+  const {data,error}=await sb.from('admin_users').select('role').eq('user_id',user.id).single();
+  if(error||!data){setMsg('loginMsg','This account is not authorized as admin.',false);return}
+  $('loginView').classList.add('hidden');$('appView').classList.remove('hidden');await loadAll();
+}
+async function signOut(){await sb.auth.signOut();location.reload()}
+
+async function loadAll(){
+  const since30=new Date(Date.now()-30*24*60*60*1000).toISOString();
+  const [c,r,p,s,k,i,q,qi,l,ae,ct]=await Promise.all([
+    sb.from('categories').select('*').order('sort_order'),
+    sb.from('product_ranges').select('*').order('sort_order'),
+    sb.from('products').select('*').order('sort_order'),
+    sb.from('suppliers').select('*').order('legal_name'),
+    sb.from('product_skus').select('*').order('sort_order'),
+    sb.from('product_images').select('*').order('sort_order'),
+    sb.from('quote_requests').select('*').order('created_at',{ascending:false}),
+    sb.from('quote_request_items').select('*').order('created_at'),
+    sb.from('leads').select('*').order('created_at',{ascending:false}),
+    sb.from('analytics_events').select('*').gte('created_at',since30).order('created_at',{ascending:false}),
+    sb.from('contact_settings').select('*').eq('setting_key','default').single()
+  ]);
+  const errs=[c,r,p,s,k,i,q,qi,l,ae].filter(x=>x.error);if(errs.length){console.error(errs)}
+  cats=c.data||[];ranges=r.data||[];products=p.data||[];suppliers=s.data||[];skus=k.data||[];images=i.data||[];quotes=q.data||[];quoteItems=qi.data||[];leads=l.data||[];analyticsEvents=ae.data||[];contact=ct.data||null;
+  renderAll();
+}
+
+function renderAll(){
+  const catMap=Object.fromEntries(cats.map(x=>[x.id,x.name]));
+  const rangeMap=Object.fromEntries(ranges.map(x=>[x.id,x.public_code]));
+  const supplierMap=Object.fromEntries(suppliers.map(x=>[x.id,x.legal_name]));
+  const productMap=Object.fromEntries(products.map(x=>[x.id,x.name]));
+  const skuMap=Object.fromEntries(skus.map(x=>[x.id,x.label||x.sku_code||'SKU']));
+  $('countProducts').textContent=products.length;$('countRanges').textContent=ranges.length;$('countQuotes').textContent=quotes.length;$('countLeads').textContent=leads.length;$('countDueFollowups').textContent=leads.filter(x=>x.follow_up_at&&new Date(x.follow_up_at).getTime()<Date.now()&&!['won','lost'].includes(x.status)).length;$('countSuppliers').textContent=suppliers.length;
+  renderAnalytics();
+
+  const roots=cats.filter(x=>!x.parent_id);
+  $('categoriesBody').innerHTML=roots.map(root=>{
+    const children=cats.filter(x=>x.parent_id===root.id);
+    return '<tr class="parentrow"><td><strong>'+esc(root.name)+'</strong></td><td>'+esc(root.slug)+'</td><td>—</td><td><strong>Main category</strong></td></tr>'+
+      children.map(x=>'<tr><td class="indent">↳ '+esc(x.name)+'</td><td>'+esc(x.slug)+'</td><td><strong>'+esc(x.code_prefix||'')+'</strong></td><td>'+esc(root.name)+'</td></tr>').join('');
+  }).join('');
+
+  $('suppliersBody').innerHTML=suppliers.map(x=>'<tr><td><span class="badge">'+esc(x.internal_code)+'</span></td><td>'+esc(x.legal_name)+'</td><td>'+esc(x.contact_name||'—')+'</td><td>'+esc(x.email||'—')+'<br>'+esc(x.whatsapp||'')+'</td><td>'+(x.is_active?'<span class="badge green">Active</span>':'Inactive')+'</td></tr>').join('');
+  $('rangesBody').innerHTML=ranges.map(x=>'<tr><td><span class="badge">'+esc(x.public_code)+'</span></td><td>'+esc(catMap[x.category_id]||'')+'</td><td>'+esc(supplierMap[x.supplier_id]||'')+'</td><td>'+(x.is_active?'Active':'Inactive')+'</td></tr>').join('');
+  $('productsBody').innerHTML=products.map(x=>'<tr><td><strong>'+esc(x.name)+'</strong><br><span class="small">'+esc(x.slug)+'</span></td><td>'+esc(catMap[x.category_id]||'')+'</td><td>'+esc(rangeMap[x.range_id]||'')+'</td><td><span class="badge">'+esc(x.status)+'</span></td><td><select onchange="updateProductStatus(\''+x.id+'\',this.value)"><option value="draft" '+(x.status==='draft'?'selected':'')+'>Draft</option><option value="published" '+(x.status==='published'?'selected':'')+'>Published</option><option value="archived" '+(x.status==='archived'?'selected':'')+'>Archived</option></select></td></tr>').join('');
+  $('skusBody').innerHTML=skus.map(x=>'<tr><td>'+esc(productMap[x.product_id]||'')+'</td><td>'+esc(x.sku_code||'—')+'<br><span class="small">'+esc(x.label||'')+'</span></td><td>'+esc(x.pack_weight??'—')+' '+esc(x.pack_weight_unit||'')+'</td><td>'+esc(x.packs_per_carton??'—')+'</td><td>'+[x.carton_length_cm,x.carton_width_cm,x.carton_height_cm].map(v=>v??'—').join(' × ')+' cm<br><span class="small">'+esc(x.carton_gross_weight_kg??'—')+' kg gross</span></td><td>'+(x.is_default?'Yes':'No')+'</td></tr>').join('');
+
+  $('imagesBody').innerHTML=images.map(x=>{
+    const pub=sb.storage.from('product-images').getPublicUrl(x.storage_path).data.publicUrl;
+    return '<tr><td><img class="thumb" src="'+esc(pub)+'" alt=""></td><td>'+esc(productMap[x.product_id]||'')+'</td><td>'+esc(skuMap[x.sku_id]||'—')+'</td><td class="small">'+esc(x.storage_path)+'</td><td>'+(x.is_primary?'Yes':'No')+'</td><td><button class="btn danger" onclick="deleteImage(\''+x.id+'\',\''+String(x.storage_path).replace(/'/g,"\\'")+'\')">Delete</button></td></tr>';
+  }).join('');
+
+  $('quotesBody').innerHTML=quotes.map(x=>{
+    const items=quoteItems.filter(i=>i.quote_request_id===x.id);
+    const productText=items.length
+      ? items.map(i=>esc(i.product_name_snapshot||'Product')+(i.quantity?' — '+esc(i.quantity):'')).join('<br>')
+      : '—';
+    const number=esc(x.whatsapp||'—');
+    return '<tr>'
+      +'<td><strong>#'+x.reference_no+'</strong></td>'
+      +'<td>'+esc(x.company_name||'—')+'</td>'
+      +'<td>'+esc(x.contact_person||'—')+'<br><span class="small">'+esc(x.email||'—')+'</span></td>'
+      +'<td>'+number+'</td>'
+      +'<td>'+productText+'</td>'
+      +'<td>'+esc(x.destination_country||'—')+(x.destination_port?' / '+esc(x.destination_port):'')+'</td>'
+      +'<td>'+esc(x.incoterm||'—')+'</td>'
+      +'<td><span class="badge">'+esc(x.status)+'</span></td>'
+      +'<td><select onchange="updateQuoteStatus(\''+x.id+'\',this.value)">'+['new','contacted','quoted','negotiation','won','lost'].map(st=>'<option '+(st===x.status?'selected':'')+' value="'+st+'">'+st+'</option>').join('')+'</select></td>'
+      +'</tr>';
+  }).join('');
+
+  $('leadsBody').innerHTML=leads.map(x=>{
+    const who=[x.full_name,x.company_name].filter(Boolean).map(esc).join('<br>')||'<span class="small">Anonymous visitor</span>';
+    const interest=[x.product_name,x.range_code,x.subject].filter(Boolean).map(esc).join('<br>')||esc(x.message||'—');
+    const sourceLabel=String(x.source||'other').charAt(0).toUpperCase()+String(x.source||'other').slice(1);
+    const firstContact=x.first_contact_at?new Date(x.first_contact_at).toLocaleString():'—';
+    const quoteSent=x.quote_sent_at?new Date(x.quote_sent_at).toLocaleString():'—';
+    const followValue=x.follow_up_at?new Date(x.follow_up_at).toISOString().slice(0,16):'';
+    const overdue=x.follow_up_at && new Date(x.follow_up_at).getTime()<Date.now() && !['won','lost'].includes(x.status);
+    const value=x.deal_value==null?'':x.deal_value;
+    return '<tr'+(overdue?' style="background:#fff8e7"':'')+'>'
+      +'<td><strong>#'+x.reference_no+'</strong>'+(overdue?'<br><span class="badge" style="background:#fff0d5;color:#9a6700">Follow-up due</span>':'')+'</td>'
+      +'<td><span class="badge">'+esc(sourceLabel)+'</span></td>'
+      +'<td>'+who+(x.email?'<br><span class="small">'+esc(x.email)+'</span>':'')+'</td>'
+      +'<td>'+esc(x.phone||'—')+'</td>'
+      +'<td>'+interest+'</td>'
+      +'<td class="small">'+esc(firstContact)+'</td>'
+      +'<td class="small">'+esc(quoteSent)+'</td>'
+      +'<td><input type="datetime-local" id="fu-'+x.id+'" value="'+esc(followValue)+'" style="min-width:180px"></td>'
+      +'<td><textarea id="fn-'+x.id+'" rows="2" style="min-width:200px">'+esc(x.follow_up_note||'')+'</textarea></td>'
+      +'<td><div style="display:flex;gap:6px"><input id="dv-'+x.id+'" type="number" step="0.01" min="0" value="'+esc(value)+'" placeholder="0" style="width:110px"><select id="dc-'+x.id+'" style="width:80px">'+['USD','EUR','AED','OMR','IRR'].map(c=>'<option '+(c===x.deal_currency?'selected':'')+'>'+c+'</option>').join('')+'</select></div></td>'
+      +'<td><select id="lr-'+x.id+'" style="min-width:150px"><option value="">—</option>'+['Price','No response','Competitor','Payment issue','Shipping issue','MOQ','Timing','Other'].map(r=>'<option '+(r===x.lost_reason?'selected':'')+' value="'+r+'">'+r+'</option>').join('')+'</select></td>'
+      +'<td><span class="badge">'+esc(x.status)+'</span></td>'
+      +'<td style="min-width:180px"><select onchange="updateLeadStatus(\''+x.id+'\',this.value)">'+['new','contacted','qualified','quoted','negotiation','won','lost'].map(st=>'<option '+(st===x.status?'selected':'')+' value="'+st+'">'+st+'</option>').join('')+'</select><br><button class="btn secondary" style="margin-top:8px" onclick="saveLeadDetails(\''+x.id+'\')">Save details</button></td>'
+      +'</tr>';
+  }).join('')||'<tr><td colspan="13" class="small">No leads yet.</td></tr>';
+
+  const leaves=cats.filter(x=>x.parent_id);
+  const catOpts=leaves.map(x=>'<option value="'+x.id+'">'+esc(catMap[x.parent_id]+' → '+x.name)+'</option>').join('');
+  $('rCategory').innerHTML=catOpts;$('pCategory').innerHTML=catOpts;
+  $('rSupplier').innerHTML=suppliers.map(x=>'<option value="'+x.id+'">'+esc(x.internal_code+' — '+x.legal_name)+'</option>').join('');
+  const pOpts=products.map(x=>'<option value="'+x.id+'">'+esc(x.name)+'</option>').join('');
+  $('kProduct').innerHTML=pOpts;$('iProduct').innerHTML=pOpts;
+  filterRangesForProduct();filterImageSkus();
+
+  if(contact){$('cPerson').value=contact.contact_person||'';$('cTitle').value=contact.contact_title||'';$('cWhatsapp').value=contact.whatsapp||'';$('cEmail').value=contact.email||'';$('cPhone').value=contact.phone||'';$('cTemplate').value=contact.whatsapp_message_template||''}
+}
+
+function filterRangesForProduct(){
+  const cid=$('pCategory').value;
+  const opts=ranges.filter(x=>x.category_id===cid).map(x=>'<option value="'+x.id+'">'+esc(x.public_code)+'</option>').join('');
+  $('pRange').innerHTML=opts||'<option value="">Create a Product Range first</option>';
+}
+function filterImageSkus(){
+  const pid=$('iProduct').value;
+  $('iSku').innerHTML='<option value="">Product-level image</option>'+skus.filter(x=>x.product_id===pid).map(x=>'<option value="'+x.id+'">'+esc(x.label||x.sku_code||'SKU')+'</option>').join('');
+}
+
+
+const BULK_REQUIRED_HEADERS=[
+  'Supplier Code','Supplier Name','Main Category','Subcategory','Range Code',
+  'Product Name','Product Slug','Product Status'
+];
+
+function cleanCell(v){
+  if(v===undefined||v===null)return '';
+  return String(v).trim();
+}
+function boolCell(v){
+  const x=cleanCell(v).toLowerCase();
+  return ['true','yes','1','y'].includes(x);
+}
+function nullableNum(v){
+  if(v===undefined||v===null||String(v).trim()==='')return null;
+  const n=Number(v); return Number.isFinite(n)?n:null;
+}
+function csvArray(v){
+  const x=cleanCell(v);
+  return x?x.split(',').map(a=>a.trim()).filter(Boolean):null;
+}
+function normalizeBulkRow(row){
+  const o={};
+  Object.keys(row||{}).forEach(k=>o[String(k).trim()]=row[k]);
+  return o;
+}
+function readBulkFile(){
+  const file=$('bulkFile').files[0];
+  bulkRows=[];$('bulkImportBtn').disabled=true;
+  $('bulkHead').innerHTML='';$('bulkBody').innerHTML='';
+  if(!file){setMsg('bulkMsg','Choose an Excel file.',false);return}
+  setMsg('bulkMsg','Reading file…');
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const data=new Uint8Array(e.target.result);
+      const wb=XLSX.read(data,{type:'array'});
+      const sheet=wb.Sheets['Bulk Import']||wb.Sheets[wb.SheetNames[0]];
+      const rows=XLSX.utils.sheet_to_json(sheet,{defval:''}).map(normalizeBulkRow);
+      if(!rows.length) throw new Error('No data rows found.');
+      const headers=Object.keys(rows[0]);
+      const missing=BULK_REQUIRED_HEADERS.filter(h=>!headers.includes(h));
+      if(missing.length) throw new Error('Missing required columns: '+missing.join(', '));
+      bulkRows=rows.filter(r=>cleanCell(r['Supplier Code'])||cleanCell(r['Product Name'])||cleanCell(r['SKU Code']));
+      renderBulkPreview(headers,bulkRows);
+      $('bulkImportBtn').disabled=!bulkRows.length;
+      setMsg('bulkMsg','File ready: '+bulkRows.length+' row(s).');
+    }catch(err){
+      console.error(err);setMsg('bulkMsg','Could not read file: '+(err?.message||String(err)),false);
+    }
+  };
+  reader.onerror=()=>setMsg('bulkMsg','Could not read the selected file.',false);
+  reader.readAsArrayBuffer(file);
+}
+function renderBulkPreview(headers,rows){
+  const shown=headers.slice(0,12);
+  $('bulkHead').innerHTML='<tr>'+shown.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr>';
+  $('bulkBody').innerHTML=rows.slice(0,25).map(r=>'<tr>'+shown.map(h=>'<td>'+esc(r[h]??'')+'</td>').join('')+'</tr>').join('');
+  $('bulkCount').textContent=rows.length+' row(s) loaded'+(rows.length>25?' — first 25 shown':'');
+}
+async function ensureSupplier(row){
+  const code=cleanCell(row['Supplier Code']).toUpperCase();
+  if(!code) throw new Error('Supplier Code is required.');
+  let existing=suppliers.find(x=>String(x.internal_code).toUpperCase()===code);
+  const payload={
+    internal_code:code,
+    legal_name:cleanCell(row['Supplier Name'])||code,
+    contact_name:cleanCell(row['Contact Name'])||null,
+    phone:cleanCell(row['Phone'])||null,
+    whatsapp:cleanCell(row['WhatsApp'])||null,
+    email:cleanCell(row['Email'])||null,
+    website:cleanCell(row['Website'])||null,
+    notes:cleanCell(row['Supplier Notes'])||null,
+    is_active:true
+  };
+  if(existing){
+    const {data,error}=await sb.from('suppliers').update(payload).eq('id',existing.id).select('*').single();
+    if(error) throw error; Object.assign(existing,data); return existing;
+  }
+  const {data,error}=await sb.from('suppliers').insert(payload).select('*').single();
+  if(error) throw error; suppliers.push(data); return data;
+}
+function findLeafCategory(row){
+  const sub=cleanCell(row['Subcategory']).toLowerCase();
+  const main=cleanCell(row['Main Category']).toLowerCase();
+  const rootById=Object.fromEntries(cats.filter(x=>!x.parent_id).map(x=>[x.id,x]));
+  const match=cats.find(x=>x.parent_id && String(x.name).toLowerCase()===sub && (!main || String(rootById[x.parent_id]?.name||'').toLowerCase()===main));
+  if(!match) throw new Error('Subcategory not found: '+cleanCell(row['Main Category'])+' → '+cleanCell(row['Subcategory']));
+  return match;
+}
+async function ensureRange(row,supplier,category){
+  const code=cleanCell(row['Range Code']).toUpperCase();
+  if(!code) throw new Error('Range Code is required.');
+  let existing=ranges.find(x=>String(x.public_code).toUpperCase()===code);
+  const payload={category_id:category.id,supplier_id:supplier.id,public_code:code,is_active:true};
+  if(existing){
+    const {data,error}=await sb.from('product_ranges').update(payload).eq('id',existing.id).select('*').single();
+    if(error) throw error; Object.assign(existing,data); return existing;
+  }
+  const {data,error}=await sb.from('product_ranges').insert(payload).select('*').single();
+  if(error) throw error; ranges.push(data); return data;
+}
+async function ensureProduct(row,category,range){
+  let slug=cleanCell(row['Product Slug'])||slugify(cleanCell(row['Product Name']));
+  if(!slug) throw new Error('Product Name / Slug is required.');
+  let existing=products.find(x=>String(x.slug).toLowerCase()===slug.toLowerCase());
+  const status=['draft','published','archived'].includes(cleanCell(row['Product Status']).toLowerCase())?cleanCell(row['Product Status']).toLowerCase():'draft';
+  const payload={
+    category_id:category.id,range_id:range.id,
+    name:cleanCell(row['Product Name'])||slug,slug,
+    description:cleanCell(row['Product Description'])||null,
+    flavors_types:csvArray(row['Flavors / Types']),
+    packaging_type:cleanCell(row['Packaging Type'])||null,
+    private_label:cleanCell(row['Private Label'])||'On Request',
+    certificates:csvArray(row['Certificates']),
+    country_of_origin:cleanCell(row['Country of Origin'])||'Iran',
+    shelf_life:cleanCell(row['Shelf Life'])||null,
+    moq:cleanCell(row['MOQ'])||null,
+    lead_time:cleanCell(row['Lead Time'])||null,
+    status
+  };
+  if(existing){
+    const {data,error}=await sb.from('products').update(payload).eq('id',existing.id).select('*').single();
+    if(error) throw error; Object.assign(existing,data); return existing;
+  }
+  const {data,error}=await sb.from('products').insert(payload).select('*').single();
+  if(error) throw error; products.push(data); return data;
+}
+async function ensureSku(row,product){
+  const skuCode=cleanCell(row['SKU Code']);
+  const label=cleanCell(row['SKU Label']);
+  if(!skuCode && !label && cleanCell(row['Pack Weight'])==='') return null;
+  let existing=skuCode?skus.find(x=>String(x.sku_code||'').toLowerCase()===skuCode.toLowerCase()):null;
+  const payload={
+    product_id:product.id,
+    sku_code:skuCode||null,
+    label:label||null,
+    pack_weight:nullableNum(row['Pack Weight']),
+    pack_weight_unit:cleanCell(row['Weight Unit'])||'g',
+    packs_per_carton:nullableNum(row['Packs / Carton']),
+    pack_length_cm:nullableNum(row['Pack Length cm']),
+    pack_width_cm:nullableNum(row['Pack Width cm']),
+    pack_height_cm:nullableNum(row['Pack Height cm']),
+    carton_length_cm:nullableNum(row['Carton Length cm']),
+    carton_width_cm:nullableNum(row['Carton Width cm']),
+    carton_height_cm:nullableNum(row['Carton Height cm']),
+    carton_gross_weight_kg:nullableNum(row['Carton Gross Weight kg']),
+    is_default:boolCell(row['Default SKU'])
+  };
+  if(existing){
+    const {data,error}=await sb.from('product_skus').update(payload).eq('id',existing.id).select('*').single();
+    if(error) throw error; Object.assign(existing,data); return existing;
+  }
+  const {data,error}=await sb.from('product_skus').insert(payload).select('*').single();
+  if(error) throw error; skus.push(data); return data;
+}
+async function runBulkImport(){
+  if(!bulkRows.length){setMsg('bulkMsg','Load an Excel file first.',false);return}
+  const btn=$('bulkImportBtn');btn.disabled=true;btn.textContent='Importing…';
+  let ok=0,fail=0;const errors=[];
+  for(let i=0;i<bulkRows.length;i++){
+    const row=bulkRows[i];
+    setMsg('bulkMsg','Importing row '+(i+1)+' of '+bulkRows.length+'…');
+    try{
+      const supplier=await ensureSupplier(row);
+      const category=findLeafCategory(row);
+      const range=await ensureRange(row,supplier,category);
+      const product=await ensureProduct(row,category,range);
+      await ensureSku(row,product);
+      ok++;
+    }catch(err){
+      fail++;errors.push('Row '+(i+2)+': '+(err?.message||String(err)));
+      console.error('Bulk row failed',i,row,err);
+    }
+  }
+  await loadAll();
+  btn.disabled=false;btn.textContent='Import Rows';
+  if(fail){
+    setMsg('bulkMsg','Imported '+ok+' row(s); '+fail+' failed. '+errors.slice(0,3).join(' | '),false);
+    alert('Bulk import finished with errors.\n\n'+errors.slice(0,10).join('\n'));
+  }else{
+    setMsg('bulkMsg','Bulk import complete: '+ok+' row(s) imported successfully.');
+    alert('Bulk import complete: '+ok+' row(s) imported successfully.');
+  }
+}
+
+
+function countBy(arr,key,emptyLabel='Direct / Unknown'){
+  const m={};arr.forEach(x=>{const v=(x[key]||emptyLabel);m[v]=(m[v]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1]);
+}
+function renderAnalytics(){
+  const visitors=new Set(analyticsEvents.map(x=>x.visitor_id)).size;
+  const sessions=new Set(analyticsEvents.map(x=>x.session_id)).size;
+  const views=analyticsEvents.filter(x=>x.event_type==='page_view').length;
+  const since30=Date.now()-30*24*60*60*1000;
+  const recentQuotes=quotes.filter(x=>new Date(x.created_at).getTime()>=since30).length;
+  const conv=visitors?((recentQuotes/visitors)*100).toFixed(1)+'%':'—';
+
+  if($('countVisitors'))$('countVisitors').textContent=visitors;
+  if($('countPageViews'))$('countPageViews').textContent=views;
+  if($('quoteConversion'))$('quoteConversion').textContent=conv;
+  if($('aVisitors'))$('aVisitors').textContent=visitors;
+  if($('aViews'))$('aViews').textContent=views;
+  if($('aSessions'))$('aSessions').textContent=sessions;
+  if($('aConversion'))$('aConversion').textContent=conv;
+
+  const rows=(pairs)=>pairs.slice(0,10).map(([k,v])=>'<tr><td>'+esc(k)+'</td><td><strong>'+v+'</strong></td></tr>').join('')||'<tr><td colspan="2" class="small">No data yet</td></tr>';
+  if($('topPagesBody'))$('topPagesBody').innerHTML=rows(countBy(analyticsEvents.filter(x=>x.event_type==='page_view'),'page_path','/'));
+  if($('devicesBody'))$('devicesBody').innerHTML=rows(countBy(analyticsEvents,'device_type','Unknown'));
+  if($('countriesBody'))$('countriesBody').innerHTML=rows(countBy(analyticsEvents,'country','Unknown'));
+  if($('browsersBody'))$('browsersBody').innerHTML=rows(countBy(analyticsEvents,'browser','Unknown'));
+  if($('referrersBody'))$('referrersBody').innerHTML=rows(countBy(analyticsEvents,'referrer','Direct / Unknown'));
+}
+async function loadAnalytics(){
+  const since30=new Date(Date.now()-30*24*60*60*1000).toISOString();
+  const {data,error}=await sb.from('analytics_events').select('*').gte('created_at',since30).order('created_at',{ascending:false});
+  if(error){alert(error.message);return}
+  analyticsEvents=data||[];renderAnalytics();
+}
+
+async function createSupplier(){
+  if(!val('sCode')||!val('sName')){setMsg('supplierMsg','Internal code and legal name are required.',false);return}
+  const {error}=await sb.from('suppliers').insert({internal_code:val('sCode'),legal_name:val('sName'),contact_name:val('sContact')||null,phone:val('sPhone')||null,whatsapp:val('sWhatsapp')||null,email:val('sEmail')||null,website:val('sWebsite')||null,notes:val('sNotes')||null});
+  if(error){setMsg('supplierMsg',error.message,false);return}setMsg('supplierMsg','Supplier saved.');await loadAll();
+}
+async function createRange(){
+  const btn=$('saveRangeBtn');
+  const categoryId=$('rCategory').value;
+  const supplierId=$('rSupplier').value;
+  const code=val('rCode').toUpperCase();
+  const sortOrder=Number(val('rSort')||0);
+
+  if(!categoryId||!supplierId||!code){
+    setMsg('rangeMsg','Category, supplier and public code are required.',false);
+    return;
+  }
+
+  btn.disabled=true;
+  btn.textContent='Saving…';
+  setMsg('rangeMsg','Saving Product Range…');
+
+  try{
+    const {data,error}=await sb
+      .from('product_ranges')
+      .insert({
+        category_id:categoryId,
+        supplier_id:supplierId,
+        public_code:code,
+        sort_order:sortOrder,
+        is_active:true
+      })
+      .select('id,public_code')
+      .single();
+
+    if(error) throw error;
+
+    setMsg('rangeMsg','Product Range '+data.public_code+' saved successfully.');
+    alert('Product Range '+data.public_code+' saved successfully.');
+    $('rCode').value='';
+    $('rSort').value='0';
+    await loadAll();
+  }catch(err){
+    console.error('createRange failed',err);
+    const msg='Could not save range: '+(err?.message||String(err));
+    setMsg('rangeMsg',msg,false);
+    alert(msg);
+  }finally{
+    btn.disabled=false;
+    btn.textContent='Save Range';
+  }
+}
+async function createProduct(){
+  if(!val('pName')||!val('pSlug')||!$('pCategory').value||!$('pRange').value){setMsg('productMsg','Name, slug, category and range are required.',false);return}
+  const payload={name:val('pName'),slug:val('pSlug'),category_id:$('pCategory').value,range_id:$('pRange').value,country_of_origin:val('pOrigin')||'Iran',status:$('pStatus').value,description:val('pDescription')||null,packaging_type:val('pPackaging')||null,private_label:val('pPrivate')||'On Request',shelf_life:val('pShelf')||null,moq:val('pMoq')||null,lead_time:val('pLead')||null,flavors_types:arr('pFlavors'),certificates:arr('pCerts')};
+  const {error}=await sb.from('products').insert(payload);if(error){setMsg('productMsg',error.message,false);return}setMsg('productMsg','Product saved.');await loadAll();
+}
+async function updateProductStatus(id,status){const {error}=await sb.from('products').update({status}).eq('id',id);if(error)alert(error.message);else await loadAll()}
+
+async function createSku(){
+  if(!$('kProduct').value){setMsg('skuMsg','Choose a product.',false);return}
+  const payload={product_id:$('kProduct').value,sku_code:val('kCode')||null,label:val('kLabel')||null,pack_weight:num('kWeight'),pack_weight_unit:$('kUnit').value,packs_per_carton:num('kPacks'),pack_length_cm:num('kPL'),pack_width_cm:num('kPW'),pack_height_cm:num('kPH'),carton_length_cm:num('kCL'),carton_width_cm:num('kCW'),carton_height_cm:num('kCH'),carton_gross_weight_kg:num('kGross'),is_default:$('kDefault').value==='true'};
+  const {error}=await sb.from('product_skus').insert(payload);if(error){setMsg('skuMsg',error.message,false);return}setMsg('skuMsg','SKU saved.');await loadAll();
+}
+
+async function uploadImage(){
+  const pid=$('iProduct').value,file=$('iFile').files[0];if(!pid||!file){setMsg('imageMsg','Choose a product and image file.',false);return}
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase();const path=pid+'/'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
+  setMsg('imageMsg','Uploading…');
+  const up=await sb.storage.from('product-images').upload(path,file,{upsert:false,contentType:file.type||undefined});
+  if(up.error){setMsg('imageMsg',up.error.message,false);return}
+  const primary=$('iPrimary').value==='true';
+  if(primary)await sb.from('product_images').update({is_primary:false}).eq('product_id',pid);
+  const {error}=await sb.from('product_images').insert({product_id:pid,sku_id:$('iSku').value||null,storage_path:path,alt_text:val('iAlt')||null,is_primary:primary});
+  if(error){await sb.storage.from('product-images').remove([path]);setMsg('imageMsg',error.message,false);return}
+  setMsg('imageMsg','Image uploaded.');$('iFile').value='';await loadAll();
+}
+async function deleteImage(id,path){
+  if(!confirm('Delete this image?'))return;
+  const rm=await sb.storage.from('product-images').remove([path]);if(rm.error){alert(rm.error.message);return}
+  const {error}=await sb.from('product_images').delete().eq('id',id);if(error)alert(error.message);else await loadAll();
+}
+
+async function updateQuoteStatus(id,status){const {error}=await sb.from('quote_requests').update({status}).eq('id',id);if(error)alert(error.message);else await loadAll()}
+async function updateLeadStatus(id,status){const {error}=await sb.from('leads').update({status,updated_at:new Date().toISOString()}).eq('id',id);if(error)alert(error.message);else await loadAll()}
+async function saveLeadDetails(id){
+  const lead=leads.find(x=>x.id===id);
+  const d=$('fu-'+id)?.value||'';
+  const note=$('fn-'+id)?.value.trim()||'';
+  const value=$('dv-'+id)?.value||'';
+  const currency=$('dc-'+id)?.value||'USD';
+  const lostReason=$('lr-'+id)?.value||'';
+  if(lead?.status==='lost' && !lostReason){alert('Choose a Lost Reason first.');return}
+  const payload={
+    follow_up_at:d?new Date(d).toISOString():null,
+    follow_up_note:note||null,
+    deal_value:value===''?null:Number(value),
+    deal_currency:currency,
+    lost_reason:lead?.status==='lost'?(lostReason||null):null,
+    updated_at:new Date().toISOString()
+  };
+  const {error}=await sb.from('leads').update(payload).eq('id',id);
+  if(error){alert(error.message);return}
+  alert('Lead details saved.');
+  await loadAll();
+}
+async function saveContact(){
+  const payload={contact_person:val('cPerson')||null,contact_title:val('cTitle')||null,whatsapp:val('cWhatsapp')||null,email:val('cEmail')||null,phone:val('cPhone')||null,whatsapp_message_template:val('cTemplate')};
+  const {error}=await sb.from('contact_settings').update(payload).eq('setting_key','default');if(error){setMsg('contactMsg',error.message,false);return}setMsg('contactMsg','Settings saved.');await loadAll();
+}
+$('saveRangeBtn').addEventListener('click', async function(e){
+  e.preventDefault();
+  try{
+    await createRange();
+  }catch(err){
+    console.error('Range save click failed',err);
+    setMsg('rangeMsg','Unexpected error: '+(err?.message||String(err)),false);
+    alert('Could not save Product Range: '+(err?.message||String(err)));
+  }
+});
+checkSession();
+</script>
+</body>
+</html>

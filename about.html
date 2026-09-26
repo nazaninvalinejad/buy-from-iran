@@ -298,6 +298,10 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
   .util-bar__left { display: none; }
 }
 </style>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -707,6 +711,9 @@ function switchAuthTab(name){
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAuthModal()});
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<script src="./analytics.js"></script>\n<script src="./lead-tracking.js"></script>
 </body>
 </html>
 

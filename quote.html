@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
 <title>Get a Quote — Buy From Iran</title>
 <meta name="description" content="Submit one sourcing request and receive competitive quotes from verified Iranian manufacturers and exporters. No middlemen, no obligation — just direct supplier quotes within 48 hours.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -318,6 +320,10 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
   .footer-grid { grid-template-columns: 1fr; }
 }
 </style>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -519,14 +525,11 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
               <div class="fld-wrap">
                 <select id="f-category">
                   <option value="">Select a category</option>
-                  <option value="agriculture">Agriculture &amp; Food</option>
-                  <option value="beverages">Beverages</option>
-                  <option value="personalcare">Personal Care</option>
-                  <option value="homecare">Home Care</option>
-                  <option value="medical">Medical Equipment</option>
-                  <option value="textile">Textile &amp; Apparel</option>
-                  <option value="packaging">Packaging</option>
-                  <option value="handicrafts">Handicrafts &amp; Persian Carpets</option>
+                  <option value="Agriculture & Food">Agriculture &amp; Food</option>
+                  <option value="Beverage">Beverage</option>
+                  <option value="Personal Care">Personal Care</option>
+                  <option value="Home Care">Home Care</option>
+                  <option value="Textile & Apparel">Textile &amp; Apparel</option>
                 </select>
               </div>
               <div class="err-text" id="err-category" role="alert">
@@ -738,6 +741,7 @@ function toggleMobileNav() {
 }
 
 /* ── Validation helpers ── */
+const sb = supabase.createClient(window.BFI_SUPABASE.url, window.BFI_SUPABASE.publishableKey);
 function getEl(id) { return document.getElementById(id); }
 
 function setErr(fieldId, show) {
@@ -802,6 +806,16 @@ function validateField(id) {
   return ok;
 }
 
+/* Prefill from catalog Add to Quote */
+(function prefillQuoteFromCatalog(){
+  try{
+    const raw=localStorage.getItem('bfi_quote_item');
+    if(!raw) return;
+    const item=JSON.parse(raw);
+    if(item && item.product_name) getEl('f-product').value=item.product_name;
+  }catch(e){ console.warn('Could not prefill quote item',e); }
+})();
+
 /* Live validation on blur/input */
 ['name', 'email', 'phone', 'country'].forEach(id => {
   const el = getEl('f-' + id);
@@ -833,7 +847,7 @@ function handleFile(input) {
 }
 
 /* ── Form submit ── */
-getEl('quoteForm').addEventListener('submit', function(e) {
+getEl('quoteForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
   const required = ['product', 'category', 'country', 'qty', 'name', 'email', 'phone'];
@@ -846,18 +860,61 @@ getEl('quoteForm').addEventListener('submit', function(e) {
   }
 
   const btn = getEl('submitBtn');
+  const original = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = '<span class="btn-spinner"></span> Sending request…';
 
-  /* Simulated send — replace body of setTimeout with your real fetch() call */
-  setTimeout(() => {
+  const productName = getEl('f-product').value.trim();
+  const category = getEl('f-category').value.trim();
+  let catalogItem={};
+  try{ catalogItem=JSON.parse(localStorage.getItem('bfi_quote_item')||'{}')||{}; }catch(e){}
+
+  const qty = getEl('f-qty').value.trim();
+  const unit = getEl('f-unit').value.trim();
+  const details = getEl('f-details').value.trim();
+  const notes = [
+    category ? 'Category: ' + category : '',
+    details
+  ].filter(Boolean).join('\n');
+
+  try {
+    const { data, error } = await sb.rpc('submit_quote', {
+      p_company_name: getEl('f-company').value.trim(),
+      p_contact_person: getEl('f-name').value.trim(),
+      p_email: getEl('f-email').value.trim(),
+      p_whatsapp: getEl('f-phone').value.trim(),
+      p_destination_country: getEl('f-country').value.trim(),
+      p_destination_port: '',
+      p_incoterm: getEl('f-terms').value.trim(),
+      p_private_label: '',
+      p_required_packaging: '',
+      p_notes: notes,
+      p_items: [{
+        product_id: catalogItem.product_id || '',
+        sku_id: '',
+        product_name: productName,
+        range_code: catalogItem.range_code || '',
+        quantity: [qty, unit].filter(Boolean).join(' ')
+      }]
+    });
+    if (error) throw error;
+
+    const result = Array.isArray(data) ? data[0] : data;
     const email = getEl('f-email').value.trim();
     getEl('confirmEmail').textContent = email;
+    const successTitle = document.querySelector('.success-h');
+    if (successTitle && result?.reference_no) successTitle.textContent = 'Request #' + result.reference_no + ' sent';
     getEl('quoteForm').style.display = 'none';
     getEl('successScreen').style.display = 'block';
+    localStorage.removeItem('bfi_quote_item');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    console.error('Quote submission failed', err);
+    alert('Could not send your request. Please try again.\n\n' + (err?.message || String(err)));
+  } finally {
     btn.disabled = false;
-    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Get quotes from verified suppliers';
-  }, 1800);
+    btn.innerHTML = original;
+  }
 });
 
 /* ── Reset form ── */
@@ -916,6 +973,9 @@ function switchAuthTab(name){
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAuthModal()});
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<script src="./analytics.js"></script>\n<script src="./lead-tracking.js"></script>
 </body>
 </html>
 

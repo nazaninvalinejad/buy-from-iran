@@ -320,24 +320,30 @@ input, select, button { font-family: inherit; }
   max-width: 1280px; margin: -78px auto 0; padding: 0 32px;
 }
 .cat-row {
-  display: flex; gap: 16px; overflow-x: auto; padding: 6px 2px 22px;
-  scroll-snap-type: x mandatory;
+  display: flex; justify-content: center; align-items: stretch; gap: 18px;
+  overflow: visible; padding: 6px 2px 24px;
 }
-.cat-row::-webkit-scrollbar { height: 8px; }
-.cat-row::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 .cat-card {
-  scroll-snap-align: start; flex: 0 0 158px;
-  background: #fff; border: 1px solid var(--border); border-radius: 16px;
-  box-shadow: 0 8px 22px rgba(18,60,86,.1); padding: 22px 16px;
-  display: flex; flex-direction: column; align-items: center; gap: 13px;
+  flex: 0 0 166px;
+  min-height: 116px;
+  background: #fff; border: 1px solid var(--border); border-radius: 17px;
+  box-shadow: 0 10px 26px rgba(18,60,86,.12); padding: 20px 14px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
   cursor: pointer; transition: transform .2s cubic-bezier(.2,0,0,1), box-shadow .2s, border-color .2s;
 }
-.cat-card:hover { transform: translateY(-5px); box-shadow: 0 16px 32px rgba(18,60,86,.16); border-color: #7FA3B8; }
+.cat-card:hover { transform: translateY(-6px); box-shadow: 0 18px 36px rgba(18,60,86,.17); border-color: #7FA3B8; }
 .cat-icon {
-  display: inline-flex; width: 54px; height: 54px; border-radius: 15px;
+  display: inline-flex; width: 58px; height: 58px; border-radius: 16px;
   align-items: center; justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(18,60,86,.04);
 }
-.cat-label { font-size: 13.5px; font-weight: 600; color: var(--ink); text-align: center; line-height: 1.3; }
+.cat-label { font-size: 13.5px; font-weight: 700; color: var(--ink); text-align: center; line-height: 1.3; }
+@media (max-width: 980px) {
+  .cat-row { justify-content: flex-start; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 22px; }
+  .cat-row::-webkit-scrollbar { height: 8px; }
+  .cat-row::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+  .cat-card { scroll-snap-align: start; flex-basis: 158px; }
+}
 
 /* ─── Trust strip ─── */
 .trust-strip { background: #fff; padding: 30px 0 8px; }
@@ -519,6 +525,10 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
   .cta-inner { padding: 40px 28px; }
 }
 </style>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -577,28 +587,61 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
           <a href="#">Listing</a>
           <div class="mega-menu">
             <div class="mega-col">
-              <div class="mega-col__title">Food &amp; Agriculture</div>
-              <a href="listing.html?cat=food">Commodity Foods</a><a href="listing.html?cat=food">Tomato Paste</a><a href="listing.html?cat=food">Canned Foods</a><a href="listing.html?cat=food">Pasta</a><a href="listing.html?cat=food">Biscuits</a><a href="listing.html?cat=food">Wafers</a><a href="listing.html?cat=food">Cakes</a><a href="listing.html?cat=food">Chocolate</a><a href="listing.html?cat=food">Pistachios</a><a href="listing.html?cat=food">Dates</a><a href="listing.html?cat=food">Raisins</a><a href="listing.html?cat=food">Saffron</a><a href="listing.html?cat=food">Honey</a>
+              <div class="mega-col__title">Agriculture &amp; Food</div>
+              <a href="listing.html?cat=agriculture-food&sub=biscuits-crackers">Biscuits &amp; Crackers</a>
+              <a href="listing.html?cat=agriculture-food&sub=wafers">Wafers</a>
+              <a href="listing.html?cat=agriculture-food&sub=cakes-cookies">Cakes &amp; Cookies</a>
+              <a href="listing.html?cat=agriculture-food&sub=chocolate-confectionery">Chocolate &amp; Confectionery</a>
+              <a href="listing.html?cat=agriculture-food&sub=candy-toffee-gummies">Candy, Toffee &amp; Gummies</a>
+              <a href="listing.html?cat=agriculture-food&sub=snacks-chips">Snacks &amp; Chips</a>
+              <a href="listing.html?cat=agriculture-food&sub=tomato-paste">Tomato Paste</a>
+              <a href="listing.html?cat=agriculture-food&sub=sauces-condiments">Sauces &amp; Condiments</a>
+              <a href="listing.html?cat=agriculture-food&sub=canned-foods">Canned Foods</a>
+              <a href="listing.html?cat=agriculture-food&sub=pickles-olives">Pickles &amp; Olives</a>
+              <a href="listing.html?cat=agriculture-food&sub=pasta-noodles">Pasta &amp; Noodles</a>
+              <a href="listing.html?cat=agriculture-food&sub=jams-honey-spreads">Jams, Honey &amp; Spreads</a>
+              <a href="listing.html?cat=agriculture-food&sub=nuts-dried-fruits">Nuts &amp; Dried Fruits</a>
+              <a href="listing.html?cat=agriculture-food&sub=saffron-spices">Saffron &amp; Spices</a>
+              <a href="listing.html?cat=agriculture-food&sub=rice-grains-pulses">Rice, Grains &amp; Pulses</a>
             </div>
             <div class="mega-col">
-              <div class="mega-col__title">Beverages</div>
-              <a href="listing.html?cat=beverages">Fruit Juices</a><a href="listing.html?cat=beverages">Malt Beverages</a><a href="listing.html?cat=beverages">Energy Drinks</a><a href="listing.html?cat=beverages">Tea</a><a href="listing.html?cat=beverages">Herbal Tea</a><a href="listing.html?cat=beverages">Coffee</a><a href="listing.html?cat=beverages">Syrups</a>
+              <div class="mega-col__title">Beverage</div>
+              <a href="listing.html?cat=beverage&sub=fruit-juices-nectars">Fruit Juices &amp; Nectars</a>
+              <a href="listing.html?cat=beverage&sub=malt-non-alcoholic-beverages">Malt &amp; Non-Alcoholic Beverages</a>
+              <a href="listing.html?cat=beverage&sub=soft-drinks-energy-drinks">Soft Drinks &amp; Energy Drinks</a>
+              <a href="listing.html?cat=beverage&sub=tea-herbal-infusions">Tea &amp; Herbal Infusions</a>
+              <a href="listing.html?cat=beverage&sub=coffee">Coffee</a>
+              <a href="listing.html?cat=beverage&sub=syrups-concentrates">Syrups &amp; Concentrates</a>
+              <a href="listing.html?cat=beverage&sub=water-functional-beverages">Water &amp; Functional Beverages</a>
             </div>
             <div class="mega-col">
               <div class="mega-col__title">Personal Care</div>
-              <a href="listing.html?cat=personal">Shampoo</a><a href="listing.html?cat=personal">Conditioner</a><a href="listing.html?cat=personal">Hair Care</a><a href="listing.html?cat=personal">Soap</a><a href="listing.html?cat=personal">Liquid Hand Soap</a><a href="listing.html?cat=personal">Body Wash</a><a href="listing.html?cat=personal">Toothpaste</a>
+              <a href="listing.html?cat=personal-care&sub=hair-care">Hair Care</a>
+              <a href="listing.html?cat=personal-care&sub=skin-care">Skin Care</a>
+              <a href="listing.html?cat=personal-care&sub=bath-body">Bath &amp; Body</a>
+              <a href="listing.html?cat=personal-care&sub=hand-personal-hygiene">Hand &amp; Personal Hygiene</a>
+              <a href="listing.html?cat=personal-care&sub=oral-care">Oral Care</a>
+              <a href="listing.html?cat=personal-care&sub=baby-care">Baby Care</a>
+              <a href="listing.html?cat=personal-care&sub=feminine-care">Feminine Care</a>
             </div>
             <div class="mega-col">
               <div class="mega-col__title">Home Care</div>
-              <a href="listing.html?cat=home">Laundry Detergent</a><a href="listing.html?cat=home">Dishwashing Liquid</a><a href="listing.html?cat=home">Surface Cleaner</a><a href="listing.html?cat=home">Bleach</a><a href="listing.html?cat=home">Disinfectants</a>
+              <a href="listing.html?cat=home-care&sub=laundry-care">Laundry Care</a>
+              <a href="listing.html?cat=home-care&sub=dishwashing">Dishwashing</a>
+              <a href="listing.html?cat=home-care&sub=surface-floor-cleaners">Surface &amp; Floor Cleaners</a>
+              <a href="listing.html?cat=home-care&sub=bleach-disinfectants">Bleach &amp; Disinfectants</a>
+              <a href="listing.html?cat=home-care&sub=bathroom-toilet-cleaners">Bathroom &amp; Toilet Cleaners</a>
+              <a href="listing.html?cat=home-care&sub=air-fresheners">Air Fresheners</a>
             </div>
             <div class="mega-col">
-              <div class="mega-col__title">Packaging</div>
-              <a href="listing.html?cat=packaging">Plastic Packaging</a><a href="listing.html?cat=packaging">PET Packaging</a><a href="listing.html?cat=packaging">Flexible Packaging</a><a href="listing.html?cat=packaging">Food Packaging</a>
-            </div>
-            <div class="mega-col">
-              <div class="mega-col__title">Biscuits &amp; Crackers</div>
-              <a href="listing.html?cat=food">Champion Biscuit</a><a href="listing.html?cat=food">Mahfel Biscuit</a><a href="listing.html?cat=food">Digestive Biscuit</a><a href="listing.html?cat=food">Sugar Free Biscuit</a><a href="listing.html?cat=food">Multi Grain</a><a href="listing.html?cat=food">Oats Plus</a><a href="listing.html?cat=food">Crackers</a><a href="listing.html?cat=food">Traditional Biscuit</a><a href="listing.html?cat=food">Barley Biscuit</a>
+              <div class="mega-col__title">Textile &amp; Apparel</div>
+              <a href="listing.html?cat=textile-apparel&sub=apparel-garments">Apparel &amp; Garments</a>
+              <a href="listing.html?cat=textile-apparel&sub=fabrics-yarns">Fabrics &amp; Yarns</a>
+              <a href="listing.html?cat=textile-apparel&sub=home-textiles">Home Textiles</a>
+              <a href="listing.html?cat=textile-apparel&sub=towels-bath-textiles">Towels &amp; Bath Textiles</a>
+              <a href="listing.html?cat=textile-apparel&sub=socks-hosiery">Socks &amp; Hosiery</a>
+              <a href="listing.html?cat=textile-apparel&sub=workwear-uniforms">Workwear &amp; Uniforms</a>
+              <a href="listing.html?cat=textile-apparel&sub=carpets-rugs">Carpets &amp; Rugs</a>
             </div>
           </div>
         </div>
@@ -731,13 +774,10 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
             <select aria-label="Select category">
               <option>All categories</option>
               <option>Agriculture &amp; Food</option>
-              <option>Beverages</option>
+              <option>Beverage</option>
               <option>Personal Care</option>
               <option>Home Care</option>
-              <option>Medical Equipment</option>
               <option>Textile &amp; Apparel</option>
-              <option>Packaging</option>
-              <option>Handicrafts &amp; Persian Carpets</option>
             </select>
           </div>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="m6 9 6 6 6-6"/></svg>
@@ -760,10 +800,10 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
 
     <div class="popular">
       <span>Popular:</span>
-      <a href="#">Portland cement</a>
-      <a href="#">Bitumen 60/70</a>
-      <a href="#">Negin saffron</a>
-      <a href="#">Persian carpets</a>
+      <a href="listing.html?cat=agriculture-food&sub=biscuits-crackers">Biscuits &amp; Crackers</a>
+      <a href="listing.html?cat=agriculture-food&sub=chocolate-confectionery">Chocolate &amp; Confectionery</a>
+      <a href="listing.html?cat=agriculture-food&sub=tomato-paste">Tomato Paste</a>
+      <a href="listing.html?cat=beverage&sub=fruit-juices-nectars">Fruit Juices</a>
     </div>
 
     <!-- About panel -->
@@ -804,41 +844,28 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
 <!-- ═══════════════ QUICK CATEGORIES ═══════════════ -->
 <div id="categories" class="categories-wrap">
   <div class="cat-row">
-    <div class="cat-card">
-      <span class="cat-icon" style="background:#DEF0E6;"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#2E8B57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
+    <a class="cat-card" href="listing.html?cat=agriculture-food" style="color:inherit;">
+      <span class="cat-icon" style="background:#EEF3F7;font-size:25px;display:inline-flex;align-items:center;justify-content:center;">🌾</span>
       <span class="cat-label">Agriculture &amp; Food</span>
-    </div>
-    <div class="cat-card">
-      <span class="cat-icon" style="background:#DCE7EE;"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#123C56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8"/><path d="M9 2v2.789a4 4 0 0 1-.672 2.219l-.656.984A4 4 0 0 0 7 10.212V20a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-9.788a4 4 0 0 0-.672-2.219l-.656-.984A4 4 0 0 1 15 4.789V2"/><path d="M7 15a6.47 6.47 0 0 1 5 0 6.47 6.47 0 0 0 5 0"/></svg></span>
-      <span class="cat-label">Beverages</span>
-    </div>
-    <div class="cat-card">
-      <span class="cat-icon" style="background:#DEF0E6;"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#2E8B57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M12 2a10 10 0 0 1 9 5.5"/><path d="M3 7.5A10 10 0 0 1 12 2"/><path d="m9 6 3-4 3 4"/></svg></span>
+    </a>
+    <a class="cat-card" href="listing.html?cat=beverage" style="color:inherit;">
+      <span class="cat-icon" style="background:#EEF3F7;font-size:25px;display:inline-flex;align-items:center;justify-content:center;">🥤</span>
+      <span class="cat-label">Beverage</span>
+    </a>
+    <a class="cat-card" href="listing.html?cat=personal-care" style="color:inherit;">
+      <span class="cat-icon" style="background:#EEF3F7;font-size:25px;display:inline-flex;align-items:center;justify-content:center;">🧴</span>
       <span class="cat-label">Personal Care</span>
-    </div>
-    <div class="cat-card">
-      <span class="cat-icon" style="background:#EBF2FF;"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#1A5FD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"/><path d="M12 3v6"/></svg></span>
+    </a>
+    <a class="cat-card" href="listing.html?cat=home-care" style="color:inherit;">
+      <span class="cat-icon" style="background:#EEF3F7;font-size:25px;display:inline-flex;align-items:center;justify-content:center;">🏠</span>
       <span class="cat-label">Home Care</span>
-    </div>
-    <div class="cat-card">
-      <span class="cat-icon" style="background:#DEF0E6;"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#2E8B57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg></span>
-      <span class="cat-label">Medical Equipment</span>
-    </div>
-    <div class="cat-card">
-      <span class="cat-icon" style="background:#DEF0E6;"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#2E8B57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 3.5 16 2a4 4 0 0 1-8 0L3.6 3.5a2 2 0 0 0-1.3 2.2l.6 3.5a1 1 0 0 0 1 .8H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.2a1 1 0 0 0 1-.8l.5-3.5a2 2 0 0 0-1.3-2.2Z"/></svg></span>
+    </a>
+    <a class="cat-card" href="listing.html?cat=textile-apparel" style="color:inherit;">
+      <span class="cat-icon" style="background:#EEF3F7;font-size:25px;display:inline-flex;align-items:center;justify-content:center;">👕</span>
       <span class="cat-label">Textile &amp; Apparel</span>
-    </div>
-    <div class="cat-card">
-      <span class="cat-icon" style="background:#DCE7EE;"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#123C56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73Z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/></svg></span>
-      <span class="cat-label">Packaging</span>
-    </div>
-    <div class="cat-card">
-      <span class="cat-icon" style="background:#EBF2FF;"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#1A5FD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9h18M3 15h18M8 4v16M16 4v16"/></svg></span>
-      <span class="cat-label">Handicrafts &amp; Carpets</span>
-    </div>
+    </a>
   </div>
 </div>
-
 
 <!-- ═══════════════ TRUST STRIP ═══════════════ -->
 <section class="trust-strip">
@@ -1069,6 +1096,9 @@ function switchAuthTab(name){
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAuthModal()});
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<script src="./analytics.js"></script>\n<script src="./lead-tracking.js"></script>
 </body>
 </html>
 
