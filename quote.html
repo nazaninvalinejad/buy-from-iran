@@ -495,7 +495,7 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
           </div>
           <div class="success-row">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            Confirmation sent to <strong id="confirmEmail">your email</strong>
+            Request reference: <strong id="confirmEmail">saved</strong>
           </div>
         </div>
         <button class="new-req-btn" onclick="resetForm()">Submit another request</button>
@@ -900,10 +900,9 @@ getEl('quoteForm').addEventListener('submit', async function(e) {
     if (error) throw error;
 
     const result = Array.isArray(data) ? data[0] : data;
-    const email = getEl('f-email').value.trim();
-    getEl('confirmEmail').textContent = email;
+    getEl('confirmEmail').textContent = result?.reference_no ? '#' + result.reference_no : 'saved';
     const successTitle = document.querySelector('.success-h');
-    if (successTitle && result?.reference_no) successTitle.textContent = 'Request #' + result.reference_no + ' sent';
+    if (successTitle && result?.reference_no) successTitle.textContent = 'Request #' + result.reference_no + ' submitted';
     getEl('quoteForm').style.display = 'none';
     getEl('successScreen').style.display = 'block';
     localStorage.removeItem('bfi_quote_item');
