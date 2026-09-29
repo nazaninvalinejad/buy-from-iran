@@ -24,11 +24,48 @@
   window.BFITrackLead=submit;
 
   document.addEventListener('click',function(e){
-    const a=e.target.closest && e.target.closest('a[href*="wa.me"],a[href*="api.whatsapp.com"]');
-    if(a) submit('whatsapp',{p_subject:'WhatsApp click'});
+    const a=e.target.closest && e.target.closest('a[href*="wa.me"],a[href*="api.whatsapp.com"],[data-bfi-whatsapp]');
+    if(!a) return;
+    submit('whatsapp',{
+      p_subject:a.getAttribute('data-bfi-subject')||'WhatsApp click',
+      p_product_name:a.getAttribute('data-bfi-product')||null,
+      p_range_code:a.getAttribute('data-bfi-range')||null
+    });
   },true);
 
+  async function mountWhatsApp(){
+    try{
+      const {data,error}=await sb.from('contact_settings')
+        .select('whatsapp,whatsapp_message_template')
+        .eq('setting_key','default')
+        .single();
+      if(error || !data || !data.whatsapp) return;
+      if(document.querySelector('[data-bfi-floating-whatsapp]')) return;
+
+      const phone=String(data.whatsapp).replace(/\D/g,'');
+      if(!phone) return;
+
+      const a=document.createElement('a');
+      a.href='https://wa.me/'+phone+'?text='+encodeURIComponent('Hello, I would like more information about Buy From Iran.');
+      a.target='_blank';
+      a.rel='noopener';
+      a.setAttribute('data-bfi-whatsapp','1');
+      a.setAttribute('data-bfi-floating-whatsapp','1');
+      a.setAttribute('data-bfi-subject','Floating WhatsApp click');
+      a.setAttribute('aria-label','Chat with Buy From Iran on WhatsApp');
+      a.textContent='WhatsApp';
+      Object.assign(a.style,{
+        position:'fixed',right:'22px',bottom:'92px',zIndex:'9998',
+        background:'#25D366',color:'#fff',padding:'12px 16px',
+        borderRadius:'999px',fontWeight:'700',fontFamily:'inherit',
+        boxShadow:'0 8px 24px rgba(0,0,0,.18)',textDecoration:'none'
+      });
+      document.body.appendChild(a);
+    }catch(_){}
+  }
+
   document.addEventListener('DOMContentLoaded',function(){
+    mountWhatsApp();
     const widget=document.querySelector('elevenlabs-convai');
     if(!widget) return;
 
