@@ -55,7 +55,7 @@
       a.setAttribute('aria-label','Chat with Buy From Iran on WhatsApp');
       a.textContent='WhatsApp';
       Object.assign(a.style,{
-        position:'fixed',right:'22px',bottom:'92px',zIndex:'9998',
+        position:'fixed',left:'22px',bottom:'24px',zIndex:'9998',
         background:'#25D366',color:'#fff',padding:'12px 16px',
         borderRadius:'999px',fontWeight:'700',fontFamily:'inherit',
         boxShadow:'0 8px 24px rgba(0,0,0,.18)',textDecoration:'none'
