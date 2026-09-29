@@ -660,11 +660,11 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         <input type="text" placeholder="Type your search..." aria-label="Search">
       </div>
-      <button onclick="openAuthModal('signin')" class="nav-signin" style="background:none;border:none;cursor:pointer;">
+      <button onclick="openAuthModal('signin')" class="nav-signin bfi-auth-trigger" style="background:none;border:none;cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
         Sign in or Register
       </button>
-      <button class="btn-add-listing">ADD LISTING</button>
+      <button class="btn-add-listing" onclick="handleAddListing()">ADD LISTING</button>
       <button class="hamburger" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -686,11 +686,11 @@ footer { background: #0A2535; color: #9FB2BF; padding: 60px 0 0; }
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <input type="text" placeholder="Type your search..." aria-label="Search">
         </div>
-        <button onclick="openAuthModal('signin')" class="nav-signin" style="display:inline-flex;background:none;border:none;cursor:pointer;">
+        <button onclick="openAuthModal('signin')" class="nav-signin bfi-auth-trigger" style="display:inline-flex;background:none;border:none;cursor:pointer;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
           Sign in or Register
         </button>
-        <button class="btn-add-listing">ADD LISTING</button>
+        <button class="btn-add-listing" onclick="handleAddListing()">ADD LISTING</button>
       </div>
     </nav>
   </div>
@@ -1031,8 +1031,8 @@ function toggleMobileNav() {
     <!-- Sign In pane -->
     <div class="auth-pane active" data-pane="signin">
       <div class="auth-field">
-        <label for="si-username">Username</label>
-        <input type="text" id="si-username" placeholder="Enter your username" autocomplete="username">
+        <label for="si-username">Email</label>
+        <input type="email" id="si-username" placeholder="you@company.com" autocomplete="email">
       </div>
       <div class="auth-field">
         <label for="si-password">Password</label>
@@ -1040,9 +1040,9 @@ function toggleMobileNav() {
       </div>
       <div class="auth-row">
         <label class="auth-remember"><input type="checkbox"> Remember me</label>
-        <a href="#" class="auth-forgot">Forgot password?</a>
+        <a href="#" class="auth-forgot" onclick="forgotPassword(event)">Forgot password?</a>
       </div>
-      <button class="auth-btn">Sign In</button>
+      <button class="auth-btn" id="signInBtn" onclick="signInPublic()">Sign In</button>
     </div>
     <!-- Register pane -->
     <div class="auth-pane" data-pane="register">
@@ -1058,20 +1058,121 @@ function toggleMobileNav() {
         <label for="reg-password">Password</label>
         <input type="password" id="reg-password" placeholder="Create a password" autocomplete="new-password">
       </div>
-      <button class="auth-btn">Sign Up</button>
+      <button class="auth-btn" id="signUpBtn" onclick="signUpPublic()">Create Account</button>
       <p class="auth-privacy">Your personal data will be used to support your experience on this website, to manage access to your account and for other purposes described in our <a href="#">privacy policy</a>.</p>
     </div>
+    <div class="auth-pane" data-pane="account">
+      <div style="font-size:15px;color:#374151;line-height:1.6;margin-bottom:18px;">
+        Signed in as <strong id="accountEmail"></strong>
+      </div>
+      <button class="auth-btn" onclick="signOutPublic()">Sign Out</button>
+    </div>
+    <div id="authStatus" style="display:none;margin:0 32px 26px;padding:11px 13px;border-radius:9px;background:#EEF3F7;color:#123C56;font-size:13.5px;line-height:1.45;"></div>
   </div>
 </div>
 <script>
-function openAuthModal(tab){document.getElementById('authOverlay').classList.add('open');if(tab)switchAuthTab(tab)}
+let publicAuthClient=null;
+let publicAuthSession=null;
+let pendingAddListing=false;
+
+function authClient(){
+  if(publicAuthClient) return publicAuthClient;
+  if(!window.supabase||!window.BFI_SUPABASE) return null;
+  publicAuthClient=supabase.createClient(
+    window.BFI_SUPABASE.url,
+    window.BFI_SUPABASE.publishableKey,
+    {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'bfi_public_auth'}}
+  );
+  return publicAuthClient;
+}
+function authStatus(message,isError){
+  const el=document.getElementById('authStatus');
+  if(!el)return;
+  el.style.display=message?'block':'none';
+  el.style.background=isError?'#FEF2F2':'#EEF3F7';
+  el.style.color=isError?'#B91C1C':'#123C56';
+  el.textContent=message||'';
+}
+function openAuthModal(tab){
+  document.getElementById('authOverlay').classList.add('open');
+  authStatus('');
+  if(publicAuthSession){
+    document.getElementById('accountEmail').textContent=publicAuthSession.user.email||'your account';
+    switchAuthTab('account');
+  }else if(tab)switchAuthTab(tab);
+}
 function closeAuthModal(){document.getElementById('authOverlay').classList.remove('open')}
 function handleOverlayClick(e){if(e.target===document.getElementById('authOverlay'))closeAuthModal()}
 function switchAuthTab(name){
   document.querySelectorAll('.auth-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
   document.querySelectorAll('.auth-pane').forEach(p=>p.classList.toggle('active',p.dataset.pane===name));
 }
+function setAuthButtons(session){
+  document.querySelectorAll('.bfi-auth-trigger').forEach(btn=>{
+    const label=session?.user?.user_metadata?.username||session?.user?.email||'Sign in or Register';
+    const svg=btn.querySelector('svg')?.outerHTML||'';
+    btn.innerHTML=svg+' '+(session?'Account: '+label:'Sign in or Register');
+  });
+}
+async function signInPublic(){
+  const client=authClient(); if(!client)return authStatus('Authentication is not available right now.',true);
+  const email=document.getElementById('si-username').value.trim();
+  const password=document.getElementById('si-password').value;
+  if(!email||!password)return authStatus('Enter your email and password.',true);
+  const btn=document.getElementById('signInBtn'); btn.disabled=true; btn.textContent='Signing in…';
+  const {data,error}=await client.auth.signInWithPassword({email,password});
+  btn.disabled=false; btn.textContent='Sign In';
+  if(error)return authStatus(error.message,true);
+  publicAuthSession=data.session; setAuthButtons(publicAuthSession);
+  authStatus('Signed in successfully.');
+  if(pendingAddListing){pendingAddListing=false;location.href='membership.html?intent=add-listing';return;}
+  setTimeout(closeAuthModal,500);
+}
+async function signUpPublic(){
+  const client=authClient(); if(!client)return authStatus('Authentication is not available right now.',true);
+  const email=document.getElementById('reg-email').value.trim();
+  const username=document.getElementById('reg-username').value.trim();
+  const password=document.getElementById('reg-password').value;
+  if(!email||!username||password.length<6)return authStatus('Enter an email, username, and a password of at least 6 characters.',true);
+  const btn=document.getElementById('signUpBtn'); btn.disabled=true; btn.textContent='Creating account…';
+  const {data,error}=await client.auth.signUp({email,password,options:{data:{username}}});
+  btn.disabled=false; btn.textContent='Create Account';
+  if(error)return authStatus(error.message,true);
+  if(data.session){
+    publicAuthSession=data.session;setAuthButtons(publicAuthSession);
+    authStatus('Account created successfully.');
+    if(pendingAddListing){pendingAddListing=false;location.href='membership.html?intent=add-listing';return;}
+    setTimeout(closeAuthModal,700);
+  }else{
+    authStatus('Account created. Check your email to confirm your account, then sign in.');
+  }
+}
+async function forgotPassword(e){
+  e.preventDefault();
+  const client=authClient(); if(!client)return authStatus('Authentication is not available right now.',true);
+  const email=document.getElementById('si-username').value.trim();
+  if(!email)return authStatus('Enter your email first, then click Forgot password.',true);
+  const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:location.origin+'/index.html'});
+  if(error)return authStatus(error.message,true);
+  authStatus('Password reset email sent. Check your inbox.');
+}
+async function signOutPublic(){
+  const client=authClient(); if(client) await client.auth.signOut();
+  publicAuthSession=null;setAuthButtons(null);switchAuthTab('signin');authStatus('Signed out.');
+}
+async function handleAddListing(){
+  if(publicAuthSession){location.href='membership.html?intent=add-listing';return;}
+  pendingAddListing=true;
+  openAuthModal('register');
+  authStatus('Create an account or sign in first. After that, we’ll take you to the supplier listing process.');
+}
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAuthModal()});
+window.addEventListener('load',async function(){
+  const client=authClient(); if(!client)return;
+  const {data}=await client.auth.getSession();
+  publicAuthSession=data.session||null;setAuthButtons(publicAuthSession);
+  client.auth.onAuthStateChange((_event,session)=>{publicAuthSession=session||null;setAuthButtons(publicAuthSession);});
+});
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
