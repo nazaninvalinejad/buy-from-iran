@@ -1074,6 +1074,7 @@ function toggleMobileNav() {
 let publicAuthClient=null;
 let publicAuthSession=null;
 let pendingAddListing=false;
+const POST_AUTH_INTENT_KEY='bfi_post_auth_intent';
 
 function authClient(){
   if(publicAuthClient) return publicAuthClient;
@@ -1125,7 +1126,12 @@ async function signInPublic(){
   if(error)return authStatus(error.message,true);
   publicAuthSession=data.session; setAuthButtons(publicAuthSession);
   authStatus('Signed in successfully.');
-  if(pendingAddListing){pendingAddListing=false;location.href='membership.html?intent=add-listing';return;}
+  if(pendingAddListing||localStorage.getItem(POST_AUTH_INTENT_KEY)==='add-listing'){
+    pendingAddListing=false;
+    localStorage.removeItem(POST_AUTH_INTENT_KEY);
+    location.href='membership.html?intent=add-listing';
+    return;
+  }
   setTimeout(closeAuthModal,500);
 }
 async function signUpPublic(){
@@ -1135,16 +1141,28 @@ async function signUpPublic(){
   const password=document.getElementById('reg-password').value;
   if(!email||!username||password.length<6)return authStatus('Enter an email, username, and a password of at least 6 characters.',true);
   const btn=document.getElementById('signUpBtn'); btn.disabled=true; btn.textContent='Creating account…';
-  const {data,error}=await client.auth.signUp({email,password,options:{data:{username}}});
+  const nextIntent=pendingAddListing?'add-listing':'account';
+  if(pendingAddListing) localStorage.setItem(POST_AUTH_INTENT_KEY,'add-listing');
+  const redirectUrl=location.origin+'/index.html?auth=confirmed&next='+encodeURIComponent(nextIntent);
+  const {data,error}=await client.auth.signUp({
+    email,
+    password,
+    options:{data:{username},emailRedirectTo:redirectUrl}
+  });
   btn.disabled=false; btn.textContent='Create Account';
   if(error)return authStatus(error.message,true);
   if(data.session){
     publicAuthSession=data.session;setAuthButtons(publicAuthSession);
     authStatus('Account created successfully.');
-    if(pendingAddListing){pendingAddListing=false;location.href='membership.html?intent=add-listing';return;}
+    if(pendingAddListing||localStorage.getItem(POST_AUTH_INTENT_KEY)==='add-listing'){
+      pendingAddListing=false;
+      localStorage.removeItem(POST_AUTH_INTENT_KEY);
+      location.href='membership.html?intent=add-listing';
+      return;
+    }
     setTimeout(closeAuthModal,700);
   }else{
-    authStatus('Account created. Check your email to confirm your account, then sign in.');
+    authStatus('Account created. Check your email and click Confirm email address. If you confirm on another device, return here and sign in with the same email and password.');
   }
 }
 async function forgotPassword(e){
@@ -1163,15 +1181,41 @@ async function signOutPublic(){
 async function handleAddListing(){
   if(publicAuthSession){location.href='membership.html?intent=add-listing';return;}
   pendingAddListing=true;
+  localStorage.setItem(POST_AUTH_INTENT_KEY,'add-listing');
   openAuthModal('register');
   authStatus('Create an account or sign in first. After that, we’ll take you to the supplier listing process.');
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAuthModal()});
 window.addEventListener('load',async function(){
   const client=authClient(); if(!client)return;
+  const params=new URLSearchParams(location.search);
+  const confirmed=params.get('auth')==='confirmed';
+  const next=params.get('next');
   const {data}=await client.auth.getSession();
-  publicAuthSession=data.session||null;setAuthButtons(publicAuthSession);
-  client.auth.onAuthStateChange((_event,session)=>{publicAuthSession=session||null;setAuthButtons(publicAuthSession);});
+  publicAuthSession=data.session||null;
+  setAuthButtons(publicAuthSession);
+
+  if(confirmed){
+    if(next==='add-listing') localStorage.setItem(POST_AUTH_INTENT_KEY,'add-listing');
+    history.replaceState({},document.title,location.pathname);
+    if(publicAuthSession){
+      if(localStorage.getItem(POST_AUTH_INTENT_KEY)==='add-listing'){
+        localStorage.removeItem(POST_AUTH_INTENT_KEY);
+        location.href='membership.html?intent=add-listing';
+        return;
+      }
+      openAuthModal('account');
+      authStatus('Your email is confirmed and you are signed in.');
+    }else{
+      openAuthModal('signin');
+      authStatus('Your email is confirmed. Sign in with the same email and password to continue.');
+    }
+  }
+
+  client.auth.onAuthStateChange((_event,session)=>{
+    publicAuthSession=session||null;
+    setAuthButtons(publicAuthSession);
+  });
 });
 </script>
 
