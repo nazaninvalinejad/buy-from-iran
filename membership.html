@@ -303,6 +303,24 @@ footer{background:#0A2535;color:#9FB2BF;padding:60px 0 0}
   .footer-grid{grid-template-columns:1fr}
   .bottom-cta__btns{flex-direction:column;align-items:center}
 }
+
+.supplier-onboarding{display:none;padding:48px 0 76px;background:#F7F9FB}
+.supplier-onboarding__wrap{max-width:920px;margin:0 auto;padding:0 32px}
+.supplier-onboarding__card{background:#fff;border:1px solid var(--divider);border-radius:18px;padding:34px;box-shadow:0 8px 28px rgba(18,60,86,.08)}
+.supplier-onboarding__eyebrow{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--emerald);margin-bottom:8px}
+.supplier-onboarding__title{font-family:'Rasa',serif;font-size:34px;color:var(--ink);margin-bottom:10px}
+.supplier-onboarding__sub{font-size:15.5px;line-height:1.6;color:var(--body);margin-bottom:28px}
+.supplier-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.supplier-field{display:flex;flex-direction:column;gap:6px}
+.supplier-field.full{grid-column:1/-1}
+.supplier-field label{font-size:13px;font-weight:700;color:#374151}
+.supplier-field input,.supplier-field select,.supplier-field textarea{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:11px 13px;background:#fff;color:var(--ink);font-size:14.5px;outline:none}
+.supplier-field textarea{min-height:110px;resize:vertical}
+.supplier-field input:focus,.supplier-field select:focus,.supplier-field textarea:focus{border-color:var(--petroleum);box-shadow:0 0 0 3px rgba(18,60,86,.08)}
+.supplier-submit{margin-top:22px;width:100%;border:0;border-radius:10px;background:var(--petroleum);color:#fff;font-size:15px;font-weight:700;padding:13px 18px;cursor:pointer}
+.supplier-submit:disabled{opacity:.6;cursor:not-allowed}
+.supplier-form-status{display:none;margin-top:14px;padding:11px 13px;border-radius:9px;background:#EEF3F7;color:var(--petroleum);font-size:13.5px}
+@media(max-width:700px){.supplier-form-grid{grid-template-columns:1fr}.supplier-field.full{grid-column:auto}}
 </style>
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -325,7 +343,7 @@ footer{background:#0A2535;color:#9FB2BF;padding:60px 0 0}
         </div>
       </div>
       <div class="util-bar__right">
-        <a href="tel:+982140005000" class="util-bar__link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.83 19.05A16 16 0 0 1 4.95 10.17 2 2 0 0 1 6.9 7.5l1.27.13a2 2 0 0 1 1.7 1.45l.34 1.36a2 2 0 0 1-.5 1.9l-.7.7a12 12 0 0 0 4 4l.7-.7a2 2 0 0 1 1.9-.5l1.36.34a2 2 0 0 1 1.45 1.7l.13 1.27a2 2 0 0 1-2.67 1.95Z"/></svg> +98 21 4000 5000</a>
+        <a href="tel:+989122202363" class="util-bar__link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.83 19.05A16 16 0 0 1 4.95 10.17 2 2 0 0 1 6.9 7.5l1.27.13a2 2 0 0 1 1.7 1.45l.34 1.36a2 2 0 0 1-.5 1.9l-.7.7a12 12 0 0 0 4 4l.7-.7a2 2 0 0 1 1.9-.5l1.36.34a2 2 0 0 1 1.45 1.7l.13 1.27a2 2 0 0 1-2.67 1.95Z"/></svg> +98 912 220 2363</a>
         <span class="util-bar__sep"></span>
         <div class="lang-bar">
           <button class="lang-btn active" onclick="selectLang(this)">AR</button>
@@ -353,7 +371,7 @@ footer{background:#0A2535;color:#9FB2BF;padding:60px 0 0}
       </nav>
       <div class="nav-search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" placeholder="Type your search…" aria-label="Search"></div>
       <button onclick="openAuthModal('signin')" class="nav-signin" style="background:none;border:none;cursor:pointer;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg> Sign in or Register</button>
-      <button class="btn-add-listing">ADD LISTING</button>
+      <button class="btn-add-listing" onclick="openSupplierListing()">ADD LISTING</button>
       <button class="hamburger" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
     <nav class="mobile-nav" id="mobileNav">
@@ -364,7 +382,7 @@ footer{background:#0A2535;color:#9FB2BF;padding:60px 0 0}
       <div class="mobile-nav__actions">
         <div class="mobile-nav__search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" placeholder="Search…" aria-label="Search"></div>
         <button onclick="openAuthModal('signin')" class="nav-signin" style="display:inline-flex;background:none;border:none;cursor:pointer;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg> Sign in or Register</button>
-        <button class="btn-add-listing" style="display:block;">ADD LISTING</button>
+        <button class="btn-add-listing" style="display:block;" onclick="openSupplierListing()">ADD LISTING</button>
       </div>
     </nav>
   </div>
@@ -394,6 +412,61 @@ footer{background:#0A2535;color:#9FB2BF;padding:60px 0 0}
     <a href="index.html">Home</a><span class="breadcrumb__sep">›</span><span>Membership</span>
   </div>
 </nav>
+
+<section class="supplier-onboarding" id="supplierOnboarding">
+  <div class="supplier-onboarding__wrap">
+    <div class="supplier-onboarding__card">
+      <div class="supplier-onboarding__eyebrow">Supplier onboarding</div>
+      <h1 class="supplier-onboarding__title">Add your company and products</h1>
+      <p class="supplier-onboarding__sub">Submit your supplier information for review. Your company identity remains internal until the listing is approved for publication.</p>
+      <form id="supplierListingForm">
+        <div class="supplier-form-grid">
+          <div class="supplier-field">
+            <label for="sl-company">Company / Brand name *</label>
+            <input id="sl-company" required placeholder="Company name">
+          </div>
+          <div class="supplier-field">
+            <label for="sl-contact">Contact person *</label>
+            <input id="sl-contact" required placeholder="Full name">
+          </div>
+          <div class="supplier-field">
+            <label for="sl-email">Email *</label>
+            <input id="sl-email" type="email" required placeholder="you@company.com">
+          </div>
+          <div class="supplier-field">
+            <label for="sl-phone">WhatsApp / Phone *</label>
+            <input id="sl-phone" required placeholder="+98 ...">
+          </div>
+          <div class="supplier-field">
+            <label for="sl-category">Main product category *</label>
+            <select id="sl-category" required>
+              <option value="">Select category</option>
+              <option>Agriculture &amp; Food</option>
+              <option>Beverage</option>
+              <option>Personal Care</option>
+              <option>Home Care</option>
+              <option>Textile &amp; Apparel</option>
+            </select>
+          </div>
+          <div class="supplier-field">
+            <label for="sl-website">Website</label>
+            <input id="sl-website" placeholder="https://...">
+          </div>
+          <div class="supplier-field full">
+            <label for="sl-products">Products / product range *</label>
+            <textarea id="sl-products" required placeholder="Tell us which products you want to list, pack sizes, private-label capability, certifications, etc."></textarea>
+          </div>
+          <div class="supplier-field full">
+            <label for="sl-notes">Additional notes</label>
+            <textarea id="sl-notes" placeholder="Anything else we should know?"></textarea>
+          </div>
+        </div>
+        <button class="supplier-submit" id="supplierSubmitBtn" type="submit">Submit supplier application</button>
+        <div class="supplier-form-status" id="supplierFormStatus"></div>
+      </form>
+    </div>
+  </div>
+</section>
 
 
 <!-- ═══ PRICING CARDS ═══ -->
@@ -718,8 +791,8 @@ footer{background:#0A2535;color:#9FB2BF;padding:60px 0 0}
       <div class="footer-col-title">Get in touch</div>
       <div style="display:flex;flex-direction:column;gap:12px;font-size:14.5px;">
         <span style="display:inline-flex;align-items:center;gap:9px;color:#9FB2BF;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7FA3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>hello@buyfromiran.com</span>
-        <span style="display:inline-flex;align-items:center;gap:9px;color:#9FB2BF;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7FA3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.83 19.05A16 16 0 0 1 4.95 10.17 2 2 0 0 1 6.9 7.5l1.27.13a2 2 0 0 1 1.7 1.45l.34 1.36a2 2 0 0 1-.5 1.9l-.7.7a12 12 0 0 0 4 4l.7-.7a2 2 0 0 1 1.9-.5l1.36.34a2 2 0 0 1 1.45 1.7l.13 1.27a2 2 0 0 1-2.67 1.95Z"/></svg>+98 21 4000 5000</span>
-        <span style="display:inline-flex;align-items:flex-start;gap:9px;color:#9FB2BF;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7FA3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px;flex-shrink:0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Valiasr St, Tehran, Iran</span>
+        <span style="display:inline-flex;align-items:center;gap:9px;color:#9FB2BF;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7FA3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.83 19.05A16 16 0 0 1 4.95 10.17 2 2 0 0 1 6.9 7.5l1.27.13a2 2 0 0 1 1.7 1.45l.34 1.36a2 2 0 0 1-.5 1.9l-.7.7a12 12 0 0 0 4 4l.7-.7a2 2 0 0 1 1.9-.5l1.36.34a2 2 0 0 1 1.45 1.7l.13 1.27a2 2 0 0 1-2.67 1.95Z"/></svg>+98 912 220 2363</span>
+        <span style="display:inline-flex;align-items:flex-start;gap:9px;color:#9FB2BF;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7FA3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px;flex-shrink:0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Vanak Square, Valiasr St, Tehran, Iran</span>
       </div>
     </div>
   </div>
@@ -756,6 +829,111 @@ function toggleFaq(el){
 function choosePlan(name){
   alert('Redirecting to registration for: '+name+'\n\n(Connect this to your auth/checkout flow)');
 }
+</script>
+
+<script>
+let supplierClient=null;
+function getSupplierClient(){
+  if(supplierClient)return supplierClient;
+  if(!window.supabase||!window.BFI_SUPABASE)return null;
+  supplierClient=supabase.createClient(
+    window.BFI_SUPABASE.url,
+    window.BFI_SUPABASE.publishableKey,
+    {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'bfi_public_auth'}}
+  );
+  return supplierClient;
+}
+function openSupplierListing(){
+  location.href='membership.html?intent=add-listing';
+}
+function showSupplierStatus(message,isError){
+  const el=document.getElementById('supplierFormStatus');
+  if(!el)return;
+  el.style.display='block';
+  el.style.background=isError?'#FEF2F2':'#ECFDF5';
+  el.style.color=isError?'#B91C1C':'#065F46';
+  el.textContent=message;
+}
+window.addEventListener('load',async function(){
+  const intent=new URLSearchParams(location.search).get('intent');
+  if(intent!=='add-listing')return;
+
+  document.getElementById('supplierOnboarding').style.display='block';
+  document.querySelectorAll('.hero,.pricing-section,.trust-band,.compare-section,.how-section,.testimonial-section,.faq-section,.bottom-cta')
+    .forEach(el=>el.style.display='none');
+
+  const crumb=document.querySelector('.breadcrumb__inner span:last-child');
+  if(crumb)crumb.textContent='Add Listing';
+
+  const client=getSupplierClient();
+  if(client){
+    const {data}=await client.auth.getSession();
+    const session=data.session;
+    if(session?.user?.email){
+      document.getElementById('sl-email').value=session.user.email;
+      document.querySelectorAll('.nav-signin').forEach(btn=>{
+        const svg=btn.querySelector('svg')?.outerHTML||'';
+        const label=session.user.user_metadata?.username||session.user.email;
+        btn.innerHTML=svg+' Account: '+label;
+      });
+    }
+  }
+
+  document.getElementById('supplierListingForm').addEventListener('submit',async function(e){
+    e.preventDefault();
+    const client=getSupplierClient();
+    if(!client)return showSupplierStatus('Could not connect to the application service. Please try again.',true);
+
+    const company=document.getElementById('sl-company').value.trim();
+    const contact=document.getElementById('sl-contact').value.trim();
+    const email=document.getElementById('sl-email').value.trim();
+    const phone=document.getElementById('sl-phone').value.trim();
+    const category=document.getElementById('sl-category').value.trim();
+    const website=document.getElementById('sl-website').value.trim();
+    const products=document.getElementById('sl-products').value.trim();
+    const notes=document.getElementById('sl-notes').value.trim();
+
+    if(!company||!contact||!email||!phone||!category||!products){
+      return showSupplierStatus('Please complete all required fields.',true);
+    }
+
+    const btn=document.getElementById('supplierSubmitBtn');
+    btn.disabled=true; btn.textContent='Submitting…';
+
+    const message=[
+      'Supplier listing application',
+      'Category: '+category,
+      website?'Website: '+website:'',
+      'Products: '+products,
+      notes?'Notes: '+notes:''
+    ].filter(Boolean).join('\n');
+
+    const {data,error}=await client.rpc('submit_lead',{
+      p_source:'other',
+      p_full_name:contact,
+      p_company_name:company,
+      p_email:email,
+      p_phone:phone,
+      p_subject:'Supplier listing application',
+      p_message:message,
+      p_visitor_id:localStorage.getItem('bfi_visitor_id')||'',
+      p_page_path:location.pathname+location.search,
+      p_product_name:products.slice(0,180),
+      p_range_code:'',
+      p_destination_country:'',
+      p_quantity_needed:'',
+      p_preferred_contact:'WhatsApp / Email'
+    });
+
+    btn.disabled=false; btn.textContent='Submit supplier application';
+    if(error)return showSupplierStatus(error.message||'Could not submit the application.',true);
+
+    const result=Array.isArray(data)?data[0]:data;
+    showSupplierStatus('Application submitted successfully'+(result?.reference_no?' — Reference #'+result.reference_no:'')+'. Our team will review it.');
+    this.reset();
+    if(email)document.getElementById('sl-email').value=email;
+  });
+});
 </script>
 
 <!-- ElevenLabs widget -->
