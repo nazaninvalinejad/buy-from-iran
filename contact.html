@@ -260,6 +260,10 @@ input, select, button, textarea { font-family: inherit; }
   .container, .page-hero__inner, .breadcrumb__inner { padding-left: 16px; padding-right: 16px; }
 }
 </style>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -416,7 +420,7 @@ input, select, button, textarea { font-family: inherit; }
         <div class="success-box">
           <div class="success-row">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            Confirmation sent to <strong id="confirmEmail">your email</strong>
+            Lead reference: <strong id="confirmEmail">saved</strong>
           </div>
           <div class="success-row">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -696,7 +700,7 @@ function validateField(id) {
   });
 });
 
-g('contactForm').addEventListener('submit', function(e) {
+g('contactForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   let valid = true;
   ['name', 'email', 'message'].forEach(id => { if (!validateField(id)) valid = false; });
@@ -706,14 +710,36 @@ g('contactForm').addEventListener('submit', function(e) {
   btn.disabled = true;
   btn.innerHTML = '<span class="btn-spinner"></span> Sending…';
 
-  /* Replace setTimeout body with your real fetch() / Formspree / EmailJS call */
-  setTimeout(() => {
-    g('confirmEmail').textContent = g('f-email').value.trim();
-    g('contactForm').style.display = 'none';
-    g('successScreen').style.display = 'block';
-    btn.disabled = false;
-    btn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Message';
-  }, 1600);
+  try{
+    const client=supabase.createClient(window.BFI_SUPABASE.url,window.BFI_SUPABASE.publishableKey,{auth:{persistSession:false}});
+    const {data,error}=await client.rpc('submit_lead',{
+      p_source:'contact',
+      p_full_name:g('f-name').value.trim(),
+      p_company_name:null,
+      p_email:g('f-email').value.trim(),
+      p_phone:g('f-phone').value.trim()||null,
+      p_subject:g('f-subject').value||null,
+      p_message:g('f-message').value.trim(),
+      p_visitor_id:localStorage.getItem('bfi_visitor_id')||null,
+      p_page_path:location.pathname+(location.search||''),
+      p_product_name:null,
+      p_range_code:null
+    });
+    if(error) throw error;
+    const result=Array.isArray(data)?data[0]:data;
+    const ref=result?.reference_no ? 'Lead #'+result.reference_no+' saved' : 'Message saved';
+    const row=document.querySelector('#successScreen .success-row strong');
+    if(row) row.textContent=ref;
+    g('contactForm').style.display='none';
+    g('successScreen').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(err){
+    console.error(err);
+    alert('Could not send your message. Please try again.');
+  }finally{
+    btn.disabled=false;
+    btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Message';
+  }
 });
 
 function resetForm() {
@@ -768,6 +794,9 @@ function switchAuthTab(name){
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAuthModal()});
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<script src="./analytics.js"></script>\n<script src="./lead-tracking.js"></script>
 </body>
 </html>
 
