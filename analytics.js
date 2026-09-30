@@ -70,3 +70,15 @@
 
   recordPageView();
 })();
+
+// Load the deterministic Homepage translation layer independently from analytics logic.
+(function(){
+  const p=location.pathname;
+  if(!(p==='/' || p.endsWith('/index.html'))) return;
+  if(document.querySelector('script[data-bfi-i18n]')) return;
+  const s=document.createElement('script');
+  s.src='./i18n-home.js';
+  s.defer=true;
+  s.dataset.bfiI18n='1';
+  document.head.appendChild(s);
+})();
