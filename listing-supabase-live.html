@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Products & Catalog — Buy From Iran</title>
+<meta name="description" content="Browse export-ready products from Iran by category and product range. Request quotes, review product details, and contact the Buy From Iran sourcing team.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rasa:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:'Source Sans 3',sans-serif;background:#F7F9FB;color:#1F2937}a{text-decoration:none;color:inherit}button,input,select{font:inherit}
+:root{--petroleum:#123C56;--petroleum-d:#0A2535;--blue:#2B7FFF;--blue-d:#1A5FD4;--green:#2E8B57;--ink:#1F2937;--body:#4B5563;--muted:#6B7280;--border:#D9E2EC;--divider:#E5E7EB;--bg:#F7F9FB;--soft:#EEF3F7}
+.container{max-width:1240px;margin:0 auto;padding:0 28px}
+.util{height:38px;background:#0A2535;color:#D7E1E8}.util .container{height:100%;display:flex;align-items:center;justify-content:space-between;font-size:12.5px}.util a{color:#D7E1E8}
+.langs{display:flex;gap:4px}.langs button{border:0;background:transparent;color:#C7D3DC;padding:4px 7px;border-radius:6px;cursor:pointer}.langs button.active{background:rgba(255,255,255,.14);color:white}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--divider)}.nav{height:72px;display:flex;align-items:center;gap:24px}.logo img{height:46px;width:auto;display:block}.navlinks{display:flex;gap:4px;margin:0 auto}.navlinks a{padding:9px 12px;border-radius:8px;color:#4B5563;font-size:14px}.navlinks a:hover,.navlinks a.active{background:var(--soft);color:var(--petroleum)}.nav-actions{display:flex;align-items:center;gap:10px}.quote-btn{background:var(--blue);color:white;border:0;border-radius:9px;padding:10px 15px;font-weight:700}.home-btn{border:1px solid var(--border);background:white;color:var(--petroleum);border-radius:9px;padding:9px 13px;font-weight:700}
+.hero{background:linear-gradient(145deg,#0A2535,#123C56 60%,#1E5B80);color:white;padding:52px 0 48px}.crumb{font-size:13px;color:#B8CAD5;margin-bottom:16px}.crumb a{color:#D9E7EF}.hero h1{font-family:'Rasa',serif;font-size:46px;line-height:1;margin:0 0 12px}.hero p{margin:0;max-width:680px;color:#D8E6EE;font-size:17px;line-height:1.6}
+.catalog-toolbar{background:white;border-bottom:1px solid var(--divider)}.toolbar-inner{padding-top:20px;padding-bottom:20px;display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:12px}.field{position:relative}.field input,.field select{width:100%;height:46px;border:1px solid var(--border);border-radius:10px;background:#fff;color:#27313A;padding:0 13px;outline:none}.field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(43,127,255,.08)}.reset{height:46px;border:1px solid var(--border);background:var(--soft);color:var(--petroleum);border-radius:10px;padding:0 15px;font-weight:700;cursor:pointer}
+.main{padding:30px 0 64px}.summary-row{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px}.summary-row h2{font-family:'Rasa',serif;color:var(--petroleum);font-size:28px;margin:0}.count{color:var(--muted);font-size:14px}.notice{background:#EEF6FF;border:1px solid #CFE0FA;color:#284968;border-radius:12px;padding:13px 15px;margin-bottom:20px;font-size:14px}.range-group{margin:30px 0}.range-head{display:flex;align-items:end;justify-content:space-between;border-bottom:1px solid var(--divider);padding-bottom:11px;margin-bottom:16px}.range-path{font-size:13px;color:var(--muted);margin-bottom:3px}.range-title{display:flex;align-items:center;gap:10px}.range-title h3{font-family:'Rasa',serif;font-size:27px;color:var(--ink);margin:0}.range-code{display:inline-flex;background:#EAF2FF;color:#1A5FD4;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:800}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.card{background:white;border:1px solid var(--divider);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:transform .18s,box-shadow .18s}.card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(18,60,86,.08)}.image-wrap{aspect-ratio:4/3;background:linear-gradient(135deg,#F0F4F7,#E7EDF2);display:flex;align-items:center;justify-content:center;overflow:hidden}.image-wrap img{width:100%;height:100%;object-fit:contain;background:white}.placeholder{font-family:'Rasa',serif;color:#91A2AF;font-size:22px;text-align:center;padding:24px}.card-body{padding:16px 16px 15px;display:flex;flex-direction:column;flex:1}.product-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.product-name{font-size:18px;font-weight:700;color:var(--ink);line-height:1.25}.mini-code{font-size:11px;font-weight:800;color:#536877;background:#F2F5F7;border-radius:999px;padding:4px 8px;white-space:nowrap}.desc{font-size:14px;line-height:1.5;color:var(--body);margin:9px 0 13px;min-height:42px}.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}.fact{background:#F8FAFC;border:1px solid #EDF1F4;border-radius:9px;padding:8px 9px;min-width:0}.fact-label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#82909B;font-weight:700}.fact-value{display:block;font-size:13px;color:#344450;font-weight:600;margin-top:2px;overflow:hidden;text-overflow:ellipsis}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}.actions button{border:0;border-radius:9px;padding:10px 9px;font-weight:700;cursor:pointer}.details{background:#EEF3F7;color:#123C56}.add{background:#2B7FFF;color:white}.wa{grid-column:1/-1;background:#EAF8EF;color:#18794E}.empty{background:white;border:1px dashed #BEC9D2;border-radius:18px;padding:46px 24px;text-align:center}.empty h3{font-family:'Rasa',serif;font-size:28px;color:var(--petroleum);margin:0 0 8px}.empty p{color:var(--muted);max-width:560px;margin:0 auto 18px;line-height:1.6}.empty a{display:inline-block;background:var(--blue);color:white;padding:10px 16px;border-radius:9px;font-weight:700}.loading{padding:42px;text-align:center;color:var(--muted)}
+.modal{position:fixed;inset:0;background:rgba(8,28,40,.62);z-index:1000;display:none;align-items:center;justify-content:center;padding:18px}.modal.open{display:flex}.modal-card{width:min(900px,100%);max-height:90vh;overflow:auto;background:white;border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.22)}.modal-head{padding:20px 22px;border-bottom:1px solid var(--divider);display:flex;justify-content:space-between;gap:18px;align-items:flex-start}.modal-head h3{font-family:'Rasa',serif;font-size:30px;color:var(--petroleum);margin:0}.close{border:0;background:#F2F5F7;border-radius:50%;width:36px;height:36px;font-size:22px;cursor:pointer;color:#54636F}.modal-body{padding:22px;display:grid;grid-template-columns:1fr 1.15fr;gap:22px}.modal-image{aspect-ratio:1/1;background:#F2F5F7;border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden}.modal-image img{width:100%;height:100%;object-fit:contain;background:white}.detail-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.detail-item{border-bottom:1px solid #EDF1F4;padding-bottom:8px}.detail-item b{display:block;font-size:11px;text-transform:uppercase;color:#82909B;letter-spacing:.04em}.detail-item span{display:block;margin-top:3px;color:#344450}.modal-actions{display:flex;gap:9px;flex-wrap:wrap}.modal-actions button{border:0;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer}.modal-actions .q{background:var(--blue);color:white}.modal-actions .w{background:#EAF8EF;color:#18794E}
+footer{background:#0A2535;color:#C6D2DA;padding:34px 0}.footer-inner{display:flex;justify-content:space-between;gap:24px;align-items:center}.footer-inner img{height:40px;filter:brightness(0) invert(1)}.footer-text{font-size:13px;text-align:right;line-height:1.6}
+@media(max-width:950px){.grid{grid-template-columns:repeat(2,1fr)}.toolbar-inner{grid-template-columns:1fr 1fr}.modal-body{grid-template-columns:1fr}.navlinks{display:none}}
+@media(max-width:620px){.container{padding:0 18px}.hero{padding:38px 0}.hero h1{font-size:38px}.toolbar-inner{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.summary-row{align-items:flex-start;flex-direction:column}.range-head{align-items:flex-start;flex-direction:column;gap:6px}.nav-actions .home-btn{display:none}.footer-inner{flex-direction:column;align-items:flex-start}.footer-text{text-align:left}.facts{grid-template-columns:1fr}}
+</style>
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<div class="util"><div class="container"><div>hello@buyfromiran.com &nbsp; · &nbsp; +98 912 220 2363</div><div class="langs"><button>AR</button><button class="active">EN</button><button>FR</button><button>RU</button><button>ES</button><button>TR</button></div></div></div>
+<header><div class="container nav"><a class="logo" href="index.html"><img src="img/logo-bfi.png" alt="Buy From Iran"></a><nav class="navlinks"><a href="index.html">Home</a><a href="about.html">About</a><a class="active" href="listing-supabase-live.html">Products</a><a href="quote.html">Get a Quote</a><a href="contact.html">Contact</a></nav><div class="nav-actions"><a class="home-btn" href="index.html">Home</a><a class="quote-btn" href="quote.html">Request a Quote</a></div></div></header>
+<section class="hero"><div class="container"><div class="crumb"><a href="index.html">Home</a> / Products</div><h1>Source products from Iran</h1><p>Browse product categories and product ranges, review available specifications, and send a structured quote request to the Buy From Iran sourcing team.</p></div></section>
+<section class="catalog-toolbar"><div class="container toolbar-inner"><div class="field"><input id="searchInput" type="search" placeholder="Search product name, category or range…"></div><div class="field"><select id="categoryFilter"><option value="">All categories</option></select></div><div class="field"><select id="rangeFilter"><option value="">All product ranges</option></select></div><button class="reset" id="resetBtn">Reset</button></div></section>
+<main class="main"><div class="container"><div class="summary-row"><div><h2>Product catalog</h2><div class="count" id="resultCount">Loading products…</div></div></div><div class="notice">Supplier identity is kept internal. Public listings are organized by product category and neutral product range code.</div><div id="app" class="loading">Loading published products…</div></div></main>
+<div class="modal" id="productModal" onclick="if(event.target===this)closeModal()"><div class="modal-card"><div class="modal-head"><div><div class="range-path" id="mPath"></div><h3 id="mName"></h3></div><button class="close" onclick="closeModal()">×</button></div><div class="modal-body"><div class="modal-image" id="mImage"><div class="placeholder">Product image<br>on request</div></div><div><p class="desc" id="mDesc"></p><div class="detail-list" id="mDetails"></div><div class="modal-actions"><button class="q" id="mQuote">Add to Quote</button><button class="w" id="mWa">WhatsApp</button></div></div></div></div></div>
+<footer><div class="container footer-inner"><img src="img/logo-bfi.png" alt="Buy From Iran"><div class="footer-text">Buy From Iran — structured B2B sourcing for export-ready products from Iran.<br>Vanak Square, Valiasr St, Tehran, Iran</div></div></footer>
+<script>
+const sb=supabase.createClient(window.BFI_SUPABASE.url,window.BFI_SUPABASE.publishableKey);
+let contact={},catalog=[],filtered=[],imageMap={},skuMap={},activeProduct=null;
+const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+const value=(v,fallback='On Request')=>v===null||v===undefined||String(v).trim()===''?fallback:String(v);
+
+async function load(){
+  const [catalogRes,contactRes,imageRes,skuRes]=await Promise.all([
+    sb.from('public_product_catalog').select('*').order('parent_category_name').order('category_name').order('range_code'),
+    sb.from('contact_settings').select('*').eq('setting_key','default').single(),
+    sb.from('public_product_images').select('*'),
+    sb.from('public_product_skus').select('*')
+  ]);
+  if(catalogRes.error){app.className='';app.innerHTML=`<div class="empty"><h3>Catalog unavailable</h3><p>${esc(catalogRes.error.message)}</p></div>`;return;}
+  contact=contactRes.data||{};catalog=catalogRes.data||[];
+  (imageRes.data||[]).forEach(i=>{const id=i.product_id;if(!imageMap[id]||i.is_primary)imageMap[id]=i.image_url||i.public_url||i.url||'';});
+  (skuRes.data||[]).forEach(s=>(skuMap[s.product_id]??=[]).push(s));
+  populateFilters();applyFilters();
+}
+function populateFilters(){
+  const cats=[...new Set(catalog.map(x=>x.category_name).filter(Boolean))].sort();
+  categoryFilter.innerHTML='<option value="">All categories</option>'+cats.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
+  refreshRanges();
+}
+function refreshRanges(){
+  const c=categoryFilter.value;
+  const ranges=[...new Set(catalog.filter(x=>!c||x.category_name===c).map(x=>x.range_code).filter(Boolean))].sort();
+  const current=rangeFilter.value;
+  rangeFilter.innerHTML='<option value="">All product ranges</option>'+ranges.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
+  if(ranges.includes(current))rangeFilter.value=current;
+}
+function applyFilters(){
+  const q=searchInput.value.trim().toLowerCase(),cat=categoryFilter.value,range=rangeFilter.value;
+  filtered=catalog.filter(p=>{
+    const hay=[p.product_name,p.description,p.parent_category_name,p.category_name,p.range_code,p.flavors_types,p.packaging].join(' ').toLowerCase();
+    return (!q||hay.includes(q))&&(!cat||p.category_name===cat)&&(!range||p.range_code===range);
+  });
+  render();
+}
+function shortFact(p,label,keys){
+  const found=keys.map(k=>p[k]).find(v=>v!==null&&v!==undefined&&String(v).trim()!=='');
+  return `<div class="fact"><span class="fact-label">${esc(label)}</span><span class="fact-value">${esc(value(found))}</span></div>`;
+}
+function render(){
+  resultCount.textContent=`${filtered.length} product${filtered.length===1?'':'s'} shown`;
+  app.className='';
+  if(!catalog.length){app.innerHTML='<div class="empty"><h3>No published products yet</h3><p>Products will appear here after they are added in Admin and set to Published. The catalog structure is already connected to Supabase.</p><a href="admin-supabase-live.html">Open Admin</a></div>';return;}
+  if(!filtered.length){app.innerHTML='<div class="empty"><h3>No matching products</h3><p>Try changing your search, category, or product range filters.</p></div>';return;}
+  const groups={};filtered.forEach(x=>{const k=[x.parent_category_name||'',x.category_name||'',x.range_code||''].join('||');(groups[k]??=[]).push(x);});
+  app.innerHTML=Object.entries(groups).map(([k,items])=>{const [parent,cat,range]=k.split('||');return `<section class="range-group"><div class="range-head"><div><div class="range-path">${esc(parent)} → ${esc(cat)}</div><div class="range-title"><h3>${esc(cat)}</h3><span class="range-code">${esc(range||'Range')}</span></div></div><div class="count">${items.length} product${items.length===1?'':'s'}</div></div><div class="grid">${items.map(cardHtml).join('')}</div></section>`;}).join('');
+}
+function cardHtml(p){
+  const img=imageMap[p.product_id]||'';const skus=skuMap[p.product_id]||[];const first=skus.find(s=>s.is_default)||skus[0]||{};
+  const image=img?`<img src="${esc(img)}" alt="${esc(p.product_name)}" loading="lazy">`:`<div class="placeholder">${esc(p.product_name)}<br><small>Image on request</small></div>`;
+  return `<article class="card"><div class="image-wrap">${image}</div><div class="card-body"><div class="product-top"><div class="product-name">${esc(p.product_name)}</div><span class="mini-code">${esc(p.range_code||'')}</span></div><div class="desc">${esc(value(p.description,'Product details available on request.'))}</div><div class="facts">${shortFact({...p,...first},'Pack size',['pack_size_label','pack_label','pack_weight'])}${shortFact({...p,...first},'Packs / carton',['packs_per_carton','units_per_carton'])}${shortFact(p,'Private label',['private_label'])}${shortFact(p,'MOQ',['moq'])}</div><div class="actions"><button class="details" onclick="openDetails('${esc(p.product_id||p.id||'')}')">View Details</button><button class="add" data-name="${esc(p.product_name)}" data-range="${esc(p.range_code)}" data-product-id="${esc(p.product_id||p.id||'')}" onclick="addToQuote(this)">Add to Quote</button><button class="wa" onclick="wa('${String(p.product_name).replace(/'/g,"\\'")}','${String(p.range_code||'').replace(/'/g,"\\'")}')">WhatsApp</button></div></div></article>`;
+}
+function productById(id){return catalog.find(p=>String(p.product_id||p.id||'')===String(id));}
+function openDetails(id){
+  const p=productById(id);if(!p)return;activeProduct=p;const skus=skuMap[p.product_id]||[];const first=skus.find(s=>s.is_default)||skus[0]||{};const img=imageMap[p.product_id]||'';
+  mPath.textContent=[p.parent_category_name,p.category_name,p.range_code].filter(Boolean).join(' → ');mName.textContent=p.product_name;mDesc.textContent=value(p.description,'Product details available on request.');mImage.innerHTML=img?`<img src="${esc(img)}" alt="${esc(p.product_name)}">`:'<div class="placeholder">Product image<br>on request</div>';
+  const details=[['Available flavors / types',p.flavors_types],['Packaging',p.packaging],['Private label',p.private_label],['Shelf life',p.shelf_life],['MOQ',p.moq],['Lead time',p.lead_time],['Certifications',p.certifications],['SKU',first.sku_code||first.code],['Pack size',first.pack_size_label||first.pack_label||first.pack_weight],['Packs per carton',first.packs_per_carton||first.units_per_carton],['Carton dimensions',first.carton_dimensions||[first.carton_length,first.carton_width,first.carton_height].filter(Boolean).join(' × ')],['Carton gross weight',first.gross_weight_kg]];
+  mDetails.innerHTML=details.map(([k,v])=>`<div class="detail-item"><b>${esc(k)}</b><span>${esc(value(v))}</span></div>`).join('');
+  mQuote.onclick=()=>addToQuoteData(p);mWa.onclick=()=>wa(p.product_name,p.range_code||'');productModal.classList.add('open');document.body.style.overflow='hidden';
+}
+function closeModal(){productModal.classList.remove('open');document.body.style.overflow='';activeProduct=null;}
+function addToQuote(btn){addToQuoteData({product_name:btn.dataset.name||'',range_code:btn.dataset.range||'',product_id:btn.dataset.productId||''});}
+function addToQuoteData(p){localStorage.setItem('bfi_quote_item',JSON.stringify({product_name:p.product_name||'',range_code:p.range_code||'',product_id:p.product_id||p.id||'',quantity:''}));window.location.href='quote.html';}
+function wa(name,range){
+  if(!contact.whatsapp){alert('WhatsApp number is not configured yet in Admin → Contact Settings.');return;}
+  let msg=(contact.whatsapp_message_template||'Hello, I am interested in {product_name} — Product Range {range_code}.').replace('{product_name}',name).replace('{range_code}',range);
+  if(window.BFITrackLead)window.BFITrackLead('whatsapp',{p_subject:'Catalog WhatsApp click',p_product_name:name||null,p_range_code:range||null});
+  window.open(`https://wa.me/${contact.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+searchInput.addEventListener('input',applyFilters);categoryFilter.addEventListener('change',()=>{refreshRanges();applyFilters();});rangeFilter.addEventListener('change',applyFilters);resetBtn.addEventListener('click',()=>{searchInput.value='';categoryFilter.value='';refreshRanges();rangeFilter.value='';applyFilters();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+load();
+</script>
+<script src="./analytics.js"></script>
+<script src="./lead-tracking.js"></script>
+</body>
+</html>
