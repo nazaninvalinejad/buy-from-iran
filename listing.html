@@ -1,120 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Product Listing — Buy From Iran</title>
-<meta name="description" content="Browse Agriculture & Food, Beverage, Personal Care, Home Care, and Textile & Apparel products sourced from Iran.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rasa:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./supabase-config.js"></script>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:'Source Sans 3',sans-serif;background:#f7f9fb;color:#334155}
-:root{--navy:#123c56;--blue:#2b7fff;--line:#dbe4ea;--muted:#6b7280;--white:#fff}
-a{text-decoration:none;color:inherit}.container{max-width:1240px;margin:auto;padding:0 28px}
-.topbar{background:#0a2535;color:#dbe7ee;font-size:13px}.topbar .container{height:38px;display:flex;align-items:center;justify-content:space-between}
-nav{background:#fff;border-bottom:1px solid var(--line)}.navin{min-height:72px;display:flex;align-items:center;gap:28px}
-.logo{font-family:'Rasa',serif;font-size:26px;font-weight:700;color:var(--navy)}.navlinks{display:flex;gap:22px;margin-left:auto;font-weight:600}.navlinks a:hover{color:var(--blue)}
-.hero{background:linear-gradient(135deg,#eef4f7,#fff);border-bottom:1px solid var(--line);padding:46px 0}
-.hero h1{font-family:'Rasa',serif;color:var(--navy);font-size:42px;margin:0 0 8px}.hero p{margin:0;color:var(--muted);max-width:760px}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:24px;padding:30px 0 60px}
-.sidebar,.panel,.card,.empty,.product{background:#fff;border:1px solid var(--line);border-radius:16px}
-.sidebar{padding:14px;height:max-content;position:sticky;top:18px}.sidebar h3{margin:8px 10px 12px;color:var(--navy)}
-.catbtn{width:100%;border:0;background:transparent;text-align:left;padding:11px 12px;border-radius:10px;cursor:pointer;font:inherit;font-weight:600;color:#475569;margin:2px 0}
-.catbtn.active{background:#eaf2ff;color:#1a5fd4}.catbtn span{margin-right:8px}
-.panel{padding:24px}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1a5fd4}
-.panel h2{font-family:'Rasa',serif;color:var(--navy);font-size:30px;margin:5px 0 4px}.panel .intro{color:var(--muted);margin:0 0 22px}
-.subgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.subcard{border:1px solid var(--line);background:#fff;border-radius:13px;padding:15px;text-align:left;cursor:pointer;transition:.15s}
-.subcard:hover,.subcard.active{border-color:#7aaeff;box-shadow:0 5px 18px rgba(43,127,255,.08)}.subname{font-weight:700;color:#1f2937}.code{display:inline-block;margin-top:7px;background:#eef4ff;color:#1a5fd4;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:800}
-.products-head{display:flex;align-items:center;justify-content:space-between;margin:30px 0 12px}.products-head h3{margin:0;color:var(--navy);font-size:20px}.quote-chip{background:#eaf2ff;color:#1a5fd4;padding:7px 10px;border-radius:999px;font-weight:800;font-size:12px}
-.productgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.product{padding:17px}.product h4{margin:0 0 6px;color:#1f2937;font-size:17px}.muted{color:var(--muted)}.range{font-size:11px;font-weight:800;color:#1a5fd4;background:#eef4ff;border-radius:999px;padding:3px 8px;display:inline-block}
-.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.btn{border:0;border-radius:8px;padding:9px 11px;font-weight:700;cursor:pointer}.primary{background:#2b7fff;color:#fff}.secondary{background:#eef3f7;color:#123c56}.wa{background:#eaf8ef;color:#18794e}
-.empty{padding:20px;color:var(--muted);background:#fbfcfd}.notice{margin-bottom:18px;padding:12px 14px;border-radius:11px;background:#fff8e7;border:1px solid #f1dfaf;color:#6b5a2d}
-footer{background:#0a2535;color:#d6e2e8;padding:38px 0}.footergrid{display:grid;grid-template-columns:1.5fr repeat(2,1fr);gap:30px}footer h4{color:#fff;margin:0 0 10px}footer a{display:block;margin:6px 0;color:#d6e2e8}
-.modalbg{display:none;position:fixed;inset:0;background:rgba(10,37,53,.55);z-index:50;align-items:center;justify-content:center;padding:20px}.modalbg.open{display:flex}.modal{background:#fff;border-radius:18px;width:min(650px,100%);padding:24px;box-shadow:0 30px 70px rgba(0,0,0,.2)}.modalhead{display:flex;justify-content:space-between;gap:20px}.close{border:0;background:#eef3f7;border-radius:8px;width:34px;height:34px;cursor:pointer}.details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.detail{padding:11px;background:#f7f9fb;border-radius:10px}.detail b{display:block;font-size:12px;color:#64748b;margin-bottom:3px}
-@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{position:static}.subgrid,.productgrid{grid-template-columns:1fr 1fr}.navlinks{display:none}}@media(max-width:600px){.subgrid,.productgrid,.details{grid-template-columns:1fr}.hero h1{font-size:34px}.container{padding:0 18px}}
-</style>
+<title>Products — Buy From Iran</title>
 <script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+(function(){
+  var target='listing-supabase-live.html'+(location.search||'')+(location.hash||'');
+  location.replace(target);
+})();
 </script>
-<script defer src="/_vercel/insights/script.js"></script>
 </head>
-<body>
-<div class="topbar"><div class="container"><span>Buy From Iran — B2B Sourcing Platform</span><span>Verified catalog structure</span></div></div>
-<nav><div class="container navin"><a class="logo" href="index.html">Buy From Iran</a><div class="navlinks"><a href="index.html">Home</a><a href="listing.html">Products</a><a href="quote.html">Get a Quote</a><a href="contact.html">Contact</a></div></div></nav>
-<section class="hero"><div class="container"><div class="eyebrow">Product Catalog</div><h1>Source by category</h1><p>Choose one of our five core sectors, then browse its subcategories and published product ranges. Supplier identity remains internal.</p></div></section>
-<main class="container">
-<div class="layout">
-<aside class="sidebar"><h3>Categories</h3><div id="categoryButtons"></div></aside>
-<section class="panel">
-<div id="categoryHeader"></div>
-<div id="subcategories" class="subgrid"></div>
-<div class="products-head"><h3 id="productsTitle">Published Products</h3><span class="quote-chip" id="quoteCount">Quote List (0)</span></div>
-<div id="catalogStatus" class="notice">Loading published products…</div>
-<div id="products" class="productgrid"></div>
-</section>
-</div>
-</main>
-<footer><div class="container footergrid"><div><div class="logo" style="color:white">Buy From Iran</div><p>Connecting international buyers with Iranian manufacturers through a structured B2B catalog.</p></div><div><h4>Categories</h4><a href="?cat=agriculture-food">Agriculture &amp; Food</a><a href="?cat=beverage">Beverage</a><a href="?cat=personal-care">Personal Care</a></div><div><h4>More</h4><a href="?cat=home-care">Home Care</a><a href="?cat=textile-apparel">Textile &amp; Apparel</a><a href="contact.html">Contact</a></div></div></footer>
-<div class="modalbg" id="modalbg" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modalhead"><div><span class="range" id="mRange"></span><h2 id="mName" style="color:#123c56;margin:8px 0"></h2></div><button class="close" onclick="closeModal()">×</button></div><p class="muted" id="mDesc"></p><div class="details" id="mDetails"></div></div></div>
-<script>
-var TAXONOMY=[{"slug":"agriculture-food","label":"Agriculture & Food","icon":"🌾","subs":[["Biscuits & Crackers","B"],["Wafers","W"],["Cakes & Cookies","CK"],["Chocolate & Confectionery","CH"],["Candy, Toffee & Gummies","CG"],["Snacks & Chips","SN"],["Tomato Paste","TP"],["Sauces & Condiments","SC"],["Canned Foods","CF"],["Pickles & Olives","PK"],["Pasta & Noodles","PA"],["Jams, Honey & Spreads","JM"],["Nuts & Dried Fruits","ND"],["Saffron & Spices","SP"],["Rice, Grains & Pulses","RG"]]},{"slug":"beverage","label":"Beverage","icon":"🥤","subs":[["Fruit Juices & Nectars","JU"],["Malt & Non-Alcoholic Beverages","NB"],["Soft Drinks & Energy Drinks","SD"],["Tea & Herbal Infusions","TE"],["Coffee","CO"],["Syrups & Concentrates","SY"],["Water & Functional Beverages","WB"]]},{"slug":"personal-care","label":"Personal Care","icon":"🧴","subs":[["Hair Care","HC"],["Skin Care","SK"],["Bath & Body","BB"],["Hand & Personal Hygiene","HY"],["Oral Care","OC"],["Baby Care","BC"],["Feminine Care","FC"]]},{"slug":"home-care","label":"Home Care","icon":"🏠","subs":[["Laundry Care","LC"],["Dishwashing","DW"],["Surface & Floor Cleaners","CL"],["Bleach & Disinfectants","BD"],["Bathroom & Toilet Cleaners","BT"],["Air Fresheners","AF"]]},{"slug":"textile-apparel","label":"Textile & Apparel","icon":"👕","subs":[["T-Shirts","TS"],["Trousers & Pants","TR"],["Socks","SO"],["Caps & Hats","CP"],["Towels","TW"],["Bed Sheets","BS"]]}];
-var aliases={food:"agriculture-food",beverages:"beverage",personal:"personal-care",home:"home-care",packaging:"agriculture-food"};
-var rows=[],contact={},selectedCat="",selectedSub="";
-var quote=JSON.parse(localStorage.getItem("bfiQuote")||"[]");
-function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(s){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]})}
-function slugify(v){return String(v||"").toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
-function currentTop(){return TAXONOMY.find(function(x){return x.slug===selectedCat})||TAXONOMY[0]}
-function renderNav(){
- document.getElementById("categoryButtons").innerHTML=TAXONOMY.map(function(t){return '<button class="catbtn '+(t.slug===selectedCat?'active':'')+'" onclick="selectCat(\''+t.slug+'\')"><span>'+t.icon+'</span>'+esc(t.label)+'</button>'}).join("");
-}
-function selectCat(slug,keepSub){
- selectedCat=aliases[slug]||slug;
- var t=currentTop(); if(!keepSub) selectedSub=slugify(t.subs[0][0]);
- history.replaceState(null,"","?cat="+encodeURIComponent(selectedCat)+"&sub="+encodeURIComponent(selectedSub));
- renderNav();renderCategory();renderProducts();
-}
-function selectSub(slug){
- selectedSub=slug;history.replaceState(null,"","?cat="+encodeURIComponent(selectedCat)+"&sub="+encodeURIComponent(selectedSub));renderCategory();renderProducts();
-}
-function renderCategory(){
- var t=currentTop();
- document.getElementById("categoryHeader").innerHTML='<div class="eyebrow">'+esc(t.icon+" "+t.label)+'</div><h2>'+esc(t.label)+'</h2><p class="intro">Select a subcategory to view its published product ranges.</p>';
- document.getElementById("subcategories").innerHTML=t.subs.map(function(s){var sl=slugify(s[0]);return '<button class="subcard '+(sl===selectedSub?'active':'')+'" onclick="selectSub(\''+sl+'\')"><div class="subname">'+esc(s[0])+'</div><span class="code">'+esc(s[1])+'</span></button>'}).join("");
- var chosen=t.subs.find(function(s){return slugify(s[0])===selectedSub})||t.subs[0];
- document.getElementById("productsTitle").textContent=chosen[0]+" — Published Products";
- document.getElementById("quoteCount").textContent="Quote List ("+quote.length+")";
-}
-function matches(r){
- var t=currentTop(); var chosen=t.subs.find(function(s){return slugify(s[0])===selectedSub});
- var parent=slugify(r.parent_category_name||""); var cat=slugify(r.category_name||"");
- return parent===slugify(t.label)&&chosen&&cat===slugify(chosen[0]);
-}
-function renderProducts(){
- var box=document.getElementById("products"),status=document.getElementById("catalogStatus");
- if(!rows.length){box.innerHTML="";status.style.display="block";status.textContent="No published products yet in the live catalog. Categories are ready for real product data.";return}
- var filtered=rows.filter(matches);
- if(!filtered.length){box.innerHTML="";status.style.display="block";status.textContent="No published products in this subcategory yet.";return}
- status.style.display="none";
- box.innerHTML=filtered.map(function(p,i){return '<article class="product"><span class="range">'+esc(p.range_code||"Range")+'</span><h4>'+esc(p.product_name)+'</h4><p class="muted">'+esc(p.description||"Product details available on request.")+'</p><div class="actions"><button class="btn secondary" onclick="openDetails('+rows.indexOf(p)+')">View Details</button><button class="btn primary" onclick="addQuote('+rows.indexOf(p)+')">Add to Quote</button><button class="btn wa" onclick="wa('+rows.indexOf(p)+')">WhatsApp</button></div></article>'}).join("");
-}
-function addQuote(i){var p=rows[i];if(!p)return;var key=(p.product_id||p.product_name)+"|"+(p.range_code||"");if(!quote.some(function(x){return x.key===key}))quote.push({key:key,name:p.product_name,range:p.range_code||""});localStorage.setItem("bfiQuote",JSON.stringify(quote));document.getElementById("quoteCount").textContent="Quote List ("+quote.length+")"}
-function wa(i){var p=rows[i];if(!p)return;if(!contact.whatsapp){alert("WhatsApp number is not configured yet in Admin → Contact Settings.");return}var msg=(contact.whatsapp_message_template||"Hello, I am interested in {product_name} — Product Range {range_code}.").replace("{product_name}",p.product_name).replace("{range_code}",p.range_code||"");if(window.BFITrackLead)window.BFITrackLead('whatsapp',{p_subject:'Catalog WhatsApp click',p_product_name:p.product_name||null,p_range_code:p.range_code||null});window.open("https://wa.me/"+String(contact.whatsapp).replace(/\D/g,"")+"?text="+encodeURIComponent(msg),"_blank")}
-function openDetails(i){var p=rows[i];if(!p)return;document.getElementById("mRange").textContent=p.range_code||"Product Range";document.getElementById("mName").textContent=p.product_name||"";document.getElementById("mDesc").textContent=p.description||"Product details available on request.";var details=[["Country of Origin",p.country_of_origin||"Iran"],["Private Label",p.private_label===true?"Available":"On Request"],["Pack Weight",p.pack_weight||"On Request"],["Packs / Carton",p.packs_per_carton||"On Request"],["Shelf Life",p.shelf_life||"On Request"],["MOQ",p.moq||"On Request"],["Packaging Type",p.packaging_type||"On Request"],["Lead Time",p.lead_time||"On Request"]];document.getElementById("mDetails").innerHTML=details.map(function(d){return '<div class="detail"><b>'+esc(d[0])+'</b>'+esc(d[1])+'</div>'}).join("");document.getElementById("modalbg").classList.add("open")}
-function closeModal(){document.getElementById("modalbg").classList.remove("open")}
-async function loadLive(){
- if(!window.supabase||!window.BFI_SUPABASE){document.getElementById("catalogStatus").textContent="Live catalog configuration is not available.";return}
- var sb=supabase.createClient(window.BFI_SUPABASE.url,window.BFI_SUPABASE.publishableKey);
- var result=await Promise.all([sb.from("public_product_catalog").select("*").order("parent_category_name").order("category_name").order("range_code"),sb.from("contact_settings").select("*").eq("setting_key","default").single()]);
- if(result[0].error){document.getElementById("catalogStatus").textContent="Could not load live catalog: "+result[0].error.message;return}
- rows=result[0].data||[];contact=result[1].data||{};renderProducts();
-}
-(function init(){var q=new URLSearchParams(location.search);selectedCat=aliases[q.get("cat")]||q.get("cat")||TAXONOMY[0].slug;if(!TAXONOMY.some(function(x){return x.slug===selectedCat}))selectedCat=TAXONOMY[0].slug;var t=currentTop();selectedSub=q.get("sub")||slugify(t.subs[0][0]);renderNav();renderCategory();loadLive()})();
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./supabase-config.js"></script>
-<script src="./analytics.js"></script>\n<script src="./lead-tracking.js"></script>
-</body>
+<body></body>
 </html>
