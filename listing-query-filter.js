@@ -36,11 +36,21 @@
     'trousers-pants':'Trousers & Pants','socks':'Socks','caps-hats':'Caps & Hats','towels':'Towels','bed-sheets':'Bed Sheets'
   };
 
+  function dedupeOptions(select){
+    const seen=new Set();
+    [...select.options].forEach((opt,index)=>{
+      const key=slugify(opt.textContent||opt.value);
+      if(index===0 || !key){seen.add(key);return;}
+      if(seen.has(key)) opt.remove(); else seen.add(key);
+    });
+  }
+
   function applyRequestedContext(){
     const category=document.getElementById('categoryFilter');
     const search=document.getElementById('searchInput');
     if(!category || !search) return false;
 
+    dedupeOptions(category);
     const subLabel=subLabels[subSlug]||'';
     const topLabel=topLabels[catSlug]||'';
 
@@ -50,8 +60,11 @@
         option=document.createElement('option');
         option.value=subLabel;
         option.textContent=subLabel;
+        option.dataset.bfiInjected='1';
         category.appendChild(option);
       }
+      dedupeOptions(category);
+      option=[...category.options].find(opt=>slugify(opt.textContent)===subSlug) || option;
       category.value=option.value;
       if(typeof window.refreshRanges==='function') window.refreshRanges();
       if(typeof window.applyFilters==='function') window.applyFilters();
@@ -83,6 +96,5 @@
     if(applyRequestedContext() || tries>60) clearInterval(timer);
   },100);
 
-  // Re-apply after async catalog rendering so empty-state copy also reflects the requested subcategory.
   [800,1400,2200].forEach(ms=>setTimeout(applyRequestedContext,ms));
 })();
