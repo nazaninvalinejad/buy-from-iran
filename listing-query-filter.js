@@ -98,3 +98,56 @@
 
   [800,1400,2200].forEach(ms=>setTimeout(applyRequestedContext,ms));
 })();
+
+// Ensure View Details uses the SKU fields that actually exist in the public SKU view.
+(function(){
+  if(!location.pathname.includes('listing-supabase-live.html')) return;
+  if(!window.supabase || !window.BFI_SUPABASE) return;
+
+  const client=supabase.createClient(window.BFI_SUPABASE.url,window.BFI_SUPABASE.publishableKey,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+  let productIdByName={};
+  let skuByProduct={};
+
+  Promise.all([
+    client.from('public_product_catalog').select('product_id,product_name'),
+    client.from('public_product_skus').select('*')
+  ]).then(([productsRes,skuRes])=>{
+    (productsRes.data||[]).forEach(p=>{productIdByName[p.product_name]=p.product_id;});
+    (skuRes.data||[]).forEach(s=>{if(!skuByProduct[s.product_id]||s.is_default)skuByProduct[s.product_id]=s;});
+    applyDetails();
+  });
+
+  function setDetail(label,value){
+    if(value===null||value===undefined||String(value).trim()==='') return;
+    document.querySelectorAll('#mDetails .detail-item').forEach(item=>{
+      if(item.querySelector('b')?.textContent?.trim().toLowerCase()===label.toLowerCase()){
+        const span=item.querySelector('span'); if(span) span.textContent=value;
+      }
+    });
+  }
+
+  function applyDetails(){
+    const modal=document.getElementById('productModal');
+    if(!modal?.classList.contains('open')) return;
+    const name=document.getElementById('mName')?.textContent?.trim();
+    const id=productIdByName[name];
+    const s=skuByProduct[id];
+    if(!s) return;
+
+    setDetail('SKU',s.sku_code||s.code);
+    const packSize=s.label || ([s.pack_weight,s.pack_weight_unit].filter(Boolean).join(' '));
+    setDetail('Pack size',packSize);
+    setDetail('Packs per carton',s.packs_per_carton);
+
+    const packDims=[s.pack_length_cm,s.pack_width_cm,s.pack_height_cm].filter(v=>v!==null&&v!==undefined&&v!=='').join(' × ');
+    if(packDims) setDetail('Pack dimensions',packDims+' cm');
+
+    const cartonDims=[s.carton_length_cm,s.carton_width_cm,s.carton_height_cm].filter(v=>v!==null&&v!==undefined&&v!=='').join(' × ');
+    if(cartonDims) setDetail('Carton dimensions',cartonDims+' cm');
+    if(s.carton_gross_weight_kg) setDetail('Carton gross weight',s.carton_gross_weight_kg+' kg');
+  }
+
+  const observer=new MutationObserver(()=>setTimeout(applyDetails,0));
+  observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+  document.addEventListener('click',()=>setTimeout(applyDetails,20),true);
+})();
