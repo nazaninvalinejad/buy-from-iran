@@ -52,25 +52,27 @@
     nodes.forEach(n=>{if(n.nodeValue&&n.nodeValue.includes(oldText)) n.nodeValue=n.nodeValue.split(oldText).join(newText);});
   }
 
+  function setSingleText(el,text){
+    const textNodes=Array.from(el.childNodes).filter(n=>n.nodeType===Node.TEXT_NODE);
+    textNodes.forEach(n=>n.remove());
+    el.appendChild(document.createTextNode(' '+text));
+  }
+
   function normalizeContact(){
     replaceTextEverywhere('+98 21 4000 5000',PHONE_DISPLAY);
     replaceTextEverywhere('Valiasr St, Tehran, Iran',ADDRESS);
-    replaceTextEverywhere('Vanak Square, Valiasr St, Tehran, Iran',ADDRESS);
 
-    document.querySelectorAll('a[href^="tel:"]').forEach(a=>a.setAttribute('href','tel:'+PHONE_TEL));
+    document.querySelectorAll('a[href^="tel:"]').forEach(a=>{
+      a.setAttribute('href','tel:'+PHONE_TEL);
+      if((a.textContent||'').includes(PHONE_DISPLAY) || (a.textContent||'').match(/\+98\s*21\s*4000\s*5000/)) setSingleText(a,PHONE_DISPLAY);
+    });
     document.querySelectorAll('a[href^="mailto:"]').forEach(a=>a.setAttribute('href','mailto:'+EMAIL));
 
-    document.querySelectorAll('.footer-contact-item, .util-bar__link').forEach(el=>{
+    document.querySelectorAll('.footer-contact-item').forEach(el=>{
       const t=(el.textContent||'').trim();
-      if(/\+98\s*21\s*4000\s*5000/.test(t) || /\+98\s*912\s*220\s*2363/.test(t)){
-        Array.from(el.childNodes).forEach(n=>{if(n.nodeType===Node.TEXT_NODE) n.textContent=' '+PHONE_DISPLAY;});
-      }
-      if(/Valiasr St, Tehran, Iran|Vanak Square, Valiasr St, Tehran, Iran/.test(t)){
-        Array.from(el.childNodes).forEach(n=>{if(n.nodeType===Node.TEXT_NODE) n.textContent=' '+ADDRESS;});
-      }
-      if(/hello@buyfromiran\.com/i.test(t)){
-        Array.from(el.childNodes).forEach(n=>{if(n.nodeType===Node.TEXT_NODE) n.textContent=' '+EMAIL;});
-      }
+      if(/\+98\s*(?:21\s*4000\s*5000|912\s*220\s*2363)/.test(t)) setSingleText(el,PHONE_DISPLAY);
+      else if(/Valiasr St, Tehran, Iran|Vanak Square, Valiasr St, Tehran, Iran/.test(t)) setSingleText(el,ADDRESS);
+      else if(/hello@buyfromiran\.com/i.test(t)) setSingleText(el,EMAIL);
     });
   }
 
