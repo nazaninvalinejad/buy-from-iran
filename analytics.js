@@ -82,3 +82,14 @@
   s.dataset.bfiI18n='1';
   document.head.appendChild(s);
 })();
+
+// Preserve old Homepage category/subcategory URLs on the new live catalog.
+(function(){
+  if(!location.pathname.endsWith('/listing-supabase-live.html') && !location.pathname.endsWith('listing-supabase-live.html')) return;
+  if(document.querySelector('script[data-bfi-listing-filter]')) return;
+  const s=document.createElement('script');
+  s.src='./listing-query-filter.js';
+  s.defer=true;
+  s.dataset.bfiListingFilter='1';
+  document.head.appendChild(s);
+})();
