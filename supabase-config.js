@@ -84,3 +84,39 @@ window.BFI_SUPABASE = {
   s.dataset.bfiCatalogPackage='1';
   document.head.appendChild(s);
 })();
+
+// Public catalog fix: convert product_images.storage_path into a usable public Storage URL.
+(function(){
+  if(!location.pathname.includes('listing-supabase-live.html')) return;
+
+  function installImageFix(){
+    if(typeof window.supabase==='undefined' || typeof window.imageMap==='undefined' || typeof window.applyFilters!=='function') return false;
+    if(window.__BFI_PUBLIC_IMAGE_FIX) return true;
+    window.__BFI_PUBLIC_IMAGE_FIX=true;
+
+    const client=window.__BFI_PUBLIC_IMAGE_SB || supabase.createClient(
+      window.BFI_SUPABASE.url,
+      window.BFI_SUPABASE.publishableKey,
+      {auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}}
+    );
+    window.__BFI_PUBLIC_IMAGE_SB=client;
+
+    (async()=>{
+      const {data,error}=await client.from('public_product_images').select('*');
+      if(error){console.error('Could not load product images',error);return;}
+      (data||[]).forEach(i=>{
+        if(!i.product_id||!i.storage_path) return;
+        const publicUrl=client.storage.from('product-images').getPublicUrl(i.storage_path).data.publicUrl;
+        if(!window.imageMap[i.product_id]||i.is_primary) window.imageMap[i.product_id]=publicUrl;
+      });
+      window.applyFilters();
+    })();
+    return true;
+  }
+
+  let tries=0;
+  const timer=setInterval(()=>{
+    tries++;
+    if(installImageFix()||tries>100) clearInterval(timer);
+  },100);
+})();
