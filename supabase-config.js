@@ -142,3 +142,14 @@ window.BFI_SUPABASE = {
     document.addEventListener('click',()=>setTimeout(applyImages,0),true);
   },100);
 })();
+
+// Quote page fixes: current phone number + catalog category prefill.
+(function(){
+  if(!location.pathname.includes('quote.html')) return;
+  if(document.querySelector('script[data-bfi-quote-fixes]')) return;
+  const s=document.createElement('script');
+  s.src='./quote-fixes.js';
+  s.defer=true;
+  s.dataset.bfiQuoteFixes='1';
+  document.head.appendChild(s);
+})();
