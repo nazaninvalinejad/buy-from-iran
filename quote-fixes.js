@@ -1,4 +1,4 @@
-// Quote page enhancements: keep shared contact details current and reliably prefill category from selected catalog product.
+// Quote page enhancements: keep shared contact details current, reliably prefill category, and include cartons as a quote unit.
 (function(){
   if(!location.pathname.endsWith('/quote.html') && !location.pathname.endsWith('quote.html')) return;
 
@@ -12,6 +12,19 @@
       textNodes.forEach(n=>n.remove());
       a.appendChild(document.createTextNode(' '+CURRENT_PHONE_DISPLAY));
     });
+  }
+
+  function ensureCartonsUnit(){
+    const unit=document.getElementById('f-unit');
+    if(!unit) return false;
+    const exists=[...unit.options].some(o=>o.value.trim().toLowerCase()==='cartons' || o.textContent.trim().toLowerCase()==='cartons');
+    if(!exists){
+      const opt=document.createElement('option');
+      opt.value='cartons';
+      opt.textContent='cartons';
+      unit.appendChild(opt);
+    }
+    return true;
   }
 
   async function resolveCategory(){
@@ -51,8 +64,12 @@
 
   function run(){
     updatePhone();
+    ensureCartonsUnit();
     resolveCategory();
-    [250,700,1400,2500].forEach(ms=>setTimeout(resolveCategory,ms));
+    [250,700,1400,2500].forEach(ms=>{
+      setTimeout(resolveCategory,ms);
+      setTimeout(ensureCartonsUnit,ms);
+    });
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true});
