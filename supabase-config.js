@@ -7,6 +7,17 @@ window.BFI_SUPABASE = {
   publishableKey: "sb_publishable_3Y9IEf5ZmyJKHNG2kAL8tQ_ekpFHsdz"
 };
 
+// Global public-site normalization: taxonomy + shared contact details.
+(function(){
+  if(location.pathname.includes('admin-supabase-live.html')) return;
+  if(document.querySelector('script[data-bfi-global-fixes]')) return;
+  const s=document.createElement('script');
+  s.src='./global-site-fixes.js';
+  s.defer=true;
+  s.dataset.bfiGlobalFixes='1';
+  document.head.appendChild(s);
+})();
+
 // Admin enhancement: make Bulk Import Preview show all columns clearly before import.
 (function(){
   if(!location.pathname.includes('admin-supabase-live.html')) return;
