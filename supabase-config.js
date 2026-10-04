@@ -73,3 +73,14 @@ window.BFI_SUPABASE = {
     if(install()||tries>100) clearInterval(timer);
   },100);
 })();
+
+// Admin enhancement: load Catalog Package Import (Excel + images in one ZIP).
+(function(){
+  if(!location.pathname.includes('admin-supabase-live.html')) return;
+  if(document.querySelector('script[data-bfi-catalog-package]')) return;
+  const s=document.createElement('script');
+  s.src='./catalog-package-import.js';
+  s.defer=true;
+  s.dataset.bfiCatalogPackage='1';
+  document.head.appendChild(s);
+})();
