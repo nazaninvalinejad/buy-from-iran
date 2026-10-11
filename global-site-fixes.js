@@ -76,9 +76,23 @@
     });
   }
 
+  function normalizeAddListing(){
+    // Make ADD LISTING work consistently on every public page.
+    window.openSupplierListing=function(){
+      location.href='membership.html?intent=add-listing';
+    };
+    document.querySelectorAll('.btn-add-listing').forEach(btn=>{
+      btn.onclick=function(e){
+        e.preventDefault();
+        location.href='membership.html?intent=add-listing';
+      };
+    });
+  }
+
   function run(){
     normalizeMegaMenus();
     normalizeContact();
+    normalizeAddListing();
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true}); else run();
