@@ -100,10 +100,33 @@
     });
   }
 
+  function normalizeFooterLogo(){
+    document.querySelectorAll('footer img[alt="Buy From Iran"]').forEach(img=>{
+      img.src='img/logo-bfi.svg';
+      img.style.height='40px';
+      img.style.width='auto';
+      img.style.display='block';
+      img.style.filter='none';
+
+      const wrap=img.parentElement;
+      if(!wrap) return;
+      wrap.style.display='inline-flex';
+      wrap.style.alignItems='center';
+      wrap.style.justifyContent='center';
+      wrap.style.background='#fff';
+      wrap.style.borderRadius='12px';
+      wrap.style.padding='8px 12px';
+      wrap.style.boxShadow='0 2px 8px rgba(0,0,0,.12)';
+      wrap.style.width='fit-content';
+      wrap.style.maxWidth='100%';
+    });
+  }
+
   function run(){
     normalizeMegaMenus();
     normalizeContact();
     normalizeAddListing();
+    normalizeFooterLogo();
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true}); else run();
