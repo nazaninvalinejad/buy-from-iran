@@ -60,7 +60,18 @@
 
   function normalizeContact(){
     replaceTextEverywhere('+98 21 4000 5000',PHONE_DISPLAY);
-    replaceTextEverywhere('Valiasr St, Tehran, Iran',ADDRESS);
+    // Normalize old/duplicated footer address without duplicating "Vanak Square".
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+    const addressNodes=[];
+    while(walker.nextNode()) addressNodes.push(walker.currentNode);
+    addressNodes.forEach(n=>{
+      if(!n.nodeValue) return;
+      if(n.nodeValue.includes('Vanak Square, Vanak Square, Valiasr St, Tehran, Iran')){
+        n.nodeValue=n.nodeValue.replace('Vanak Square, Vanak Square, Valiasr St, Tehran, Iran',ADDRESS);
+      } else if(n.nodeValue.trim()==='Valiasr St, Tehran, Iran'){
+        n.nodeValue=n.nodeValue.replace('Valiasr St, Tehran, Iran',ADDRESS);
+      }
+    });
 
     document.querySelectorAll('a[href^="tel:"]').forEach(a=>{
       a.setAttribute('href','tel:'+PHONE_TEL);
